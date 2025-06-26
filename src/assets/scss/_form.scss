@@ -1,0 +1,26 @@
+@use 'vars.module' as *;
+
+.dwmc-drawer {
+	.Mui-focused .MuiPickersOutlinedInput-notchedOutline,
+	.MuiPickersOutlinedInput-notchedOutline {
+		border: 0;
+	}
+	.MuiPickersInputBase-sectionsContainer {
+		padding: 0;
+		text-transform: capitalize;
+	}
+	.MuiPickersInputBase-root,
+	.MuiInputBase-input {
+		padding: 8px 16px 8px 0;
+	}
+	.MuiFormHelperText-root {
+		margin-left: 0;
+	}
+	.MuiPickersInputBase-root .MuiInputAdornment-root {
+		display: none;
+	}
+}
+
+.MuiPickersToolbar-root {
+	display: none;
+}

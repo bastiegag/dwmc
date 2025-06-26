@@ -1,0 +1,85 @@
+$black: #000000;
+$white: #ffffff;
+
+$primary: #8f61a2;
+$secondary: #efb353;
+
+$error: #ed695f;
+$warning: #efb353;
+$info: #3373d3;
+$success: #3b5144;
+
+$grey50: #f5f6f9;
+$grey100: #eff1f6;
+$grey200: #cfd4e3;
+$grey300: #aeb7d0;
+$grey400: #8e9abd;
+$grey500: #6e7daa;
+$grey600: #556391;
+$grey700: #424d71;
+$grey800: #2f3751;
+$grey900: #1c2130;
+
+$red: #ed695f;
+$orange: #ef8e53;
+$yellow: #efb353;
+$green: #36b971;
+$teal: #38a5a9;
+$cyan: #3593d5;
+$blue: #3373d3;
+$indigo: #3043b4;
+$purple: #5f399a;
+$pink: #dc74b1;
+
+$textPrimary: $grey800;
+$textSecondary: $grey600;
+$textDisabled: $grey400;
+
+$divider: $grey800;
+
+$bgDefault: $grey50;
+$bgPaper: $white;
+
+:export {
+	black: $black;
+	white: $white;
+
+	primary: $primary;
+	secondary: $secondary;
+
+	error: $error;
+	warning: $warning;
+	info: $info;
+	success: $success;
+
+	grey50: $grey50;
+	grey100: $grey100;
+	grey200: $grey200;
+	grey300: $grey300;
+	grey400: $grey400;
+	grey500: $grey500;
+	grey600: $grey600;
+	grey700: $grey700;
+	grey800: $grey800;
+	grey900: $grey900;
+
+	red: $red;
+	orange: $orange;
+	yellow: $yellow;
+	green: $green;
+	teal: $teal;
+	cyan: $cyan;
+	blue: $blue;
+	indigo: $indigo;
+	purple: $purple;
+	pink: $pink;
+
+	textPrimary: $textPrimary;
+	// textSecondary: $textSecondary;
+	// textDisabled: $textDisabled;
+
+	divider: $divider;
+
+	bgDefault: $bgDefault;
+	bgPaper: $bgPaper;
+}

@@ -1,0 +1,130 @@
+export const icons = [
+	{ id: 'default', value: 'IconArchive', icon: 'IconArchive' },
+	{
+		id: 'IconBabyCarriage',
+		value: 'IconBabyCarriage',
+		icon: 'IconBabyCarriage'
+	},
+	{
+		id: 'IconBallBaseball',
+		value: 'IconBallBaseball',
+		icon: 'IconBallBaseball'
+	},
+	{ id: 'IconBallBowling', value: 'IconBallBowling', icon: 'IconBallBowling' },
+	{
+		id: 'IconBallFootball',
+		value: 'IconBallFootball',
+		icon: 'IconBallFootball'
+	},
+	{ id: 'IconBandage', value: 'IconBandage', icon: 'IconBandage' },
+	{ id: 'IconBarbell', value: 'IconBarbell', icon: 'IconBarbell' },
+	{ id: 'IconBeach', value: 'IconBeach', icon: 'IconBeach' },
+	{ id: 'IconBeer', value: 'IconBeer', icon: 'IconBeer' },
+	{ id: 'IconBike', value: 'IconBike', icon: 'IconBike' },
+	{ id: 'IconBolt', value: 'IconBolt', icon: 'IconBolt' },
+	{ id: 'IconBooks', value: 'IconBooks', icon: 'IconBooks' },
+	{ id: 'IconBrandAmazon', value: 'IconBrandAmazon', icon: 'IconBrandAmazon' },
+	{
+		id: 'IconBuildingBank',
+		value: 'IconBuildingBank',
+		icon: 'IconBuildingBank'
+	},
+	{
+		id: 'IconBuildingSkyscraper',
+		value: 'IconBuildingSkyscraper',
+		icon: 'IconBuildingSkyscraper'
+	},
+	{
+		id: 'IconBuildingStore',
+		value: 'IconBuildingStore',
+		icon: 'IconBuildingStore'
+	},
+	{ id: 'IconCalendar', value: 'IconCalendar', icon: 'IconCalendar' },
+	{ id: 'IconCamera', value: 'IconCamera', icon: 'IconCamera' },
+	{ id: 'IconCampfire', value: 'IconCampfire', icon: 'IconCampfire' },
+	{ id: 'IconCandy', value: 'IconCandy', icon: 'IconCandy' },
+	{ id: 'IconCar', value: 'IconCar', icon: 'IconCar' },
+	{ id: 'IconCaravan', value: 'IconCaravan', icon: 'IconCaravan' },
+	{ id: 'IconCash', value: 'IconCash', icon: 'IconCash' },
+	{ id: 'IconCat', value: 'IconCat', icon: 'IconCat' },
+	{ id: 'IconChefHat', value: 'IconChefHat', icon: 'IconChefHat' },
+	{
+		id: 'IconChristmasTree',
+		value: 'IconChristmasTree',
+		icon: 'IconChristmasTree'
+	},
+	{
+		id: 'IconClipboardList',
+		value: 'IconClipboardList',
+		icon: 'IconClipboardList'
+	},
+	{ id: 'IconCloud', value: 'IconCloud', icon: 'IconCloud' },
+	{ id: 'IconCoffee', value: 'IconCoffee', icon: 'IconCoffee' },
+	{ id: 'IconCoin', value: 'IconCoin', icon: 'IconCoin' },
+	{ id: 'IconCoins', value: 'IconCoins', icon: 'IconCoins' },
+	{ id: 'IconCreditCard', value: 'IconCreditCard', icon: 'IconCreditCard' },
+	{ id: 'IconDental', value: 'IconDental', icon: 'IconDental' },
+	{
+		id: 'IconDeviceMobile',
+		value: 'IconDeviceMobile',
+		icon: 'IconDeviceMobile'
+	},
+	{ id: 'IconDeviceTv', value: 'IconDeviceTv', icon: 'IconDeviceTv' },
+	{ id: 'IconDroplet', value: 'IconDroplet', icon: 'IconDroplet' },
+	{ id: 'IconFirstAidKit', value: 'IconFirstAidKit', icon: 'IconFirstAidKit' },
+	{ id: 'IconFridge', value: 'IconFridge', icon: 'IconFridge' },
+	{ id: 'IconGasStation', value: 'IconGasStation', icon: 'IconGasStation' },
+	{ id: 'IconGift', value: 'IconGift', icon: 'IconGift' },
+	{ id: 'IconGlassFull', value: 'IconGlassFull', icon: 'IconGlassFull' },
+	{ id: 'IconGlobe', value: 'IconGlobe', icon: 'IconGlobe' },
+	{ id: 'IconHammer', value: 'IconHammer', icon: 'IconHammer' },
+	{ id: 'IconHandRock', value: 'IconHandRock', icon: 'IconHandRock' },
+	{ id: 'IconHanger', value: 'IconHanger', icon: 'IconHanger' },
+	{ id: 'IconHeart', value: 'IconHeart', icon: 'IconHeart' },
+	{ id: 'IconHome', value: 'IconHome', icon: 'IconHome' },
+	{ id: 'IconHorseToy', value: 'IconHorseToy', icon: 'IconHorseToy' },
+	{ id: 'IconIceCream', value: 'IconIceCream', icon: 'IconIceCream' },
+	{ id: 'IconMail', value: 'IconMail', icon: 'IconMail' },
+	{ id: 'IconMicrophone', value: 'IconMicrophone', icon: 'IconMicrophone' },
+	{ id: 'IconMinus', value: 'IconMinus', icon: 'IconMinus' },
+	{ id: 'IconMoon', value: 'IconMoon', icon: 'IconMoon' },
+	{ id: 'IconMovie', value: 'IconMovie', icon: 'IconMovie' },
+	{ id: 'IconMusic', value: 'IconMusic', icon: 'IconMusic' },
+	{ id: 'IconNotes', value: 'IconNotes', icon: 'IconNotes' },
+	{ id: 'IconPackage', value: 'IconPackage', icon: 'IconPackage' },
+	{ id: 'IconPaint', value: 'IconPaint', icon: 'IconPaint' },
+	{ id: 'IconPalette', value: 'IconPalette', icon: 'IconPalette' },
+	{ id: 'IconParachute', value: 'IconParachute', icon: 'IconParachute' },
+	{
+		id: 'IconParkingCircle',
+		value: 'IconParkingCircle',
+		icon: 'IconParkingCircle'
+	},
+	{ id: 'IconPennant', value: 'IconPennant', icon: 'IconPennant' },
+	{ id: 'IconPigMoney', value: 'IconPigMoney', icon: 'IconPigMoney' },
+	{ id: 'IconPlane', value: 'IconPlane', icon: 'IconPlane' },
+	{ id: 'IconPlant', value: 'IconPlant', icon: 'IconPlant' },
+	{ id: 'IconPlus', value: 'IconPlus', icon: 'IconPlus' },
+	{ id: 'IconRefresh', value: 'IconRefresh', icon: 'IconRefresh' },
+	{ id: 'IconReportMoney', value: 'IconReportMoney', icon: 'IconReportMoney' },
+	{ id: 'IconRipple', value: 'IconRipple', icon: 'IconRipple' },
+	{ id: 'IconSchool', value: 'IconSchool', icon: 'IconSchool' },
+	{ id: 'IconScissors', value: 'IconScissors', icon: 'IconScissors' },
+	{ id: 'IconSearch', value: 'IconSearch', icon: 'IconSearch' },
+	{ id: 'IconShieldCheck', value: 'IconShieldCheck', icon: 'IconShieldCheck' },
+	{ id: 'IconShirt', value: 'IconShirt', icon: 'IconShirt' },
+	{ id: 'IconShoe', value: 'IconShoe', icon: 'IconShoe' },
+	{ id: 'IconSnowflake', value: 'IconSnowflake', icon: 'IconSnowflake' },
+	{ id: 'IconStar', value: 'IconStar', icon: 'IconStar' },
+	{ id: 'IconSun', value: 'IconSun', icon: 'IconSun' },
+	{ id: 'IconTent', value: 'IconTent', icon: 'IconTent' },
+	{ id: 'IconTool', value: 'IconTool', icon: 'IconTool' },
+	{
+		id: 'IconToolsKitchen2',
+		value: 'IconToolsKitchen2',
+		icon: 'IconToolsKitchen2'
+	},
+	{ id: 'IconTrack', value: 'IconTrack', icon: 'IconTrack' },
+	{ id: 'IconWallet', value: 'IconWallet', icon: 'IconWallet' },
+	{ id: 'IconWifi', value: 'IconWifi', icon: 'IconWifi' }
+];

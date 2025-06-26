@@ -1,0 +1,12 @@
+@use 'vars.module' as *;
+
+body {
+	background-color: $black;
+}
+
+.firebase-emulator-warning {
+	background-color: $error !important;
+	text-indent: -999rem;
+	height: 3px !important;
+	border: none !important;
+}
