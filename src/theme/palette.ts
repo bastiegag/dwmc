@@ -55,7 +55,8 @@ const palette = (colors: IColors) => {
 			indigo: colors.indigo,
 			purple: colors.purple,
 			pink: colors.pink,
-			grey: grey[500]
+			light: grey[300],
+			dark: grey[600]
 		},
 		text: {
 			primary: colors.textPrimary,

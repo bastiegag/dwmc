@@ -1,9 +1,18 @@
+import { FC } from 'react';
 import { IconButton, styled } from '@mui/material';
 import { IconPlus } from '@tabler/icons-react';
 
-interface IAddButtonProps {
-	onClick?: React.MouseEventHandler;
+interface AddButtonProps {
+	onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
+
+export const AddButton: FC<AddButtonProps> = ({ onClick }) => {
+	return (
+		<Button onClick={onClick}>
+			<IconPlus />
+		</Button>
+	);
+};
 
 const Button = styled(IconButton)(({ theme }) => ({
 	position: 'absolute',
@@ -15,11 +24,3 @@ const Button = styled(IconButton)(({ theme }) => ({
 		backgroundColor: theme.palette.primary.light
 	}
 }));
-
-export const AddButton = ({ onClick }: IAddButtonProps) => {
-	return (
-		<Button onClick={onClick}>
-			<IconPlus />
-		</Button>
-	);
-};

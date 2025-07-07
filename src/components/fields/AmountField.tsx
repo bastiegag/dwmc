@@ -1,104 +1,85 @@
-import { FC } from 'react';
-import { useFormContext, Controller } from 'react-hook-form';
-import * as Icons from '@tabler/icons-react';
+import { FC, useEffect, useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
 import {
-	Input,
+	alpha,
 	FormControl,
+	Input,
 	ListItem,
-	ListItemIcon,
-	FormHelperText,
-	Avatar
+	ListItemIcon
 } from '@mui/material';
 
-type TablerIconsType = keyof typeof Icons;
+import { FieldProps } from './types';
+import { isFieldVisible } from 'utils';
+import { Icon } from 'components';
 
-interface AmountFieldData {
-	name: string;
-	type: string;
-	label?: string;
-	icon?: TablerIconsType;
-	hidden?: number;
-	required?: boolean;
-}
+export const AmountField: FC<FieldProps> = ({ data, hiddenValue, values }) => {
+	const {
+		control,
+		formState: { errors },
+		unregister
+	} = useFormContext();
+	const initialValue = values[data.name] ?? '';
+	const [show, setShow] = useState(true);
 
-interface AmountFieldProps {
-	data: AmountFieldData;
-	values: Record<string, string>;
-	setDisabled: (disabled: boolean) => void;
-}
-
-export const AmountField: FC<AmountFieldProps> = ({
-	data,
-	values,
-	setDisabled
-}) => {
-	const { control } = useFormContext();
-
-	const IconComponent = data.icon ? (Icons[data.icon] as FC) : null;
-	const initialValue =
-		typeof values[data.name] !== 'undefined' ? values[data.name] : '';
+	useEffect(() => {
+		if (isFieldVisible(data.hidden, hiddenValue)) {
+			setShow(true);
+		} else {
+			unregister(data.name);
+			setShow(false);
+		}
+	}, [hiddenValue, data, unregister]);
 
 	return (
-		<ListItem sx={{ ...(data.type === 'hidden' && { display: 'none' }) }}>
-			{IconComponent && (
-				<ListItemIcon>
-					<Avatar>
-						<IconComponent />
-					</Avatar>
-				</ListItemIcon>
-			)}
-
-			<Controller
-				name={data.name}
-				control={control}
-				rules={{
-					required: data.required
+		show && (
+			<ListItem
+				sx={{
+					...(errors[data.name] && {
+						bgcolor: (theme) => alpha(theme.palette.error.main, 0.03)
+					})
 				}}
-				defaultValue={initialValue}
-				render={({ field: { onChange, value }, fieldState: { invalid } }) => (
-					<FormControl fullWidth>
-						<NumericFormat
-							value={value}
-							onChange={onChange}
-							onValueChange={({ floatValue }) => {
-								if (data.required) {
-									if (typeof floatValue === 'undefined') {
-										setDisabled(true);
-									} else {
-										setDisabled(false);
-									}
-								}
-							}}
-							placeholder="0 $"
-							allowedDecimalSeparators={['.']}
-							allowNegative={false}
-							customInput={Input}
-							{...{ inputProps: { inputMode: 'decimal' } }}
-							decimalScale={2}
-							decimalSeparator=","
-							thousandSeparator=" "
-							fixedDecimalScale
-							suffix={' $'}
-							sx={{
-								...(!data.icon && {
-									fontSize: 32,
-									fontWeight: 500,
-									input: { textAlign: 'center', padding: 0 }
-								})
-							}}
-						/>
-						{invalid && (
-							<FormHelperText
-								error
-								sx={{ textAlign: data.icon ? 'left' : 'center' }}
-							>
-								Ce champ est obligatoire
-							</FormHelperText>
-						)}
-					</FormControl>
+			>
+				{data.icon && (
+					<ListItemIcon>
+						<Icon icon={data.icon} error={Boolean(errors[data.name])} />
+					</ListItemIcon>
 				)}
-			/>
-		</ListItem>
+
+				<Controller
+					name={data.name}
+					control={control}
+					rules={{
+						required: data.required
+					}}
+					defaultValue={initialValue}
+					render={({ field: { onChange, value } }) => (
+						<FormControl fullWidth>
+							<NumericFormat
+								value={value}
+								onChange={onChange}
+								placeholder={data.label ? data.label : '0 $'}
+								allowedDecimalSeparators={['.']}
+								allowNegative={false}
+								customInput={Input}
+								{...{ inputProps: { inputMode: 'decimal' } }}
+								decimalScale={2}
+								decimalSeparator=","
+								thousandSeparator=" "
+								fixedDecimalScale
+								suffix={' $'}
+								sx={{
+									...(!data.icon && {
+										fontSize: 32,
+										fontWeight: 500,
+										input: { textAlign: 'center', padding: 0 }
+									})
+								}}
+							/>
+						</FormControl>
+					)}
+				/>
+			</ListItem>
+		)
 	);
 };

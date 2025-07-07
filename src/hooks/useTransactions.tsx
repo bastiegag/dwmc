@@ -1,49 +1,37 @@
 import {
 	collection,
-	query,
-	onSnapshot,
-	where,
 	CollectionReference,
+	DocumentData,
+	onSnapshot,
+	query,
+	QueryDocumentSnapshot,
 	QuerySnapshot,
-	QueryDocumentSnapshot
+	where
 } from 'firebase/firestore';
 import { UseQueryResult } from '@tanstack/react-query';
 
 import { db } from '../main';
 import { useAuth, useRealtimeQuery, useDate } from 'hooks';
 
+export interface TransactionItem {
+	amount: number;
+	category: string;
+	date: number;
+	from?: string;
+	id: string;
+	note?: string;
+	to?: string;
+	type: number;
+}
+
 export interface Transactions {
 	id: string;
-	expenses: {
-		id: string;
-		amount: number;
-		category: string;
-		from: string;
-		note: string;
-		date: number;
-	}[];
-	incomes: {
-		id: string;
-		amount: number;
-		category: string;
-		to: string;
-		note: string;
-		date: number;
-	}[];
-	transfers: {
-		id: string;
-		amount: number;
-		category: string;
-		from: string;
-		to: string;
-		note: string;
-		date: number;
-	}[];
+	items: TransactionItem[];
 	month: number;
 	uid: string;
 }
 
-export const useTransactions = (): UseQueryResult<TransactionsItem[]> => {
+export const useTransactions = (): UseQueryResult<TransactionItem[]> => {
 	const auth = useAuth();
 	const userId = auth.user?.uid || '';
 	const { selector } = useDate();
@@ -52,7 +40,7 @@ export const useTransactions = (): UseQueryResult<TransactionsItem[]> => {
 		throw new Error('User ID is required to fetch transactions');
 	}
 
-	return useRealtimeQuery<TransactionsItem[]>({
+	return useRealtimeQuery<TransactionItem[]>({
 		queryKey: ['transactions', userId],
 		subscribeFn: (onData, onError) => {
 			const unsubscribe = onSnapshot(
@@ -66,15 +54,16 @@ export const useTransactions = (): UseQueryResult<TransactionsItem[]> => {
 					where('uid', '==', userId),
 					where('month', '==', selector)
 				),
-				(querySnapshot: QuerySnapshot<Transactions>) => {
+				(querySnapshot: QuerySnapshot<DocumentData>) => {
 					try {
 						const updatedTransactions = querySnapshot.docs.map(
-							(doc: QueryDocumentSnapshot<Transactions>) => ({
+							(doc: QueryDocumentSnapshot<DocumentData>) => ({
 								...doc.data(),
 								id: doc.id
 							})
-						);
-						onData(groupAndSort(updatedTransactions));
+						) as Transactions[];
+
+						onData(updatedTransactions[0]?.items || []);
 					} catch (error) {
 						onError(error);
 					}
@@ -84,47 +73,4 @@ export const useTransactions = (): UseQueryResult<TransactionsItem[]> => {
 			return unsubscribe;
 		}
 	});
-};
-
-interface TransactionsItem {
-	id: string;
-	amount: number;
-	category: string;
-	from?: string;
-	to?: string;
-	note: string;
-	date: number;
-	type: number; // 0 for expenses, 1 for incomes, 2 for transfers
-}
-
-const groupAndSort = (data: Transactions[]): TransactionsItem[] => {
-	const output: TransactionsItem[] = [];
-
-	data.forEach((month) => {
-		const expenses = month.expenses.map(
-			(expense): TransactionsItem => ({
-				...expense,
-				type: 0
-			})
-		);
-
-		const incomes = month.incomes.map(
-			(income): TransactionsItem => ({
-				...income,
-				type: 1
-			})
-		);
-
-		const transfers = month.transfers.map(
-			(transfer): TransactionsItem => ({
-				...transfer,
-				type: 2
-			})
-		);
-
-		output.push(...expenses, ...incomes, ...transfers);
-	});
-
-	// Sort by date, most recent first
-	return output.sort((a, b) => b.date - a.date);
 };

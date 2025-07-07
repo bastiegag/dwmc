@@ -1,36 +1,44 @@
 import { FC } from 'react';
-import { Avatar } from '@mui/material';
 import * as Icons from '@tabler/icons-react';
+import { IconExclamationCircle } from '@tabler/icons-react';
+import { Box, styled, alpha } from '@mui/material';
 
 type TablerIconsType = keyof typeof Icons;
 
 interface IconProps {
-	icon?: string;
 	color?: string;
+	error?: boolean;
+	icon?: string;
 	size?: number;
 }
 
-interface Icon {
-	id: string;
-	icon: string;
-	name: string;
-	section: string;
-	color?: string;
-}
-
-export const Icon: FC<IconProps> = ({ icon, color, size = 40 }) => {
-	const IconComponent = Icons[icon as TablerIconsType] as FC;
+export const Icon: FC<IconProps> = ({ icon, color, size = 40, error }) => {
+	const TablerIcon = icon ? (Icons[icon as TablerIconsType] as FC) : null;
 
 	return (
-		<Avatar
+		<IconWrapper
 			sx={{
-				bgcolor: `color.${color}`,
-				color: 'white',
-				width: size,
-				height: size
+				...(color
+					? { bgcolor: `color.${color}`, color: 'white' }
+					: { color: 'inherit' }),
+				...(error && {
+					bgcolor: (theme) => alpha(theme.palette.error.main, 0.05),
+					color: 'error.main'
+				}),
+				height: size,
+				width: size
 			}}
 		>
-			<IconComponent />
-		</Avatar>
+			{error ? <IconExclamationCircle /> : TablerIcon && <TablerIcon />}
+		</IconWrapper>
 	);
 };
+
+const IconWrapper = styled(Box, {
+	name: 'Icon'
+})({
+	alignItems: 'center',
+	borderRadius: '100%',
+	display: 'flex',
+	justifyContent: 'center'
+});

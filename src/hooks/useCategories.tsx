@@ -1,45 +1,35 @@
 import {
 	collection,
-	query,
-	onSnapshot,
-	where,
 	CollectionReference,
+	DocumentData,
+	onSnapshot,
+	query,
+	QueryDocumentSnapshot,
 	QuerySnapshot,
-	QueryDocumentSnapshot
+	where
 } from 'firebase/firestore';
 import { UseQueryResult } from '@tanstack/react-query';
 
 import { db } from '../main';
 import { useAuth, useRealtimeQuery } from 'hooks';
-import { getSetColor } from 'utils';
+import { setColor } from 'utils';
 
-export interface PrimaryCategories {
-	color: string;
-	id: string;
-	name: string;
-}
-
-export interface SecondaryCategories {
-	id: string;
-	icon: string;
-	name: string;
-	section: string;
+export interface CategoryItem {
 	color?: string;
+	icon?: string;
+	id: string;
+	name: string;
+	section?: string;
+	type: number;
 }
 
 export interface Categories {
 	id: string;
-	primary: PrimaryCategories[];
-	secondary: SecondaryCategories[];
+	items: CategoryItem[];
 	uid: string;
 }
 
-export interface CategoriesItem {
-	primary: PrimaryCategories[];
-	secondary: SecondaryCategories[];
-}
-
-export const useCategories = (): UseQueryResult<CategoriesItem> => {
+export const useCategories = (): UseQueryResult<CategoryItem[]> => {
 	const auth = useAuth();
 	const userId = auth.user?.uid || '';
 
@@ -47,7 +37,7 @@ export const useCategories = (): UseQueryResult<CategoriesItem> => {
 		throw new Error('User ID is required to fetch categories');
 	}
 
-	return useRealtimeQuery<CategoriesItem>({
+	return useRealtimeQuery<CategoryItem[]>({
 		queryKey: ['categories', userId],
 		subscribeFn: (onData, onError) => {
 			const unsubscribe = onSnapshot(
@@ -55,15 +45,17 @@ export const useCategories = (): UseQueryResult<CategoriesItem> => {
 					collection(db, 'categories') as CollectionReference<Categories>,
 					where('uid', '==', userId)
 				),
-				(querySnapshot: QuerySnapshot<Categories>) => {
+				(querySnapshot: QuerySnapshot<DocumentData>) => {
 					try {
 						const updatedCategories = querySnapshot.docs.map(
-							(doc: QueryDocumentSnapshot<Categories>) => ({
+							(doc: QueryDocumentSnapshot<DocumentData>) => ({
 								...doc.data(),
 								id: doc.id
 							})
-						);
-						onData(getSetColor(updatedCategories));
+						) as Categories[];
+
+						const items = updatedCategories[0]?.items ?? [];
+						onData(setColor(items));
 					} catch (error) {
 						onError(error);
 					}

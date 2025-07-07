@@ -1,76 +1,64 @@
-import { FC, ChangeEvent } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import * as Icons from '@tabler/icons-react';
 import {
-	Input,
+	alpha,
 	FormControl,
+	Input,
 	ListItem,
-	ListItemIcon,
-	FormHelperText,
-	Avatar
+	ListItemIcon
 } from '@mui/material';
 
-type TablerIconsType = keyof typeof Icons;
+import { FieldProps } from './types';
+import { isFieldVisible } from 'utils';
+import { Icon } from 'components';
 
-interface TextFieldData {
-	name: string;
-	type: string;
-	label?: string;
-	icon?: TablerIconsType;
-	hidden?: number;
-	required?: boolean;
-}
-
-interface TextFieldProps {
-	data: TextFieldData;
-	values: Record<string, string>;
-	setDisabled: (disabled: boolean) => void;
-}
-
-export const TextField: FC<TextFieldProps> = ({
-	data,
-	values,
-	setDisabled
-}) => {
+export const TextField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 	const {
 		register,
+		unregister,
 		formState: { errors }
 	} = useFormContext();
+	const initialValue = values[data.name] ?? '';
+	const [show, setShow] = useState(true);
 
-	const IconComponent = data.icon ? (Icons[data.icon] as FC) : null;
-	const initialValue =
-		typeof values[data.name] !== 'undefined' ? values[data.name] : '';
-
-	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-		if (data.required) {
-			if (event.target.value !== '') {
-				setDisabled(false);
-			} else {
-				setDisabled(true);
-			}
+	useEffect(() => {
+		if (isFieldVisible(data.hidden, hiddenValue)) {
+			setShow(true);
+		} else {
+			unregister(data.name);
+			setShow(false);
 		}
-	};
+	}, [hiddenValue, data, unregister]);
 
 	return (
-		<ListItem sx={{ ...(data.type === 'hidden' && { display: 'none' }) }}>
-			{IconComponent && (
-				<ListItemIcon>
-					<Avatar>
-						<IconComponent />
-					</Avatar>
-				</ListItemIcon>
-			)}
-
-			<FormControl error fullWidth onChange={handleChange}>
-				<Input
-					defaultValue={initialValue}
-					placeholder={data.label}
-					{...register(data.name, { required: data.required })}
-				/>
-				{errors[data.name] && (
-					<FormHelperText error>Ce champ est obligatoire</FormHelperText>
+		show && (
+			<ListItem
+				sx={{
+					...(errors[data.name] && {
+						bgcolor: (theme) => alpha(theme.palette.error.main, 0.03)
+					})
+				}}
+			>
+				{data.icon && (
+					<ListItemIcon>
+						<Icon icon={data.icon} />
+					</ListItemIcon>
 				)}
-			</FormControl>
-		</ListItem>
+
+				<FormControl fullWidth>
+					<Input
+						defaultValue={initialValue}
+						placeholder={data.label}
+						{...register(data.name, { required: data.required })}
+					/>
+				</FormControl>
+
+				{errors[data.name] && (
+					<ListItemIcon sx={{ mr: 0 }}>
+						<Icon error={true} />
+					</ListItemIcon>
+				)}
+			</ListItem>
+		)
 	);
 };

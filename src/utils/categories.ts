@@ -1,48 +1,39 @@
-import {
-	Categories,
-	CategoriesItem,
-	SecondaryCategories
-} from 'hooks/useCategories';
+import { CategoryItem } from 'hooks/useCategories';
 
-export const getSetColor = (data: Categories[]): CategoriesItem => {
-	let output: CategoriesItem = { primary: [], secondary: [] };
-
-	// Since we expect only one categories document per user,
-	// we'll use the first one if it exists
-	const category = data[0];
-	if (category) {
-		const primary = category.primary.map((item) => ({
-			color: item.color,
-			id: item.id,
-			name: item.name
+export const setColor = (categories: CategoryItem[]) => {
+	const primary = categories
+		.filter((item) => item.type == 0)
+		.map((cat) => ({
+			color: cat.color,
+			id: cat.id,
+			name: cat.name,
+			type: 0
 		}));
 
-		const secondary = category.secondary.map((item) => {
-			const primaryCategory = category.primary.find(
-				(p) => p.id === item.section
-			);
+	const secondary = categories
+		.filter((item) => item.type == 1)
+		.map((cat) => {
+			const color =
+				primary.find((p) => p.id === cat.section)?.color || cat.color;
+
 			return {
-				id: item.id,
-				icon: item.icon,
-				name: item.name,
-				section: item.section,
-				color: primaryCategory?.color
+				color: color,
+				id: cat.id,
+				name: cat.name,
+				type: 1,
+				icon: cat.icon,
+				section: cat.section
 			};
 		});
 
-		output = { primary, secondary };
-	}
-
-	return output;
+	return [...primary, ...secondary];
 };
 
 export const getCategory = (
-	data: CategoriesItem,
-	id?: string
-): SecondaryCategories | undefined => {
-	if (!id) return;
-
-	const category = data.secondary.find((cat) => cat.id === id);
+	data: CategoryItem[],
+	id: string | number = 'default'
+): CategoryItem | undefined => {
+	const category = data.find((category) => category.id === id);
 	if (!category) return;
 
 	return category;

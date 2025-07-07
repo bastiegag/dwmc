@@ -1,128 +1,114 @@
-import { FC, ChangeEvent, useState, useEffect } from 'react';
+import { FC, ReactElement, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import * as Icons from '@tabler/icons-react';
 import { IconChevronDown } from '@tabler/icons-react';
 import {
-	Input,
 	FormControl,
-	ListItem,
 	IconButton,
-	ListItemButton,
+	Input,
+	List,
+	ListItem,
 	ListItemIcon,
-	ListItemText,
-	FormHelperText,
-	Avatar,
-	List
+	Typography
 } from '@mui/material';
 
+import { FieldProps } from './types';
 import { useWallets } from 'hooks';
-import { Drawer, Icon } from 'components';
+import { WalletItem } from 'hooks/useWallets';
+import { getWallet, isFieldVisible } from 'utils';
+import { Drawer, Icon, ListChoice } from 'components';
 
-type TablerIconsType = keyof typeof Icons;
-
-interface WalletFieldData {
-	name: string;
-	type: string;
-	label?: string;
-	icon?: TablerIconsType;
-	hidden?: number;
-	required?: boolean;
-}
-
-interface WalletFieldProps {
-	data: WalletFieldData;
-	values: Record<string, string>;
-	setDisabled: (disabled: boolean) => void;
-}
-
-export const WalletField: FC<WalletFieldProps> = ({
-	data,
-	values,
-	setDisabled
-}) => {
-	const {
-		register,
-		setValue,
-		trigger,
-		formState: { errors }
-	} = useFormContext();
+export const WalletField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
+	const { register, unregister, setValue } = useFormContext();
+	const initialValue = values[data.name] ?? 'default';
 	const { data: wallets } = useWallets();
+	const [wallet, setWallet] = useState<WalletItem | null>(null);
 	const [open, setOpen] = useState(false);
-	const [selectedValue, setSelectedValue] = useState('');
+	const [show, setShow] = useState(true);
 
 	useEffect(() => {
-		setValue(data.name, selectedValue);
-		//trigger(data.name);
-	}, [selectedValue, setValue, data, trigger]);
-
-	const IconComponent = data.icon ? (Icons[data.icon] as FC) : null;
-	const initialValue =
-		typeof values[data.name] !== 'undefined' ? values[data.name] : '';
-
-	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-		if (data.required) {
-			if (event.target.value !== '') {
-				setDisabled(false);
-			} else {
-				setDisabled(true);
-			}
+		if (isFieldVisible(data.hidden, hiddenValue)) {
+			setShow(true);
+		} else {
+			unregister(data.name);
+			setShow(false);
 		}
+	}, [hiddenValue, data, unregister]);
+
+	useEffect(() => {
+		const found: WalletItem | undefined = wallets
+			? getWallet(wallets, initialValue)
+			: undefined;
+		setWallet(found ?? null);
+	}, [wallets, initialValue]);
+
+	const handleOpen = () => {
+		setOpen(true);
 	};
 
-	const handleClose = (id: string) => {
-		setSelectedValue(id);
+	const handleClose = (id: string | number) => {
+		const newWallet: WalletItem | undefined = wallets
+			? getWallet(wallets, id)
+			: undefined;
+		setWallet(newWallet ?? null);
+		setValue(data.name, id);
 		setOpen(false);
 	};
 
-	let list;
+	let list: ReactElement[] | undefined;
 	if (wallets) {
-		list = wallets.wallets.map((item) => {
+		list = wallets.map((item: WalletItem) => {
+			const selected = wallet ? wallet.id === item.id : false;
+			const data = {
+				id: item.id,
+				name: item.name,
+				icon: item.icon,
+				color: item.color
+			};
 			return (
-				<ListItemButton key={item.id} onClick={() => handleClose(item.id)}>
-					<ListItemIcon>
-						<Icon icon={item.icon} color={item.color} />
-					</ListItemIcon>
-					<ListItemText primary={item.name} />
-				</ListItemButton>
+				<ListChoice
+					key={item.id}
+					data={data}
+					selected={selected}
+					handleClose={handleClose}
+				/>
 			);
 		});
 	}
 
 	return (
-		<ListItem sx={{ ...(data.type === 'hidden' && { display: 'none' }) }}>
-			{IconComponent && (
-				<ListItemIcon>
-					<Avatar>
-						<IconComponent />
-					</Avatar>
-				</ListItemIcon>
-			)}
+		show &&
+		wallet && (
+			<>
+				<ListItem onClick={handleOpen}>
+					<ListItemIcon>
+						<Icon icon={wallet.icon} color={wallet.color} />
+					</ListItemIcon>
 
-			<FormControl error fullWidth onChange={handleChange}>
-				<Input
-					readOnly
-					onClick={() => {
-						setOpen(true);
-					}}
-					defaultValue={initialValue}
-					placeholder={data.label}
-					{...register(data.name, { required: data.required })}
-				/>
-				{errors[data.name] && (
-					<FormHelperText error>Ce champ est obligatoire</FormHelperText>
-				)}
-			</FormControl>
-			<Drawer open={open} setOpen={setOpen} title="Select a wallet">
-				<List>{list}</List>
-			</Drawer>
+					<FormControl error fullWidth>
+						<Input
+							type="hidden"
+							defaultValue={initialValue}
+							placeholder={data.label}
+							{...register(data.name)}
+						/>
+						<Typography>
+							{data.label} {wallet.name ?? ''}
+						</Typography>
+					</FormControl>
 
-			<IconButton
-				onClick={() => {
-					setOpen(true);
-				}}
-			>
-				<IconChevronDown />
-			</IconButton>
-		</ListItem>
+					<IconButton>
+						<IconChevronDown />
+					</IconButton>
+				</ListItem>
+
+				<Drawer
+					open={open}
+					setOpen={setOpen}
+					title={data.drawerTitle ?? 'Select'}
+				>
+					<List>{list}</List>
+				</Drawer>
+			</>
+		)
 	);
 };

@@ -1,5 +1,12 @@
 export { AmountField } from './AmountField';
+export { CategoryField } from './CategoryField';
+export { ColorField } from './ColorField';
 export { DateField } from './DateField';
-export { TextField } from './TextField';
+export { IconField } from './IconField';
 export { RadioField } from './RadioField';
+export { SelectField } from './SelectField';
+export { SwitchField } from './SwitchField';
+export { TextField } from './TextField';
 export { WalletField } from './WalletField';
+
+export type { FieldData, FieldProps } from './types';

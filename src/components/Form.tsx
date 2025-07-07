@@ -1,90 +1,46 @@
-import React from 'react';
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import {
-	useForm,
-	SubmitHandler,
+	FieldValues,
 	FormProvider,
-	FieldValues
+	SubmitHandler,
+	useForm
 } from 'react-hook-form';
 import { IconTrash } from '@tabler/icons-react';
-import { Button, IconButton, List, ListItem, Stack, Box } from '@mui/material';
+import { Box, Button, IconButton, List, ListItem, Stack } from '@mui/material';
 
 import 'assets/scss/_form.scss';
+import { FieldData } from 'components/fields';
 import { Drawer } from 'components';
 import {
 	AmountField,
+	CategoryField,
+	ColorField,
 	DateField,
-	TextField,
+	IconField,
 	RadioField,
+	SelectField,
+	SwitchField,
+	TextField,
 	WalletField
 } from 'components/fields';
-import * as Icons from '@tabler/icons-react';
 
-type TablerIconsType = keyof typeof Icons;
-
-// Remove the old Fields type
-
-// Define a type for all possible field objects
-interface FieldBase {
-	name: string;
-	type: string;
-	label?: string;
-	icon?: TablerIconsType;
-	hidden?: number;
-	required?: boolean;
-	choices?: { name: string; value: number }[];
+interface FormProps {
+	id: string;
+	fields: FieldData[];
 }
 
-const fields: FieldBase[] = [
-	{
-		name: 'note',
-		type: 'text',
-		label: 'Note',
-		icon: 'IconNote',
-		required: true
-	},
-	{
-		name: 'amount',
-		type: 'amount',
-		label: 'Amount',
-		icon: 'IconCoins',
-		required: true
-	},
-	{
-		name: 'date',
-		type: 'date',
-		label: 'Date',
-		icon: 'IconCalendar',
-		required: true
-	},
-	{
-		name: 'type',
-		type: 'radio',
-		choices: [
-			{ name: 'Dépense', value: 0 },
-			{ name: 'Revenu', value: 1 },
-			{ name: 'Virement', value: 2 }
-		],
-		required: true
-	},
-	{
-		name: 'select',
-		type: 'wallet',
-		label: 'Wallet',
-		icon: 'IconLibrary'
-	}
-];
-
-export const Form = () => {
+export const Form: FC<FormProps> = ({ id, fields }) => {
 	const methods = useForm({ mode: 'onBlur' });
 	const onSubmit: SubmitHandler<FieldValues> = (data) => console.log(data);
 	const [open, setOpen] = useState(false);
-	const [disabled, setDisabled] = useState(true);
 	const values: Record<string, string> = {};
+
+	const hidden = methods.watch('type', values.type);
 
 	return (
 		<FormProvider {...methods}>
 			<form
+				id={id}
 				onSubmit={methods.handleSubmit((data) => {
 					onSubmit(data);
 				})}
@@ -98,7 +54,7 @@ export const Form = () => {
 										key={index}
 										data={field}
 										values={values}
-										setDisabled={setDisabled}
+										hiddenValue={hidden}
 									/>
 								);
 							case 'amount':
@@ -107,7 +63,7 @@ export const Form = () => {
 										key={index}
 										data={field}
 										values={values}
-										setDisabled={setDisabled}
+										hiddenValue={hidden}
 									/>
 								);
 							case 'date':
@@ -116,7 +72,7 @@ export const Form = () => {
 										key={index}
 										data={field}
 										values={values}
-										setDisabled={setDisabled}
+										hiddenValue={hidden}
 									/>
 								);
 							case 'radio':
@@ -125,7 +81,16 @@ export const Form = () => {
 										key={index}
 										data={field}
 										values={values}
-										setDisabled={setDisabled}
+										hiddenValue={hidden}
+									/>
+								);
+							case 'select':
+								return (
+									<SelectField
+										key={index}
+										data={field}
+										values={values}
+										hiddenValue={hidden}
 									/>
 								);
 							case 'wallet':
@@ -134,7 +99,43 @@ export const Form = () => {
 										key={index}
 										data={field}
 										values={values}
-										setDisabled={setDisabled}
+										hiddenValue={hidden}
+									/>
+								);
+							case 'color':
+								return (
+									<ColorField
+										key={index}
+										data={field}
+										values={values}
+										hiddenValue={hidden}
+									/>
+								);
+							case 'icon':
+								return (
+									<IconField
+										key={index}
+										data={field}
+										values={values}
+										hiddenValue={hidden}
+									/>
+								);
+							case 'switch':
+								return (
+									<SwitchField
+										key={index}
+										data={field}
+										values={values}
+										hiddenValue={hidden}
+									/>
+								);
+							case 'category':
+								return (
+									<CategoryField
+										key={index}
+										data={field}
+										values={values}
+										hiddenValue={hidden}
 									/>
 								);
 							default:
@@ -147,12 +148,7 @@ export const Form = () => {
 							<IconButton onClick={() => setOpen(true)}>
 								<IconTrash />
 							</IconButton>
-							<Button
-								type="submit"
-								fullWidth
-								variant="contained"
-								disabled={disabled}
-							>
+							<Button type="submit" fullWidth variant="contained">
 								Enregistrer
 							</Button>
 							<Drawer open={open} setOpen={setOpen}>

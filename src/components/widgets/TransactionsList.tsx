@@ -1,21 +1,20 @@
-import { FC } from 'react';
 import {
-	Paper,
-	Typography,
-	CircularProgress,
 	Alert,
+	CircularProgress,
+	List,
 	ListItemButton,
 	ListItemIcon,
 	ListItemText,
+	Paper,
 	Stack,
-	List
+	Typography
 } from '@mui/material';
 
 import { useTransactions, useCategories } from 'hooks';
 import { Card, Icon } from 'components';
 import { formatShortDate, formatPrice, getCategory } from 'utils';
 
-export const TransactionsList: FC = () => {
+export const TransactionsList = () => {
 	const { data: transactions, isLoading, error } = useTransactions();
 	const { data: categories } = useCategories();
 

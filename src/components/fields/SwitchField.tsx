@@ -4,16 +4,17 @@ import {
 	FormControl,
 	FormControlLabel,
 	ListItem,
-	Radio,
-	RadioGroup
+	ListItemIcon,
+	Switch
 } from '@mui/material';
 
 import { FieldProps } from './types';
 import { isFieldVisible } from 'utils';
+import { Icon } from 'components';
 
-export const RadioField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
+export const SwitchField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 	const { register, unregister } = useFormContext();
-	const initialValue = values[data.name] ?? data.choices?.[0]?.value ?? '';
+	const initialValue = values[data.name] ?? false;
 	const [show, setShow] = useState(true);
 
 	useEffect(() => {
@@ -28,23 +29,24 @@ export const RadioField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 	return (
 		show && (
 			<ListItem>
+				{data.icon && (
+					<ListItemIcon>
+						<Icon icon={data.icon} />
+					</ListItemIcon>
+				)}
+
 				<FormControl fullWidth>
-					<RadioGroup
-						row
-						defaultValue={initialValue}
-						sx={{ justifyContent: 'center' }}
-					>
-						{data.choices &&
-							data.choices.length > 0 &&
-							data.choices.map((item, index) => (
-								<FormControlLabel
-									control={<Radio {...register(data.name)} />}
-									key={index}
-									label={item.name}
-									value={item.value}
-								/>
-							))}
-					</RadioGroup>
+					<FormControlLabel
+						control={
+							<Switch
+								defaultChecked={Boolean(initialValue)}
+								{...register(data.name)}
+							/>
+						}
+						label={data.label}
+						labelPlacement="start"
+						sx={{ ml: 0, justifyContent: 'space-between' }}
+					/>
 				</FormControl>
 			</ListItem>
 		)

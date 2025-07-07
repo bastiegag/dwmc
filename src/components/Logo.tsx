@@ -1,10 +1,11 @@
+import { FC } from 'react';
 import { Box } from '@mui/material';
 
-interface ILogoProps {
+interface LogoProps {
 	size: number;
 }
 
-export const Logo = ({ size }: ILogoProps) => {
+export const Logo: FC<LogoProps> = ({ size }) => {
 	return (
 		<Box sx={{ width: size, height: size }}>
 			<svg className="logo" viewBox="0 0 150.64 150.65">

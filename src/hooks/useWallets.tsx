@@ -1,44 +1,42 @@
 import {
 	collection,
-	query,
-	onSnapshot,
-	where,
 	CollectionReference,
-	QuerySnapshot
+	DocumentData,
+	onSnapshot,
+	query,
+	QueryDocumentSnapshot,
+	QuerySnapshot,
+	where
 } from 'firebase/firestore';
 import { UseQueryResult } from '@tanstack/react-query';
 
 import { db } from '../main';
 import { useAuth, useRealtimeQuery } from 'hooks';
 
-export interface Wallet {
+export interface WalletItem {
 	amount: number;
-	id: string;
-	icon: string;
-	name: string;
-	goal: number;
 	color: string;
+	goal: number;
+	icon: string;
+	id: string;
+	name: string;
 }
 
 export interface Wallets {
 	id: string;
-	wallets: Wallet[];
+	items: WalletItem[];
 	uid: string;
 }
 
-export interface WalletsItem {
-	wallets: Wallet[];
-}
-
-export const useWallets = (): UseQueryResult<WalletsItem | null> => {
+export const useWallets = (): UseQueryResult<WalletItem[] | null> => {
 	const auth = useAuth();
 	const userId = auth.user?.uid || '';
 
 	if (!userId) {
-		throw new Error('User ID is required to fetch categories');
+		throw new Error('User ID is required to fetch wallets');
 	}
 
-	return useRealtimeQuery<WalletsItem | null>({
+	return useRealtimeQuery<WalletItem[] | null>({
 		queryKey: ['wallets', userId],
 		subscribeFn: (onData, onError) => {
 			const unsubscribe = onSnapshot(
@@ -46,18 +44,16 @@ export const useWallets = (): UseQueryResult<WalletsItem | null> => {
 					collection(db, 'wallets') as CollectionReference<Wallets>,
 					where('uid', '==', userId)
 				),
-				(querySnapshot: QuerySnapshot<Wallets>) => {
+				(querySnapshot: QuerySnapshot<DocumentData>) => {
 					try {
-						const doc = querySnapshot.docs[0];
-						if (!doc) {
-							onData(null);
-							return;
-						}
-						const walletsData = doc.data();
-						const walletsItem: WalletsItem = {
-							wallets: walletsData.wallets
-						};
-						onData(walletsItem);
+						const updatedWallets = querySnapshot.docs.map(
+							(doc: QueryDocumentSnapshot<DocumentData>) => ({
+								...doc.data(),
+								id: doc.id
+							})
+						) as Wallets[];
+
+						onData(updatedWallets[0]?.items || []);
 					} catch (error) {
 						onError(error);
 					}
