@@ -7,11 +7,9 @@ import {
 	styled
 } from '@mui/material';
 
-import { useDrawer } from 'hooks';
-
 interface DrawerProps {
 	open: boolean;
-	setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	title?: string;
 	fullScreen?: boolean;
 	action?: React.ReactNode;
@@ -25,23 +23,12 @@ export const Drawer = ({
 	action,
 	children
 }: React.PropsWithChildren<DrawerProps>) => {
-	const { drawer, dispatchDrawer } = useDrawer();
-	const drawerTitle = title || drawer.title;
-
 	const handleClose = () => {
-		if (setOpen) {
-			setOpen(false);
-		} else {
-			dispatchDrawer({ type: 'close' });
-		}
+		setOpen(false);
 	};
 
 	const handleOpen = () => {
-		if (setOpen) {
-			setOpen(true);
-		} else {
-			dispatchDrawer({ type: 'open' });
-		}
+		setOpen(true);
 	};
 
 	return (
@@ -70,9 +57,7 @@ export const Drawer = ({
 					<IconButton onClick={handleClose}>
 						<IconChevronDown />
 					</IconButton>
-					{drawerTitle && (
-						<Typography variant="overline">{drawerTitle}</Typography>
-					)}
+					{title && <Typography variant="overline">{title}</Typography>}
 					{action && action}
 				</DrawerHeader>
 

@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { Box, Tab, Tabs, Stack } from '@mui/material';
 
-//import { useDrawer } from 'hooks';
-import { DateSwitcher, Card, AddButton, Drawer } from 'components';
+import { DateSwitcher, Card, AddButton } from 'components';
+import { TransactionForm } from 'components/forms';
 import { TransactionsList } from 'components/widgets';
 
 export const Home = () => {
-	//const { drawer, dispatchDrawer } = useDrawer();
 	const [tab, setTab] = useState(0);
-	const [open, setOpen] = useState(false);
+	const [openDrawer, setOpenDrawer] = useState(false);
 
 	const handleChangeTab = (event: React.SyntheticEvent, newTab: number) => {
 		event.preventDefault();
@@ -17,7 +16,7 @@ export const Home = () => {
 	};
 
 	const handleAddTransaction = () => {
-		setOpen(true);
+		setOpenDrawer(true);
 	};
 
 	return (
@@ -56,9 +55,11 @@ export const Home = () => {
 				</Card>
 			</Stack>
 			<AddButton onClick={handleAddTransaction} />
-			<Drawer open={open} fullScreen={true}>
-				test
-			</Drawer>
+			<TransactionForm
+				open={openDrawer}
+				setOpen={setOpenDrawer}
+				title="Add transaction"
+			/>
 		</>
 	);
 };

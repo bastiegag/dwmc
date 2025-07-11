@@ -28,12 +28,12 @@
 			"components/*": ["./components/*"],
 			"context/*": ["./context/*"],
 			"hooks/*": ["./hooks/*"],
-			"features/*": ["./features/*"],
 			"layouts/*": ["./layouts/*"],
 			"pages/*": ["./pages/*"],
 			"routes/*": ["./routes/*"],
 			"services/*": ["./services/*"],
 			"theme/*": ["./theme/*"],
+			"types/*": ["./types/*"],
 			"utils/*": ["./utils/*"]
 		}
 	},

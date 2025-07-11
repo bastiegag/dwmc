@@ -9,11 +9,3 @@ export { AuthProvider } from './AuthProvider';
 
 export { type IDateContext, DateContext } from './DateContext';
 export { DateProvider } from './DateProvider';
-
-export {
-	type DrawerContextType,
-	type DrawerAction,
-	type DrawerState,
-	DrawerContext
-} from './DrawerContext';
-export { DrawerProvider } from './DrawerProvider';

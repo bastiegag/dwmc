@@ -8,8 +8,7 @@ import {
 	AlertProvider,
 	AuthProvider,
 	DateProvider,
-	DataProvider,
-	DrawerProvider
+	DataProvider
 } from 'context';
 
 const App = () => {
@@ -19,11 +18,9 @@ const App = () => {
 				<AlertProvider>
 					<AuthProvider>
 						<DateProvider>
-							<DrawerProvider>
-								<DataProvider>
-									<Routes />
-								</DataProvider>
-							</DrawerProvider>
+							<DataProvider>
+								<Routes />
+							</DataProvider>
 						</DateProvider>
 					</AuthProvider>
 				</AlertProvider>

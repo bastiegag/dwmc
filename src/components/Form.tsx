@@ -10,7 +10,7 @@ import { Button, IconButton, List, ListItem, Stack } from '@mui/material';
 import { getAuth } from 'firebase/auth';
 
 import 'assets/scss/_form.scss';
-import { useSetDoc, TransactionItem, useDrawer } from 'hooks';
+import { useSetDoc, TransactionItem } from 'hooks';
 import { FieldData } from 'components/fields';
 import {
 	AmountField,
@@ -33,7 +33,7 @@ interface FormProps {
 		data: Record<string, unknown>,
 		current: TransactionItem[]
 	) => Record<string, unknown>;
-	collection: string;
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const Form: FC<FormProps> = ({
@@ -41,51 +41,48 @@ export const Form: FC<FormProps> = ({
 	fields,
 	values,
 	format,
-	collection
+	setOpen
 }) => {
 	const user = getAuth().currentUser;
 	if (!user) {
 		throw new Error('User is not authenticated');
 	}
-	const { dispatchDrawer } = useDrawer();
 	const { mutate: setDoc } = useSetDoc();
 	const methods = useForm({ mode: 'onBlur' });
 	const hidden = methods.watch('type', values?.type);
 
 	const handleCloseDrawer = () => {
-		dispatchDrawer({
-			type: 'close',
-			current: []
-		});
+		setOpen(false);
 	};
 
 	return (
 		<FormProvider {...methods}>
 			<form
 				onSubmit={methods.handleSubmit((data) => {
-					let month;
-					let year;
-					if (collection == 'transactions') {
-						const date = new Date(data.date);
-						month = date.getMonth() + 1;
-						year = date.getFullYear();
-					}
+					console.log(format(data, current));
+					//let month;
+					//let year;
+					//if (collection == 'transactions') {
+					//	const date = new Date(data.date);
+					//	month = date.getMonth() + 1;
+					//	year = date.getFullYear();
+					//}
 
-					if (month && year) {
-						setDoc({
-							userId: user.uid,
-							data: format(data, current),
-							collection,
-							year,
-							month
-						});
-					} else {
-						setDoc({
-							userId: user.uid,
-							data: format(data, current),
-							collection
-						});
-					}
+					//if (month && year) {
+					//	setDoc({
+					//		userId: user.uid,
+					//		data: format(data, current),
+					//		collection,
+					//		year,
+					//		month
+					//	});
+					//} else {
+					//	setDoc({
+					//		userId: user.uid,
+					//		data: format(data, current),
+					//		collection
+					//	});
+					//}
 
 					handleCloseDrawer();
 				})}

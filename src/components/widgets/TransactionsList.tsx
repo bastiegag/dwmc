@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
 	List,
 	ListItemButton,
@@ -7,22 +8,21 @@ import {
 	Typography
 } from '@mui/material';
 
-import { TransactionItem, useDrawer, useDataProvider } from 'hooks';
+import { TransactionItem, useDataProvider } from 'hooks';
 import { Icon } from 'components';
+import { TransactionForm } from 'components/forms';
 import { formatShortDate, formatPrice, getCategory } from 'utils';
 
 export const TransactionsList = () => {
 	const { transactions, categories } = useDataProvider();
-	const { dispatchDrawer } = useDrawer();
+	const [openDrawer, setOpenDrawer] = useState(false);
+	const [formValues, setFormValues] = useState({});
 
 	let list;
 	if (transactions && categories) {
 		const handleEdit = (item: TransactionItem) => {
-			dispatchDrawer({
-				type: 'edit-transaction',
-				title: 'Edit transaction',
-				values: { ...item }
-			});
+			setFormValues(item);
+			setOpenDrawer(true);
 		};
 
 		list = transactions.map((item) => {
@@ -59,8 +59,16 @@ export const TransactionsList = () => {
 	}
 
 	return (
-		<List component="nav" sx={{ m: -2 }}>
-			{list}
-		</List>
+		<>
+			<List component="nav" sx={{ m: -2 }}>
+				{list}
+			</List>
+			<TransactionForm
+				open={openDrawer}
+				setOpen={setOpenDrawer}
+				title="Edit transaction"
+				values={formValues}
+			/>
+		</>
 	);
 };

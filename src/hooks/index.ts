@@ -8,4 +8,3 @@ export { useWallets } from './useWallets';
 export { type TransactionItem, useTransactions } from './useTransactions';
 export { useSetDoc } from './useSetDoc';
 export { useContextWrapper } from './useContextWrapper';
-export { useDrawer } from './useDrawer';
