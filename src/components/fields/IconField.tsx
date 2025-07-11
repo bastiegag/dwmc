@@ -26,7 +26,7 @@ const IconsWrapper = styled(Box, {
 
 export const IconField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 	const { register, setValue, unregister } = useFormContext();
-	const initialValue = values[data.name] ?? 'IconArchive';
+	const initialValue = values?.[data.name] ?? 'IconArchive';
 	const [icon, setIcon] = useState(initialValue);
 	const [open, setOpen] = useState(false);
 	const [show, setShow] = useState(true);

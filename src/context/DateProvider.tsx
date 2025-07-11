@@ -10,24 +10,24 @@ export const DateProvider = ({
 	const [current, setCurrent] = useState<IDateContext['current']>(
 		initialDate.current
 	);
+	const [year, setYear] = useState<IDateContext['year']>(initialDate.year);
+	const [month, setMonth] = useState<IDateContext['month']>(initialDate.month);
 	const [max, setMax] = useState<IDateContext['max']>(initialDate.max);
 	const [min, setMin] = useState<IDateContext['min']>(initialDate.min);
 	const [label, setLabel] = useState<IDateContext['label']>(initialDate.label);
-	const [selector, setSelector] = useState<IDateContext['selector']>(
-		initialDate.selector
-	);
 	const value = useMemo(
-		() => ({ current, setCurrent, min, max, label, selector }),
-		[current, label, min, max, selector]
+		() => ({ current, setCurrent, month, year, min, max, label }),
+		[current, month, year, min, max, label]
 	);
 
 	useEffect(() => {
 		const switcher = formatDateSwitcher(current);
 
+		setMonth(switcher.month);
+		setYear(switcher.year);
 		setMin(switcher.min);
 		setMax(switcher.max);
 		setLabel(switcher.label);
-		setSelector(switcher.selector);
 	}, [current]);
 
 	return <DateContext.Provider value={value}>{children}</DateContext.Provider>;

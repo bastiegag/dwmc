@@ -1,16 +1,17 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import {
-	FieldValues,
+	//FieldValues,
 	FormProvider,
-	SubmitHandler,
+	//SubmitHandler,
 	useForm
 } from 'react-hook-form';
 import { IconTrash } from '@tabler/icons-react';
-import { Box, Button, IconButton, List, ListItem, Stack } from '@mui/material';
+import { Button, IconButton, List, ListItem, Stack } from '@mui/material';
+import { getAuth } from 'firebase/auth';
 
 import 'assets/scss/_form.scss';
+import { useSetDoc, TransactionItem, useDrawer } from 'hooks';
 import { FieldData } from 'components/fields';
-import { Drawer } from 'components';
 import {
 	AmountField,
 	CategoryField,
@@ -25,29 +26,74 @@ import {
 } from 'components/fields';
 
 interface FormProps {
-	id: string;
+	current: TransactionItem[];
 	fields: FieldData[];
+	values?: Record<string, string | number | boolean>;
+	format: (
+		data: Record<string, unknown>,
+		current: TransactionItem[]
+	) => Record<string, unknown>;
+	collection: string;
 }
 
-export const Form: FC<FormProps> = ({ id, fields }) => {
+export const Form: FC<FormProps> = ({
+	current,
+	fields,
+	values,
+	format,
+	collection
+}) => {
+	const user = getAuth().currentUser;
+	if (!user) {
+		throw new Error('User is not authenticated');
+	}
+	const { dispatchDrawer } = useDrawer();
+	const { mutate: setDoc } = useSetDoc();
 	const methods = useForm({ mode: 'onBlur' });
-	const onSubmit: SubmitHandler<FieldValues> = (data) => console.log(data);
-	const [open, setOpen] = useState(false);
-	const values: Record<string, string> = {};
+	const hidden = methods.watch('type', values?.type);
 
-	const hidden = methods.watch('type', values.type);
+	const handleCloseDrawer = () => {
+		dispatchDrawer({
+			type: 'close',
+			current: []
+		});
+	};
 
 	return (
 		<FormProvider {...methods}>
 			<form
-				id={id}
 				onSubmit={methods.handleSubmit((data) => {
-					onSubmit(data);
+					let month;
+					let year;
+					if (collection == 'transactions') {
+						const date = new Date(data.date);
+						month = date.getMonth() + 1;
+						year = date.getFullYear();
+					}
+
+					if (month && year) {
+						setDoc({
+							userId: user.uid,
+							data: format(data, current),
+							collection,
+							year,
+							month
+						});
+					} else {
+						setDoc({
+							userId: user.uid,
+							data: format(data, current),
+							collection
+						});
+					}
+
+					handleCloseDrawer();
 				})}
 			>
 				<List>
 					{fields.map((field, index): React.ReactElement | null => {
 						switch (field.type) {
+							case 'hidden':
 							case 'text':
 								return (
 									<TextField
@@ -145,15 +191,12 @@ export const Form: FC<FormProps> = ({ id, fields }) => {
 
 					<ListItem>
 						<Stack direction="row" spacing={2} sx={{ width: '100%' }}>
-							<IconButton onClick={() => setOpen(true)}>
+							<IconButton>
 								<IconTrash />
 							</IconButton>
 							<Button type="submit" fullWidth variant="contained">
 								Enregistrer
 							</Button>
-							<Drawer open={open} setOpen={setOpen}>
-								<Box sx={{ p: 2 }}>Delete that super duper form!</Box>
-							</Drawer>
 						</Stack>
 					</ListItem>
 				</List>

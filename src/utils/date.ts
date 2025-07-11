@@ -59,7 +59,7 @@ export const formatDateTitle = (date: Date) => {
  * @param {string} date
  * @returns
  */
-export const formatShortDate = (date: Date) => {
+export const formatShortDate = (date: string) => {
 	const dateObj = new Date(date);
 	const day = dateObj.getDate();
 	const month = dateObj.getMonth();
@@ -81,10 +81,11 @@ export const formatDateSwitcher = (date: Date) => {
 
 	return {
 		current: date,
-		label: `${months[month]} ${year}`,
-		selector: month + 1,
-		min: dayjs(new Date(year, 0, 1)),
-		max: dayjs(new Date(year, 11, 31))
+		month: month + 1,
+		year: year,
+		min: dayjs(new Date(year, month, 1)),
+		max: dayjs(new Date(year, month, 31)),
+		label: `${months[month]} ${year}`
 	};
 };
 

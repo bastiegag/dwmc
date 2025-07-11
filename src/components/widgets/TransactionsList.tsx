@@ -1,59 +1,39 @@
 import {
-	Alert,
-	CircularProgress,
 	List,
 	ListItemButton,
 	ListItemIcon,
 	ListItemText,
-	Paper,
 	Stack,
 	Typography
 } from '@mui/material';
 
-import { useTransactions, useCategories } from 'hooks';
-import { Card, Icon } from 'components';
+import { TransactionItem, useDrawer, useDataProvider } from 'hooks';
+import { Icon } from 'components';
 import { formatShortDate, formatPrice, getCategory } from 'utils';
 
 export const TransactionsList = () => {
-	const { data: transactions, isLoading, error } = useTransactions();
-	const { data: categories } = useCategories();
-
-	if (error) {
-		return (
-			<Alert severity="error">
-				Error loading transactions: {error.message}
-			</Alert>
-		);
-	}
-
-	if (isLoading) {
-		return (
-			<Paper
-				elevation={0}
-				sx={{ p: 3, display: 'flex', justifyContent: 'center' }}
-			>
-				<CircularProgress />
-			</Paper>
-		);
-	}
-
-	if (!transactions || transactions.length === 0) {
-		return (
-			<Paper elevation={0} sx={{ p: 3 }}>
-				<Typography variant="body1" color="text.secondary">
-					No transactions found.
-				</Typography>
-			</Paper>
-		);
-	}
+	const { transactions, categories } = useDataProvider();
+	const { dispatchDrawer } = useDrawer();
 
 	let list;
-	if (categories) {
+	if (transactions && categories) {
+		const handleEdit = (item: TransactionItem) => {
+			dispatchDrawer({
+				type: 'edit-transaction',
+				title: 'Edit transaction',
+				values: { ...item }
+			});
+		};
+
 		list = transactions.map((item) => {
 			const category = getCategory(categories, item.category);
 
 			return (
-				<ListItemButton key={item.id} sx={{ py: 1 }}>
+				<ListItemButton
+					key={item.id}
+					onClick={() => handleEdit(item)}
+					sx={{ py: 1 }}
+				>
 					<ListItemIcon>
 						<Icon icon={category?.icon} color={category?.color} />
 					</ListItemIcon>
@@ -70,7 +50,7 @@ export const TransactionsList = () => {
 							variant="caption"
 							sx={{ lineHeight: 1, mt: 0.5 }}
 						>
-							{formatShortDate(new Date())}
+							{formatShortDate(item.date)}
 						</Typography>
 					</Stack>
 				</ListItemButton>
@@ -79,10 +59,8 @@ export const TransactionsList = () => {
 	}
 
 	return (
-		<Card>
-			<List component="nav" sx={{ m: -2 }}>
-				{list}
-			</List>
-		</Card>
+		<List component="nav" sx={{ m: -2 }}>
+			{list}
+		</List>
 	);
 };

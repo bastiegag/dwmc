@@ -14,7 +14,7 @@ import { Icon } from 'components';
 
 export const SwitchField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 	const { register, unregister } = useFormContext();
-	const initialValue = values[data.name] ?? false;
+	const initialValue = values?.[data.name] ?? false;
 	const [show, setShow] = useState(true);
 
 	useEffect(() => {

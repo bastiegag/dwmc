@@ -31,7 +31,7 @@ export const setColor = (categories: CategoryItem[]) => {
 
 export const getCategory = (
 	data: CategoryItem[],
-	id: string | number = 'default'
+	id: string | number | boolean = 'default'
 ): CategoryItem | undefined => {
 	const category = data.find((category) => category.id === id);
 	if (!category) return;

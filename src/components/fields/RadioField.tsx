@@ -13,7 +13,7 @@ import { isFieldVisible } from 'utils';
 
 export const RadioField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 	const { register, unregister } = useFormContext();
-	const initialValue = values[data.name] ?? data.choices?.[0]?.value ?? '';
+	const initialValue = values?.[data.name] ?? data.choices?.[0]?.value ?? '';
 	const [show, setShow] = useState(true);
 
 	useEffect(() => {

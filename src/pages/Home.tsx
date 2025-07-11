@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { Box, Tab, Tabs, Stack } from '@mui/material';
 
-import { DateSwitcher, Card, AddButton } from 'components';
-import { TransactionForm } from 'components/forms';
+//import { useDrawer } from 'hooks';
+import { DateSwitcher, Card, AddButton, Drawer } from 'components';
 import { TransactionsList } from 'components/widgets';
 
 export const Home = () => {
-	// State to manage the active tab
+	//const { drawer, dispatchDrawer } = useDrawer();
 	const [tab, setTab] = useState(0);
+	const [open, setOpen] = useState(false);
 
 	const handleChangeTab = (event: React.SyntheticEvent, newTab: number) => {
 		event.preventDefault();
@@ -15,10 +16,7 @@ export const Home = () => {
 		setTab(newTab);
 	};
 
-	// State to manage the transaction form modal
-	const [open, setOpen] = useState(false);
-
-	const handleOpen = () => {
+	const handleAddTransaction = () => {
 		setOpen(true);
 	};
 
@@ -53,10 +51,14 @@ export const Home = () => {
 			</Box>
 			<Stack spacing={2} sx={{ py: 2, mx: 2 }}>
 				<Card primary="Home" secondary="Something bla bla bla"></Card>
-				<TransactionsList />
+				<Card>
+					<TransactionsList />
+				</Card>
 			</Stack>
-			<AddButton onClick={handleOpen} />
-			<TransactionForm open={open} setOpen={setOpen} />
+			<AddButton onClick={handleAddTransaction} />
+			<Drawer open={open} fullScreen={true}>
+				test
+			</Drawer>
 		</>
 	);
 };

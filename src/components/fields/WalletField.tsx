@@ -19,7 +19,7 @@ import { Drawer, Icon, ListChoice } from 'components';
 
 export const WalletField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 	const { register, unregister, setValue } = useFormContext();
-	const initialValue = values[data.name] ?? 'default';
+	const initialValue = values?.[data.name] ?? 'default';
 	const { data: wallets } = useWallets();
 	const [wallet, setWallet] = useState<WalletItem | null>(null);
 	const [open, setOpen] = useState(false);

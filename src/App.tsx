@@ -4,7 +4,13 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import 'dayjs/locale/fr';
 
 import Routes from 'routes';
-import { AlertProvider, AuthProvider, DateProvider } from 'context';
+import {
+	AlertProvider,
+	AuthProvider,
+	DateProvider,
+	DataProvider,
+	DrawerProvider
+} from 'context';
 
 const App = () => {
 	return (
@@ -13,7 +19,11 @@ const App = () => {
 				<AlertProvider>
 					<AuthProvider>
 						<DateProvider>
-							<Routes />
+							<DrawerProvider>
+								<DataProvider>
+									<Routes />
+								</DataProvider>
+							</DrawerProvider>
 						</DateProvider>
 					</AuthProvider>
 				</AlertProvider>

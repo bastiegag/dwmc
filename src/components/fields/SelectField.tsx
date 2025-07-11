@@ -16,7 +16,9 @@ import { Drawer, Icon, ListChoice } from 'components';
 
 export const SelectField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 	const { register, setValue, unregister } = useFormContext();
-	const initialValue = values[data.name] ?? data.choices?.[0]?.name ?? '';
+	const initialValue = String(
+		values?.[data.name] ?? data.choices?.[0]?.name ?? ''
+	);
 	const [selectValue, setSelectValue] = useState<string>(initialValue);
 	const [open, setOpen] = useState(false);
 	const [show, setShow] = useState(true);

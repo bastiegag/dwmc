@@ -6,6 +6,7 @@ import { MobileDatePicker } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
 
 import { FieldProps } from './types';
+import { useDate } from 'hooks';
 import { isFieldVisible } from 'utils';
 import { Icon } from 'components';
 
@@ -16,8 +17,16 @@ export const DateField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 		setValue,
 		unregister
 	} = useFormContext();
+	const { min, max } = useDate();
 
-	const initialValue = dayjs(values[data.name] ?? undefined);
+	const rawValue = values?.[data.name];
+	const initialValue = dayjs(
+		typeof rawValue === 'string' ||
+			typeof rawValue === 'number' ||
+			dayjs.isDayjs(rawValue)
+			? rawValue
+			: undefined
+	);
 	const [date, setDate] = useState(initialValue);
 	const [open, setOpen] = useState(false);
 	const [show, setShow] = useState(true);
@@ -64,6 +73,8 @@ export const DateField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 								}}
 								onClose={() => setOpen(false)}
 								open={open}
+								minDate={min}
+								maxDate={max}
 								sx={{ input: { textTransform: 'capitalize' } }}
 								value={value as Dayjs | null}
 							/>

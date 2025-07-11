@@ -18,7 +18,7 @@ export const TextField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 		unregister,
 		formState: { errors }
 	} = useFormContext();
-	const initialValue = values[data.name] ?? '';
+	const initialValue = values?.[data.name] ?? '';
 	const [show, setShow] = useState(true);
 
 	useEffect(() => {
@@ -36,7 +36,8 @@ export const TextField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 				sx={{
 					...(errors[data.name] && {
 						bgcolor: (theme) => alpha(theme.palette.error.main, 0.03)
-					})
+					}),
+					...(data.type == 'hidden' && { display: 'none' })
 				}}
 			>
 				{data.icon && (
@@ -47,9 +48,12 @@ export const TextField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 
 				<FormControl fullWidth>
 					<Input
-						defaultValue={initialValue}
 						placeholder={data.label}
-						{...register(data.name, { required: data.required })}
+						{...(data.type == 'hidden' && { type: 'hidden' })}
+						{...register(data.name, {
+							required: data.required,
+							value: initialValue
+						})}
 					/>
 				</FormControl>
 

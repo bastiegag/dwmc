@@ -1,9 +1,11 @@
 export { useAlert } from './useAlert';
 export { useAuth } from './useAuth';
 export { useDate } from './useDate';
+export { useDataProvider } from './useDataProvider';
 export { useRealtimeQuery } from './useRealtimeQuery';
-export { useCategories } from './useCategories';
+export { type CategoryItem, useCategories } from './useCategories';
 export { useWallets } from './useWallets';
-export { useTransactions } from './useTransactions';
+export { type TransactionItem, useTransactions } from './useTransactions';
+export { useSetDoc } from './useSetDoc';
 export { useContextWrapper } from './useContextWrapper';
-export { useShowField } from './useShowField';
+export { useDrawer } from './useDrawer';

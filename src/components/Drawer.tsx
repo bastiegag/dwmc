@@ -7,24 +7,41 @@ import {
 	styled
 } from '@mui/material';
 
+import { useDrawer } from 'hooks';
+
 interface DrawerProps {
 	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	fullScreen?: boolean;
+	setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 	title?: string;
+	fullScreen?: boolean;
 	action?: React.ReactNode;
 }
 
 export const Drawer = ({
 	open,
 	setOpen,
-	fullScreen,
 	title,
+	fullScreen = false,
 	action,
 	children
 }: React.PropsWithChildren<DrawerProps>) => {
+	const { drawer, dispatchDrawer } = useDrawer();
+	const drawerTitle = title || drawer.title;
+
 	const handleClose = () => {
-		setOpen(false);
+		if (setOpen) {
+			setOpen(false);
+		} else {
+			dispatchDrawer({ type: 'close' });
+		}
+	};
+
+	const handleOpen = () => {
+		if (setOpen) {
+			setOpen(true);
+		} else {
+			dispatchDrawer({ type: 'open' });
+		}
 	};
 
 	return (
@@ -32,7 +49,10 @@ export const Drawer = ({
 			anchor="bottom"
 			open={open}
 			onClose={handleClose}
-			onOpen={() => setOpen(true)}
+			onOpen={handleOpen}
+			ModalProps={{
+				keepMounted: false
+			}}
 			sx={(theme) => ({
 				'.MuiDrawer-paper': {
 					borderTopLeftRadius: theme.spacing(2),
@@ -50,7 +70,9 @@ export const Drawer = ({
 					<IconButton onClick={handleClose}>
 						<IconChevronDown />
 					</IconButton>
-					{title && <Typography variant="overline">{title}</Typography>}
+					{drawerTitle && (
+						<Typography variant="overline">{drawerTitle}</Typography>
+					)}
 					{action && action}
 				</DrawerHeader>
 

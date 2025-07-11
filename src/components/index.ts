@@ -8,3 +8,4 @@ export { Icon } from './Icon';
 export { ListChoice } from './ListChoice';
 export { ListSection } from './ListSection';
 export { Logo } from './Logo';
+export { Loader } from './Loader';

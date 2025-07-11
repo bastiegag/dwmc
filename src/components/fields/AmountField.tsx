@@ -19,7 +19,7 @@ export const AmountField: FC<FieldProps> = ({ data, hiddenValue, values }) => {
 		formState: { errors },
 		unregister
 	} = useFormContext();
-	const initialValue = values[data.name] ?? '';
+	const initialValue = values?.[data.name] ?? '';
 	const [show, setShow] = useState(true);
 
 	useEffect(() => {
@@ -58,7 +58,7 @@ export const AmountField: FC<FieldProps> = ({ data, hiddenValue, values }) => {
 							<NumericFormat
 								value={value}
 								onChange={onChange}
-								placeholder={data.label ? data.label : '0 $'}
+								placeholder={data.label ? data.label : '0$'}
 								allowedDecimalSeparators={['.']}
 								allowNegative={false}
 								customInput={Input}
@@ -67,7 +67,7 @@ export const AmountField: FC<FieldProps> = ({ data, hiddenValue, values }) => {
 								decimalSeparator=","
 								thousandSeparator=" "
 								fixedDecimalScale
-								suffix={' $'}
+								suffix={'$'}
 								sx={{
 									...(!data.icon && {
 										fontSize: 32,

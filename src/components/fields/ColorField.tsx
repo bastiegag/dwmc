@@ -26,7 +26,7 @@ const ColorsWrapper = styled(Box, {
 
 export const ColorField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 	const { register, setValue, unregister } = useFormContext();
-	const initialValue = values[data.name] ?? 'light';
+	const initialValue = values?.[data.name] ?? 'light';
 	const [color, setColor] = useState(initialValue);
 	const [open, setOpen] = useState(false);
 	const [show, setShow] = useState(true);
@@ -93,7 +93,7 @@ export const ColorField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 
 				<Drawer
 					open={open}
-					setOpen={setOpen}
+					//setOpen={setOpen}
 					title={data.drawerTitle ?? 'Select'}
 				>
 					<ColorsWrapper sx={{ p: 1 }}>{list}</ColorsWrapper>

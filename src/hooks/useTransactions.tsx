@@ -16,7 +16,7 @@ import { useAuth, useRealtimeQuery, useDate } from 'hooks';
 export interface TransactionItem {
 	amount: number;
 	category: string;
-	date: number;
+	date: string;
 	from?: string;
 	id: string;
 	note?: string;
@@ -34,7 +34,7 @@ export interface Transactions {
 export const useTransactions = (): UseQueryResult<TransactionItem[]> => {
 	const auth = useAuth();
 	const userId = auth.user?.uid || '';
-	const { selector } = useDate();
+	const { month, year } = useDate();
 
 	if (!userId) {
 		throw new Error('User ID is required to fetch transactions');
@@ -49,10 +49,10 @@ export const useTransactions = (): UseQueryResult<TransactionItem[]> => {
 						db,
 						'transactions',
 						userId,
-						'2025'
+						year.toString()
 					) as CollectionReference<Transactions>,
 					where('uid', '==', userId),
-					where('month', '==', selector)
+					where('month', '==', month)
 				),
 				(querySnapshot: QuerySnapshot<DocumentData>) => {
 					try {
