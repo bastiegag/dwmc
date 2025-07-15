@@ -1,15 +1,23 @@
 import { FC } from 'react';
-import { Paper, CircularProgress, Alert } from '@mui/material';
 
 import { FieldData } from 'components/fields';
 import { FormProps } from './types';
-import { useCategories } from 'hooks';
+import { useDataProvider, CategoryItem, TransactionItem } from 'hooks';
 import { Drawer, Form } from 'components';
 
-export const CategoryForm: FC<FormProps> = ({ open, setOpen }) => {
-	const { data: categories, isLoading, error } = useCategories();
+export const CategoryForm: FC<FormProps> = ({
+	open,
+	setOpen,
+	values,
+	anchor
+}) => {
+	const { categories, rawCategories } = useDataProvider();
 
 	const fields: FieldData[] = [
+		{
+			name: 'id',
+			type: 'hidden'
+		},
 		{
 			name: 'type',
 			type: 'radio',
@@ -41,7 +49,7 @@ export const CategoryForm: FC<FormProps> = ({ open, setOpen }) => {
 			choices: [
 				...(categories
 					? categories
-							.filter((cat) => cat.type === 0)
+							.filter((cat) => cat.type === 'section')
 							.map((cat) => ({
 								name: cat.name,
 								value: cat.id
@@ -58,33 +66,38 @@ export const CategoryForm: FC<FormProps> = ({ open, setOpen }) => {
 		}
 	];
 
-	if (error) {
-		return (
-			<Alert severity="error">
-				Error loading transactions: {error.message}
-			</Alert>
-		);
-	}
-
-	if (isLoading) {
-		return (
-			<Paper
-				elevation={0}
-				sx={{ p: 3, display: 'flex', justifyContent: 'center' }}
-			>
-				<CircularProgress />
-			</Paper>
-		);
-	}
-
 	return (
-		<Drawer
-			open={open}
-			setOpen={setOpen}
-			fullScreen={true}
-			title="Add category"
-		>
-			<Form id="category" fields={fields} />
-		</Drawer>
+		categories && (
+			<Drawer
+				open={open}
+				anchor={anchor}
+				setOpen={setOpen}
+				fullscreen={true}
+				title="Add category"
+			>
+				<Form
+					current={rawCategories}
+					collection="categories"
+					fields={fields}
+					values={values}
+					format={formatData}
+					setOpen={setOpen}
+				/>
+			</Drawer>
+		)
 	);
+};
+
+const formatData = (
+	data: Record<string, unknown>,
+	current: TransactionItem[] | CategoryItem[]
+): Record<string, unknown> => {
+	const idx = current.findIndex((item) => item.id === data.id);
+	if (idx !== -1) {
+		current[idx] = { ...current[idx], ...data };
+	} else {
+		current.push(data);
+	}
+
+	return { items: current };
 };

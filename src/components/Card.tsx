@@ -1,4 +1,4 @@
-import { Paper, Typography } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 
 interface CardProps {
 	primary?: string;
@@ -14,7 +14,7 @@ export const Card = ({
 		<Paper elevation={0} sx={{ mx: 2, p: 2, overflow: 'hidden' }}>
 			{primary && <Typography variant="h6">{primary}</Typography>}
 			{secondary && <Typography variant="caption">{secondary}</Typography>}
-			{children}
+			<Box sx={{ mt: 2 }}>{children}</Box>
 		</Paper>
 	);
 };

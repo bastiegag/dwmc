@@ -10,7 +10,7 @@ import { Button, IconButton, List, ListItem, Stack } from '@mui/material';
 import { getAuth } from 'firebase/auth';
 
 import 'assets/scss/_form.scss';
-import { useSetDoc, TransactionItem } from 'hooks';
+import { useSetDoc, TransactionItem, CategoryItem } from 'hooks';
 import { FieldData } from 'components/fields';
 import {
 	AmountField,
@@ -26,18 +26,20 @@ import {
 } from 'components/fields';
 
 interface FormProps {
-	current: TransactionItem[];
+	current: TransactionItem[] | CategoryItem[];
+	collection: string;
 	fields: FieldData[];
 	values?: Record<string, string | number | boolean>;
 	format: (
 		data: Record<string, unknown>,
-		current: TransactionItem[]
+		current: TransactionItem[] | CategoryItem[]
 	) => Record<string, unknown>;
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const Form: FC<FormProps> = ({
 	current,
+	collection,
 	fields,
 	values,
 	format,
@@ -72,7 +74,7 @@ export const Form: FC<FormProps> = ({
 					//	setDoc({
 					//		userId: user.uid,
 					//		data: format(data, current),
-					//		collection,
+					//		collection: collection,
 					//		year,
 					//		month
 					//	});
@@ -80,7 +82,7 @@ export const Form: FC<FormProps> = ({
 					//	setDoc({
 					//		userId: user.uid,
 					//		data: format(data, current),
-					//		collection
+					//		collection: collection
 					//	});
 					//}
 

@@ -1,4 +1,4 @@
-import { IconChevronDown } from '@tabler/icons-react';
+import { IconChevronDown, IconChevronRight } from '@tabler/icons-react';
 import {
 	SwipeableDrawer,
 	Box,
@@ -11,7 +11,8 @@ interface DrawerProps {
 	open: boolean;
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	title?: string;
-	fullScreen?: boolean;
+	fullscreen?: boolean;
+	anchor?: 'bottom' | 'right';
 	action?: React.ReactNode;
 }
 
@@ -19,7 +20,8 @@ export const Drawer = ({
 	open,
 	setOpen,
 	title,
-	fullScreen = false,
+	fullscreen = false,
+	anchor = 'bottom',
 	action,
 	children
 }: React.PropsWithChildren<DrawerProps>) => {
@@ -31,9 +33,18 @@ export const Drawer = ({
 		setOpen(true);
 	};
 
+	let height = '43vh';
+	if (fullscreen) {
+		if (anchor == 'bottom') {
+			height = 'calc(100vh - 24px)';
+		} else {
+			height = '100vh';
+		}
+	}
+
 	return (
 		<SwipeableDrawer
-			anchor="bottom"
+			anchor={anchor}
 			open={open}
 			onClose={handleClose}
 			onOpen={handleOpen}
@@ -42,10 +53,11 @@ export const Drawer = ({
 			}}
 			sx={(theme) => ({
 				'.MuiDrawer-paper': {
-					borderTopLeftRadius: theme.spacing(2),
-					borderTopRightRadius: theme.spacing(2),
+					borderTopLeftRadius: anchor == 'bottom' ? theme.spacing(2) : 0,
+					borderTopRightRadius: anchor == 'bottom' ? theme.spacing(2) : 0,
 					overflow: 'visible',
-					height: fullScreen ? 'calc(100vh - 24px)' : '43vh'
+					height: height,
+					width: anchor == 'bottom' ? 'auto' : '100%'
 				}
 			})}
 		>
@@ -55,7 +67,7 @@ export const Drawer = ({
 			>
 				<DrawerHeader>
 					<IconButton onClick={handleClose}>
-						<IconChevronDown />
+						{anchor == 'bottom' ? <IconChevronDown /> : <IconChevronRight />}
 					</IconButton>
 					{title && <Typography variant="overline">{title}</Typography>}
 					{action && action}

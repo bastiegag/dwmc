@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import dayjs from 'dayjs';
 
-import { TransactionItem, useDataProvider } from 'hooks';
+import { TransactionItem, CategoryItem, useDataProvider } from 'hooks';
 import { FieldData } from 'components/fields';
 import { FormProps } from './types';
 import { Drawer, Form } from 'components';
@@ -69,9 +69,10 @@ export const TransactionForm: FC<FormProps> = ({
 
 	return (
 		transactions && (
-			<Drawer open={open} setOpen={setOpen} fullScreen={true} title={title}>
+			<Drawer open={open} setOpen={setOpen} fullscreen={true} title={title}>
 				<Form
 					current={transactions}
+					collection="transactions"
 					fields={fields}
 					values={values}
 					format={formatData}
@@ -84,7 +85,7 @@ export const TransactionForm: FC<FormProps> = ({
 
 const formatData = (
 	data: Record<string, unknown>,
-	current: TransactionItem[]
+	current: TransactionItem[] | CategoryItem[]
 ): Record<string, unknown> => {
 	for (const [key, value] of Object.entries(data)) {
 		switch (key) {
@@ -106,6 +107,8 @@ const formatData = (
 	const idx = current.findIndex((item) => item.id === data.id);
 	if (idx !== -1) {
 		current[idx] = { ...current[idx], ...data };
+	} else {
+		current.push(data);
 	}
 
 	return { items: current };

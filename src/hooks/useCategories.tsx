@@ -12,7 +12,6 @@ import { UseQueryResult } from '@tanstack/react-query';
 
 import { db } from '../main';
 import { useAuth, useRealtimeQuery } from 'hooks';
-import { setColor } from 'utils';
 
 export interface CategoryItem {
 	color?: string;
@@ -20,7 +19,7 @@ export interface CategoryItem {
 	id: string;
 	name: string;
 	section?: string;
-	type: number;
+	type: string;
 }
 
 export interface Categories {
@@ -55,7 +54,7 @@ export const useCategories = (): UseQueryResult<CategoryItem[]> => {
 						) as Categories[];
 
 						const items = updatedCategories[0]?.items ?? [];
-						onData(setColor(items));
+						onData(items);
 					} catch (error) {
 						onError(error);
 					}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Tab, Tabs, Stack } from '@mui/material';
+import { v4 as uuidv4 } from 'uuid';
 
 import { DateSwitcher, Card, AddButton } from 'components';
 import { TransactionForm } from 'components/forms';
@@ -50,13 +51,14 @@ export const Home = () => {
 			</Box>
 			<Stack spacing={2} sx={{ py: 2, mx: 2 }}>
 				<Card primary="Home" secondary="Something bla bla bla"></Card>
-				<Card>
+				<Card primary="Last transactions" secondary="Last 3 transactions">
 					<TransactionsList />
 				</Card>
 			</Stack>
 			<AddButton onClick={handleAddTransaction} />
 			<TransactionForm
 				open={openDrawer}
+				values={{ id: uuidv4() }}
 				setOpen={setOpenDrawer}
 				title="Add transaction"
 			/>

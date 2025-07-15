@@ -11,13 +11,14 @@ import {
 	Stack,
 	Typography
 } from '@mui/material';
+import { v4 as uuidv4 } from 'uuid';
 
 import { FieldProps } from './types';
 import { useCategories } from 'hooks';
 import { CategoryItem } from 'hooks/useCategories';
 import { getCategory, isFieldVisible } from 'utils';
 import { Drawer, Icon, ListSection, ListChoice } from 'components';
-//import { CategoryForm } from 'components/forms';
+import { CategoryForm } from 'components/forms';
 
 export const CategoryField: FC<FieldProps> = ({
 	data,
@@ -29,7 +30,7 @@ export const CategoryField: FC<FieldProps> = ({
 	const { data: categories } = useCategories();
 	const [category, setCategory] = useState<CategoryItem | null>(null);
 	const [open, setOpen] = useState(false);
-	//const [openForm, setOpenForm] = useState(false);
+	const [openForm, setOpenForm] = useState(false);
 	const [show, setShow] = useState(true);
 
 	useEffect(() => {
@@ -60,7 +61,7 @@ export const CategoryField: FC<FieldProps> = ({
 	let list: React.ReactElement[] = [];
 	if (categories) {
 		list = categories
-			.filter((item) => item.type == 0)
+			.filter((item) => item.type == 'section')
 			.map((item) => (
 				<ListSection key={item.id} title={item.name}>
 					{categories
@@ -122,7 +123,7 @@ export const CategoryField: FC<FieldProps> = ({
 							<IconButton>
 								<IconEdit />
 							</IconButton>
-							<IconButton>
+							<IconButton onClick={() => setOpenForm(true)}>
 								<IconCirclePlus />
 							</IconButton>
 						</Stack>
@@ -131,7 +132,13 @@ export const CategoryField: FC<FieldProps> = ({
 					<List>{list}</List>
 				</Drawer>
 
-				{/*<CategoryForm open={openForm} setOpen={setOpenForm} />*/}
+				<CategoryForm
+					open={openForm}
+					values={{ id: uuidv4() }}
+					setOpen={setOpenForm}
+					anchor="right"
+					title="Add category"
+				/>
 			</>
 		)
 	);

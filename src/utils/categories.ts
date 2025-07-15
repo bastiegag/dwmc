@@ -2,16 +2,16 @@ import { CategoryItem } from 'hooks/useCategories';
 
 export const setColor = (categories: CategoryItem[]) => {
 	const primary = categories
-		.filter((item) => item.type == 0)
+		.filter((item) => item.type == 'section')
 		.map((cat) => ({
 			color: cat.color,
 			id: cat.id,
 			name: cat.name,
-			type: 0
+			type: 'section'
 		}));
 
 	const secondary = categories
-		.filter((item) => item.type == 1)
+		.filter((item) => item.type == 'category')
 		.map((cat) => {
 			const color =
 				primary.find((p) => p.id === cat.section)?.color || cat.color;
@@ -20,7 +20,7 @@ export const setColor = (categories: CategoryItem[]) => {
 				color: color,
 				id: cat.id,
 				name: cat.name,
-				type: 1,
+				type: 'category',
 				icon: cat.icon,
 				section: cat.section
 			};

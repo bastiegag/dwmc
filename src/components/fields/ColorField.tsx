@@ -93,7 +93,7 @@ export const ColorField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 
 				<Drawer
 					open={open}
-					//setOpen={setOpen}
+					setOpen={setOpen}
 					title={data.drawerTitle ?? 'Select'}
 				>
 					<ColorsWrapper sx={{ p: 1 }}>{list}</ColorsWrapper>

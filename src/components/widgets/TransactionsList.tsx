@@ -60,7 +60,7 @@ export const TransactionsList = () => {
 
 	return (
 		<>
-			<List component="nav" sx={{ m: -2 }}>
+			<List component="nav" sx={{ mx: -2 }}>
 				{list}
 			</List>
 			<TransactionForm

@@ -35,7 +35,6 @@ export const DateSwitcher = () => {
 
 				<Stack sx={{ textAlign: 'center' }}>
 					<Typography>{label}</Typography>
-					{/* <Typography variant="caption" sx={{ lineHeight: 1 }}></Typography> */}
 				</Stack>
 
 				<IconButton
