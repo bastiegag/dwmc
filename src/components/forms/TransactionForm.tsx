@@ -1,7 +1,8 @@
 import { FC } from 'react';
 import dayjs from 'dayjs';
 
-import { TransactionItem, CategoryItem, useDataProvider } from 'hooks';
+import { TransactionItem } from 'types';
+import { useDataProvider } from 'hooks';
 import { FieldData } from 'components/fields';
 import { FormProps } from './types';
 import { Drawer, Form } from 'components';
@@ -85,14 +86,12 @@ export const TransactionForm: FC<FormProps> = ({
 
 const formatData = (
 	data: Record<string, unknown>,
-	current: TransactionItem[] | CategoryItem[]
+	current: TransactionItem[]
 ): Record<string, unknown> => {
 	for (const [key, value] of Object.entries(data)) {
 		switch (key) {
 			case 'date': {
-				const date = dayjs(
-					value as string | number | Date | null | undefined
-				).format('YYYY/MM/DD');
+				const date = dayjs(value as string).format('YYYY/MM/DD');
 				data[key] = date;
 				localStorage.setItem('dwmcLastDate', date);
 				break;

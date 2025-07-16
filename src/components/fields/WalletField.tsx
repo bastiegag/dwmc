@@ -45,7 +45,7 @@ export const WalletField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 		setOpen(true);
 	};
 
-	const handleClose = (id: string | number) => {
+	const handleClose = (id: string) => {
 		const newWallet: WalletItem | undefined = wallets
 			? getWallet(wallets, id)
 			: undefined;

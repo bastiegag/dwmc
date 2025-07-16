@@ -1,4 +1,4 @@
-import { CategoryItem } from 'hooks/useCategories';
+import { CategoryItem } from 'types';
 
 export const setColor = (categories: CategoryItem[]) => {
 	const primary = categories
@@ -31,7 +31,7 @@ export const setColor = (categories: CategoryItem[]) => {
 
 export const getCategory = (
 	data: CategoryItem[],
-	id: string | number | boolean = 'default'
+	id: string = 'default'
 ): CategoryItem | undefined => {
 	const category = data.find((category) => category.id === id);
 	if (!category) return;

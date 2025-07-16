@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { IAlertContext, AlertContext } from 'context';
+import { AlertContextType } from 'types';
+import { AlertContext } from 'context';
 
 export const AlertProvider = ({
 	children
 }: React.PropsWithChildren<unknown>) => {
-	const [alert, setAlert] = useState<IAlertContext['alert']>({
+	const [alert, setAlert] = useState<AlertContextType['alert']>({
 		open: false,
 		type: 'error',
 		code: '',

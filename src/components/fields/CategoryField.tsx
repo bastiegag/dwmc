@@ -14,8 +14,8 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 
 import { FieldProps } from './types';
-import { useCategories } from 'hooks';
-import { CategoryItem } from 'hooks/useCategories';
+import { CategoryItem } from 'types';
+import { useDataProvider } from 'hooks';
 import { getCategory, isFieldVisible } from 'utils';
 import { Drawer, Icon, ListSection, ListChoice } from 'components';
 import { CategoryForm } from 'components/forms';
@@ -27,7 +27,7 @@ export const CategoryField: FC<FieldProps> = ({
 }) => {
 	const { register, setValue, unregister } = useFormContext();
 	const initialValue = values?.[data.name] ?? 'subdefault';
-	const { data: categories } = useCategories();
+	const { categories } = useDataProvider();
 	const [category, setCategory] = useState<CategoryItem | null>(null);
 	const [open, setOpen] = useState(false);
 	const [openForm, setOpenForm] = useState(false);
@@ -51,7 +51,7 @@ export const CategoryField: FC<FieldProps> = ({
 		setOpen(true);
 	};
 
-	const handleClose = (id: string | number) => {
+	const handleClose = (id: string) => {
 		const newCategory = categories ? getCategory(categories, id) : null;
 		setCategory(newCategory ?? null);
 		setValue(data.name, id);

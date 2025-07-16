@@ -2,7 +2,7 @@ import { WalletItem } from 'hooks/useWallets';
 
 export const getWallet = (
 	data: WalletItem[],
-	id: string | number | boolean = 'default'
+	id: string = 'default'
 ): WalletItem | undefined => {
 	const wallet = data.find((wallet) => wallet.id === id);
 	if (!wallet) return;

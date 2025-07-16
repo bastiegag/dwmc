@@ -8,10 +8,12 @@ import {
 	Typography
 } from '@mui/material';
 
-import { TransactionItem, useDataProvider } from 'hooks';
+import { TransactionItem } from 'types';
+import { useDataProvider } from 'hooks';
+import { formatShortDate, formatPrice, getCategory } from 'utils';
+
 import { Icon } from 'components';
 import { TransactionForm } from 'components/forms';
-import { formatShortDate, formatPrice, getCategory } from 'utils';
 
 export const TransactionsList = () => {
 	const { transactions, categories } = useDataProvider();
@@ -25,7 +27,7 @@ export const TransactionsList = () => {
 			setOpenDrawer(true);
 		};
 
-		list = transactions.map((item) => {
+		list = transactions.map((item: TransactionItem) => {
 			const category = getCategory(categories, item.category);
 
 			return (

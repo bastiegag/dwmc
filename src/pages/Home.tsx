@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Tab, Tabs, Stack } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
 
-import { DateSwitcher, Card, AddButton } from 'components';
+import { DateSwitcher, Card, AddButton, AlertMessage } from 'components';
 import { TransactionForm } from 'components/forms';
 import { TransactionsList } from 'components/widgets';
 
@@ -62,6 +62,7 @@ export const Home = () => {
 				setOpen={setOpenDrawer}
 				title="Add transaction"
 			/>
+			<AlertMessage />
 		</>
 	);
 };

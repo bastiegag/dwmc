@@ -1,9 +1,5 @@
 import { createContext } from 'react';
-import { User } from 'firebase/auth';
 
-export interface IAuthContext {
-	user: User;
-	setUser: React.Dispatch<React.SetStateAction<IAuthContext['user']>>;
-}
+import { AuthContextType } from 'types';
 
-export const AuthContext = createContext<IAuthContext | null>(null);
+export const AuthContext = createContext<AuthContextType | null>(null);
