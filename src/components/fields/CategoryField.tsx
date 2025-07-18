@@ -11,10 +11,8 @@ import {
 	Stack,
 	Typography
 } from '@mui/material';
-import { v4 as uuidv4 } from 'uuid';
 
-import { FieldProps } from './types';
-import { CategoryItem } from 'types';
+import { FieldProps, CategoryItem } from 'types';
 import { useDataProvider } from 'hooks';
 import { getCategory, isFieldVisible } from 'utils';
 import { Drawer, Icon, ListSection, ListChoice } from 'components';
@@ -26,7 +24,8 @@ export const CategoryField: FC<FieldProps> = ({
 	values
 }) => {
 	const { register, setValue, unregister } = useFormContext();
-	const initialValue = values?.[data.name] ?? 'subdefault';
+	const initialValue =
+		(values as Record<string, string>)[data.name] ?? 'subdefault';
 	const { categories } = useDataProvider();
 	const [category, setCategory] = useState<CategoryItem | null>(null);
 	const [open, setOpen] = useState(false);
@@ -123,7 +122,14 @@ export const CategoryField: FC<FieldProps> = ({
 							<IconButton>
 								<IconEdit />
 							</IconButton>
-							<IconButton onClick={() => setOpenForm(true)}>
+							<IconButton
+								onClick={(e) => {
+									// Make sure to stop event propagation
+									e.preventDefault();
+									e.stopPropagation();
+									setOpenForm(true);
+								}}
+							>
 								<IconCirclePlus />
 							</IconButton>
 						</Stack>
@@ -132,13 +138,16 @@ export const CategoryField: FC<FieldProps> = ({
 					<List>{list}</List>
 				</Drawer>
 
-				<CategoryForm
-					open={openForm}
-					values={{ id: uuidv4() }}
-					setOpen={setOpenForm}
-					anchor="right"
-					title="Add category"
-				/>
+				{/* Render CategoryForm outside the current form context */}
+				<div onClick={(e) => e.stopPropagation()}>
+					<CategoryForm
+						open={openForm}
+						values={{ id: crypto.randomUUID(), type: 'category' }}
+						setOpen={setOpenForm}
+						anchor="right"
+						title="Add category"
+					/>
+				</div>
 			</>
 		)
 	);

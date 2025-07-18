@@ -8,7 +8,7 @@ import {
 	ListItemIcon
 } from '@mui/material';
 
-import { FieldProps } from './types';
+import { FieldProps } from 'types';
 import { isFieldVisible } from 'utils';
 import { Icon } from 'components';
 
@@ -29,6 +29,13 @@ export const TextField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 			setShow(false);
 		}
 	}, [hiddenValue, data, unregister]);
+
+	// Debug log to check initial values
+	useEffect(() => {
+		if (data.name === 'id' || data.name === 'note') {
+			console.log(`Initial value for ${data.name}:`, initialValue);
+		}
+	}, [data.name, initialValue]);
 
 	return (
 		show && (

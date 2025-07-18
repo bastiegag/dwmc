@@ -8,7 +8,8 @@ import { Header, Navigation } from 'layouts';
 
 const Content = styled(Box)(({ theme }) => ({
 	backgroundColor: theme.palette.background.default,
-	minHeight: '100vh'
+	minHeight: '100vh',
+	paddingBottom: theme.spacing(14)
 }));
 
 export const Main = () => {

@@ -31,10 +31,13 @@ export const setColor = (categories: CategoryItem[]) => {
 
 export const getCategory = (
 	data: CategoryItem[],
-	id: string = 'default'
+	id: string = 'subdefault'
 ): CategoryItem | undefined => {
 	const category = data.find((category) => category.id === id);
-	if (!category) return;
+
+	if (!category) {
+		return data.find((category) => category.id === 'subdefault');
+	}
 
 	return category;
 };

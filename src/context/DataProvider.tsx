@@ -7,11 +7,25 @@ import { setColor } from 'utils';
 export const DataProvider = ({
 	children
 }: React.PropsWithChildren<unknown>) => {
-	const { data: transactions, isLoading, error } = useTransactions();
-	const { data: cats } = useCategories();
+	const {
+		data: transactions,
+		isLoading: transactionsLoading,
+		error: transactionsError
+	} = useTransactions();
+	const {
+		data: cats,
+		isLoading: categoriesLoading,
+		error: categoriesError
+	} = useCategories();
 
 	const categories = cats && setColor(cats);
 	const rawCategories = cats;
+
+	// Global loading: true if either transactions or categories are loading
+	const isLoading = transactionsLoading || categoriesLoading;
+
+	// Global error: first error found, or undefined if none
+	const error = transactionsError || categoriesError;
 
 	const value = useMemo(
 		() => ({

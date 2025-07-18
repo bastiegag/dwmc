@@ -1,4 +1,5 @@
 import { User } from 'firebase/auth';
+import { Dayjs } from 'dayjs';
 
 import { TransactionItem, CategoryItem } from 'types';
 
@@ -7,6 +8,8 @@ export interface DateContextType {
 	setCurrent: React.Dispatch<React.SetStateAction<DateContextType['current']>>;
 	month: number;
 	year: number;
+	min: Dayjs;
+	max: Dayjs;
 	label: string;
 }
 

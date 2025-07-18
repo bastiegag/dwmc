@@ -8,5 +8,8 @@ export type {
 	Category,
 	CategoryItem,
 	Transaction,
-	TransactionItem
+	TransactionItem,
+	Wallet,
+	WalletItem
 } from './document';
+export type { FieldData, FieldProps, FormProps } from './form';

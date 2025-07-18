@@ -10,14 +10,14 @@ import {
 	Typography
 } from '@mui/material';
 
-import { FieldProps } from './types';
+import { FieldProps } from 'types';
 import { isFieldVisible } from 'utils';
 import { Drawer, Icon, ListChoice } from 'components';
 
 export const SelectField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 	const { register, setValue, unregister } = useFormContext();
 	const initialValue = String(
-		values?.[data.name] ?? data.choices?.[0]?.name ?? ''
+		values?.[data.name] ?? data.choices?.[0]?.value ?? ''
 	);
 	const [selectValue, setSelectValue] = useState<string>(initialValue);
 	const [open, setOpen] = useState(false);

@@ -14,11 +14,12 @@ export const AlertMessage = () => {
 		<Snackbar
 			open={alert.open}
 			onClose={handleClose}
+			autoHideDuration={5000}
 			slots={{ transition: Slide }}
 			slotProps={{ transition: { direction: 'up' } }}
 			sx={(theme) => ({
 				bottom: theme.spacing(9),
-				right: theme.spacing(9),
+				right: theme.spacing(2),
 				left: theme.spacing(2)
 			})}
 		>

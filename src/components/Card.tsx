@@ -11,7 +11,7 @@ export const Card = ({
 	children
 }: React.PropsWithChildren<CardProps>) => {
 	return (
-		<Paper elevation={0} sx={{ mx: 2, p: 2, overflow: 'hidden' }}>
+		<Paper elevation={0} sx={{ p: 2, overflow: 'hidden' }}>
 			{primary && <Typography variant="h6">{primary}</Typography>}
 			{secondary && <Typography variant="caption">{secondary}</Typography>}
 			<Box sx={{ mt: 2 }}>{children}</Box>

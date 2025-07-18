@@ -8,7 +8,7 @@ import {
 	RadioGroup
 } from '@mui/material';
 
-import { FieldProps } from './types';
+import { FieldProps } from 'types';
 import { isFieldVisible } from 'utils';
 
 export const RadioField: FC<FieldProps> = ({ data, values, hiddenValue }) => {

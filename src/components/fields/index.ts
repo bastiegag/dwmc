@@ -8,5 +8,3 @@ export { SelectField } from './SelectField';
 export { SwitchField } from './SwitchField';
 export { TextField } from './TextField';
 export { WalletField } from './WalletField';
-
-export type { FieldData, FieldProps } from './types';

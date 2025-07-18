@@ -21,12 +21,27 @@ export interface TransactionItem {
 	id: string;
 	note?: string;
 	to?: string;
-	type: number;
+	type: string;
 }
 
 export interface Transaction {
 	id: string;
 	items: TransactionItem[];
 	month: number;
+	uid: string;
+}
+
+export interface WalletItem {
+	amount: number;
+	color: string;
+	goal: number;
+	icon: string;
+	id: string;
+	name: string;
+}
+
+export interface Wallet {
+	id: string;
+	items: WalletItem[];
 	uid: string;
 }

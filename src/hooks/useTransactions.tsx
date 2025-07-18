@@ -16,8 +16,8 @@ import { useAuth, useRealtimeQuery, useDate } from 'hooks';
 
 export const useTransactions = (): UseQueryResult<TransactionItem[]> => {
 	const { month, year } = useDate();
-	const auth = useAuth();
-	const userId = auth.user?.uid || '';
+	const { user } = useAuth();
+	const userId = user?.uid || '';
 
 	if (!userId) {
 		throw new Error('User ID is required to fetch transactions');

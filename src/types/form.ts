@@ -14,3 +14,11 @@ export interface FieldProps {
 	hiddenValue: string;
 	values: Record<string, string | number | boolean> | undefined;
 }
+
+export interface FormProps {
+	title: string;
+	values?: Record<string, string | number | boolean>;
+	open: boolean;
+	anchor?: 'bottom' | 'right';
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
