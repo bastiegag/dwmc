@@ -11,22 +11,8 @@ import {
 import { UseQueryResult } from '@tanstack/react-query';
 
 import { db } from '../main';
+import { Category, CategoryItem } from 'types';
 import { useAuth, useRealtimeQuery } from 'hooks';
-
-export interface CategoryItem {
-	color?: string;
-	icon?: string;
-	id: string;
-	name: string;
-	section?: string;
-	type: string;
-}
-
-export interface Categories {
-	id: string;
-	items: CategoryItem[];
-	uid: string;
-}
 
 export const useCategories = (): UseQueryResult<CategoryItem[]> => {
 	const auth = useAuth();
@@ -41,7 +27,7 @@ export const useCategories = (): UseQueryResult<CategoryItem[]> => {
 		subscribeFn: (onData, onError) => {
 			const unsubscribe = onSnapshot(
 				query(
-					collection(db, 'categories') as CollectionReference<Categories>,
+					collection(db, 'categories') as CollectionReference<Category>,
 					where('uid', '==', userId)
 				),
 				(querySnapshot: QuerySnapshot<DocumentData>) => {
@@ -51,10 +37,9 @@ export const useCategories = (): UseQueryResult<CategoryItem[]> => {
 								...doc.data(),
 								id: doc.id
 							})
-						) as Categories[];
+						) as Category[];
 
-						const items = updatedCategories[0]?.items ?? [];
-						onData(items);
+						onData(updatedCategories[0]?.items || []);
 					} catch (error) {
 						onError(error);
 					}

@@ -12,7 +12,7 @@ import {
 	Typography
 } from '@mui/material';
 
-import { FieldProps } from './types';
+import { FieldProps } from 'types';
 import { isFieldVisible, colors } from 'utils';
 import { Drawer, Icon, ListChoice } from 'components';
 
@@ -26,7 +26,7 @@ const ColorsWrapper = styled(Box, {
 
 export const ColorField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 	const { register, setValue, unregister } = useFormContext();
-	const initialValue = values?.[data.name] ?? 'light';
+	const initialValue = (values as Record<string, string>)[data.name] ?? 'light';
 	const [color, setColor] = useState(initialValue);
 	const [open, setOpen] = useState(false);
 	const [show, setShow] = useState(true);

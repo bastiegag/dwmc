@@ -11,15 +11,15 @@ import {
 	Typography
 } from '@mui/material';
 
-import { FieldProps } from './types';
+import { FieldProps, WalletItem } from 'types';
 import { useWallets } from 'hooks';
-import { WalletItem } from 'hooks/useWallets';
 import { getWallet, isFieldVisible } from 'utils';
 import { Drawer, Icon, ListChoice } from 'components';
 
 export const WalletField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 	const { register, unregister, setValue } = useFormContext();
-	const initialValue = values?.[data.name] ?? 'default';
+	const initialValue =
+		(values as Record<string, string>)[data.name] ?? 'default';
 	const { data: wallets } = useWallets();
 	const [wallet, setWallet] = useState<WalletItem | null>(null);
 	const [open, setOpen] = useState(false);
@@ -45,7 +45,7 @@ export const WalletField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 		setOpen(true);
 	};
 
-	const handleClose = (id: string | number) => {
+	const handleClose = (id: string) => {
 		const newWallet: WalletItem | undefined = wallets
 			? getWallet(wallets, id)
 			: undefined;

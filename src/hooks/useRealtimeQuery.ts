@@ -40,8 +40,6 @@ export function useRealtimeQuery<T = unknown>({
 
 	return useQuery<T>({
 		queryKey,
-		// Since real-time updates come through the subscription,
-		// we just return the initial data or latest cached value
 		queryFn: async () => {
 			const cached = queryClient.getQueryData<T>(queryKey);
 			if (cached !== undefined) return cached;

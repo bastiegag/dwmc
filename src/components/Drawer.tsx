@@ -64,6 +64,7 @@ export const Drawer = ({
 			<Box
 				className="dwmc-drawer"
 				sx={{ position: 'relative', height: '100%' }}
+				onClick={(e) => e.stopPropagation()}
 			>
 				<DrawerHeader>
 					<IconButton onClick={handleClose}>

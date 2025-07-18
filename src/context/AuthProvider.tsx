@@ -1,14 +1,15 @@
 import { useState, useEffect, useMemo } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
-import { IAuthContext, AuthContext } from 'context';
+import { AuthContextType } from 'types';
+import { AuthContext } from 'context';
 
 export const AuthProvider = ({
 	children
 }: React.PropsWithChildren<unknown>) => {
 	const auth = getAuth();
 	const [loading, setLoading] = useState(true);
-	const [user, setUser] = useState<IAuthContext['user']>(null);
+	const [user, setUser] = useState<AuthContextType['user'] | null>(null);
 	const value = useMemo(() => ({ user, setUser }), [user]);
 
 	useEffect(() => {

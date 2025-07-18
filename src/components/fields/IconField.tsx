@@ -12,7 +12,7 @@ import {
 	Typography
 } from '@mui/material';
 
-import { FieldProps } from './types';
+import { FieldProps } from 'types';
 import { isFieldVisible, icons } from 'utils';
 import { Drawer, Icon, ListChoice } from 'components';
 
@@ -26,7 +26,8 @@ const IconsWrapper = styled(Box, {
 
 export const IconField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 	const { register, setValue, unregister } = useFormContext();
-	const initialValue = values?.[data.name] ?? 'IconArchive';
+	const initialValue =
+		(values as Record<string, string>)[data.name] ?? 'IconArchive';
 	const [icon, setIcon] = useState(initialValue);
 	const [open, setOpen] = useState(false);
 	const [show, setShow] = useState(true);

@@ -11,22 +11,8 @@ import {
 import { UseQueryResult } from '@tanstack/react-query';
 
 import { db } from '../main';
+import { Wallet, WalletItem } from 'types';
 import { useAuth, useRealtimeQuery } from 'hooks';
-
-export interface WalletItem {
-	amount: number;
-	color: string;
-	goal: number;
-	icon: string;
-	id: string;
-	name: string;
-}
-
-export interface Wallets {
-	id: string;
-	items: WalletItem[];
-	uid: string;
-}
 
 export const useWallets = (): UseQueryResult<WalletItem[] | null> => {
 	const auth = useAuth();
@@ -41,7 +27,7 @@ export const useWallets = (): UseQueryResult<WalletItem[] | null> => {
 		subscribeFn: (onData, onError) => {
 			const unsubscribe = onSnapshot(
 				query(
-					collection(db, 'wallets') as CollectionReference<Wallets>,
+					collection(db, 'wallets') as CollectionReference<Wallet>,
 					where('uid', '==', userId)
 				),
 				(querySnapshot: QuerySnapshot<DocumentData>) => {
@@ -51,7 +37,7 @@ export const useWallets = (): UseQueryResult<WalletItem[] | null> => {
 								...doc.data(),
 								id: doc.id
 							})
-						) as Wallets[];
+						) as Wallet[];
 
 						onData(updatedWallets[0]?.items || []);
 					} catch (error) {

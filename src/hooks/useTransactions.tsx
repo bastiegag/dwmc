@@ -11,30 +11,13 @@ import {
 import { UseQueryResult } from '@tanstack/react-query';
 
 import { db } from '../main';
+import { Transaction, TransactionItem } from 'types';
 import { useAuth, useRealtimeQuery, useDate } from 'hooks';
 
-export interface TransactionItem {
-	amount: number;
-	category: string;
-	date: string;
-	from?: string;
-	id: string;
-	note?: string;
-	to?: string;
-	type: number;
-}
-
-export interface Transactions {
-	id: string;
-	items: TransactionItem[];
-	month: number;
-	uid: string;
-}
-
 export const useTransactions = (): UseQueryResult<TransactionItem[]> => {
-	const auth = useAuth();
-	const userId = auth.user?.uid || '';
 	const { month, year } = useDate();
+	const { user } = useAuth();
+	const userId = user?.uid || '';
 
 	if (!userId) {
 		throw new Error('User ID is required to fetch transactions');
@@ -50,7 +33,7 @@ export const useTransactions = (): UseQueryResult<TransactionItem[]> => {
 						'transactions',
 						userId,
 						year.toString()
-					) as CollectionReference<Transactions>,
+					) as CollectionReference<Transaction>,
 					where('uid', '==', userId),
 					where('month', '==', month)
 				),
@@ -61,7 +44,7 @@ export const useTransactions = (): UseQueryResult<TransactionItem[]> => {
 								...doc.data(),
 								id: doc.id
 							})
-						) as Transactions[];
+						) as Transaction[];
 
 						onData(updatedTransactions[0]?.items || []);
 					} catch (error) {

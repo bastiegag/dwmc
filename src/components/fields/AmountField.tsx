@@ -9,7 +9,7 @@ import {
 	ListItemIcon
 } from '@mui/material';
 
-import { FieldProps } from './types';
+import { FieldProps } from 'types';
 import { isFieldVisible } from 'utils';
 import { Icon } from 'components';
 

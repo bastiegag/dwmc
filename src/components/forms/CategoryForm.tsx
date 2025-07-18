@@ -1,9 +1,52 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 
-import { FieldData } from 'components/fields';
-import { FormProps } from './types';
-import { useDataProvider, CategoryItem, TransactionItem } from 'hooks';
+import { FormProps, FieldData, CategoryItem } from 'types';
+import { useDataProvider } from 'hooks';
 import { Drawer, Form } from 'components';
+
+const fields: FieldData[] = [
+	{
+		name: 'id',
+		type: 'hidden'
+	},
+	{
+		name: 'type',
+		type: 'radio',
+		choices: [
+			{ name: 'Section', value: 'section' },
+			{ name: 'Catégorie', value: 'category' }
+		]
+	},
+	{
+		name: 'name',
+		type: 'text',
+		label: 'Nom',
+		icon: 'IconTag',
+		required: true
+	},
+	{
+		name: 'color',
+		type: 'color',
+		label: 'Couleur',
+		icon: 'IconColorPicker',
+		hidden: ['category']
+	},
+	{
+		name: 'section',
+		type: 'select',
+		label: 'Section:',
+		icon: 'IconSection',
+		hidden: ['section']
+	},
+	{
+		name: 'icon',
+		type: 'icon',
+		label: 'Icon',
+		icon: 'IconPhoto',
+		hidden: ['section']
+	}
+];
 
 export const CategoryForm: FC<FormProps> = ({
 	open,
@@ -12,59 +55,31 @@ export const CategoryForm: FC<FormProps> = ({
 	anchor
 }) => {
 	const { categories, rawCategories } = useDataProvider();
+	const methods = useForm({
+		mode: 'onBlur',
+		defaultValues: values
+	});
 
-	const fields: FieldData[] = [
-		{
-			name: 'id',
-			type: 'hidden'
-		},
-		{
-			name: 'type',
-			type: 'radio',
-			choices: [
-				{ name: 'Section', value: 'section' },
-				{ name: 'Catégorie', value: 'category' }
-			]
-		},
-		{
-			name: 'name',
-			type: 'text',
-			label: 'Nom',
-			icon: 'IconTag',
-			required: true
-		},
-		{
-			name: 'color',
-			type: 'color',
-			label: 'Couleur',
-			icon: 'IconColorPicker',
-			hidden: ['category']
-		},
-		{
-			name: 'section',
-			type: 'select',
-			label: 'Section:',
-			icon: 'IconSection',
-			hidden: ['section'],
-			choices: [
-				...(categories
-					? categories
-							.filter((cat) => cat.type === 'section')
-							.map((cat) => ({
-								name: cat.name,
-								value: cat.id
-							}))
-					: [])
-			]
-		},
-		{
-			name: 'icon',
-			type: 'icon',
-			label: 'Icon',
-			icon: 'IconPhoto',
-			hidden: ['section']
+	// Reset form when values change or drawer opens
+	useEffect(() => {
+		if (open && values) {
+			methods.reset(values);
 		}
-	];
+	}, [values, open, methods]);
+
+	useEffect(() => {
+		const choices = [
+			...(categories
+				? categories
+						.filter((cat) => cat.type === 'section')
+						.map((cat) => ({
+							name: cat.name,
+							value: cat.id
+						}))
+				: [])
+		];
+		fields[4].choices = choices;
+	}, [categories]);
 
 	return (
 		categories && (
@@ -75,29 +90,42 @@ export const CategoryForm: FC<FormProps> = ({
 				fullscreen={true}
 				title="Add category"
 			>
-				<Form
-					current={rawCategories}
-					collection="categories"
-					fields={fields}
-					values={values}
-					format={formatData}
-					setOpen={setOpen}
-				/>
+				{/* Create a completely new form context */}
+				<div onClick={(e) => e.stopPropagation()}>
+					<FormProvider {...methods}>
+						<Form<CategoryItem>
+							current={rawCategories ?? []}
+							collection="categories"
+							fields={fields}
+							values={values}
+							format={formatData}
+							setOpen={setOpen}
+						/>
+					</FormProvider>
+				</div>
 			</Drawer>
 		)
 	);
 };
 
-const formatData = (
+type CategoryFormatFunction = (
 	data: Record<string, unknown>,
-	current: TransactionItem[] | CategoryItem[]
-): Record<string, unknown> => {
-	const idx = current.findIndex((item) => item.id === data.id);
+	current: CategoryItem[]
+) => Record<string, unknown>;
+
+const formatData: CategoryFormatFunction = (data, current) => {
+	// Create a copy of the current array to avoid mutations
+	const categories = [...current];
+
+	const idx = categories.findIndex((item: CategoryItem) => item.id === data.id);
 	if (idx !== -1) {
-		current[idx] = { ...current[idx], ...data };
+		categories[idx] = {
+			...categories[idx],
+			...(data as Partial<CategoryItem>)
+		};
 	} else {
-		current.push(data);
+		categories.push(data as unknown as CategoryItem);
 	}
 
-	return { items: current };
+	return { items: categories };
 };

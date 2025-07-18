@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
-import { Box, Tab, Tabs, Stack } from '@mui/material';
-import { v4 as uuidv4 } from 'uuid';
+import { Box, Tab, Tabs, Stack, useTheme } from '@mui/material';
 
-import { DateSwitcher, Card, AddButton } from 'components';
+import {
+	DateSwitcher,
+	Card,
+	AddButton,
+	TabPanel,
+	AlertMessage
+} from 'components';
 import { TransactionForm } from 'components/forms';
-import { TransactionsList } from 'components/widgets';
+import { LastTransactions } from 'components/widgets';
 
 export const Home = () => {
+	const theme = useTheme();
 	const [tab, setTab] = useState(0);
 	const [openDrawer, setOpenDrawer] = useState(false);
 
@@ -44,24 +50,30 @@ export const Home = () => {
 				sx={{
 					backgroundColor: 'primary.main',
 					transform: 'translateY(-50%)',
-					mt: 2
+					mt: 2,
+					position: 'sticky',
+					top: theme.spacing(2)
 				}}
 			>
 				<DateSwitcher />
 			</Box>
-			<Stack spacing={2} sx={{ py: 2, mx: 2 }}>
-				<Card primary="Home" secondary="Something bla bla bla"></Card>
-				<Card primary="Last transactions" secondary="Last 3 transactions">
-					<TransactionsList />
-				</Card>
-			</Stack>
+
+			<TabPanel value={tab} index={0}>
+				<Stack spacing={2} sx={{ py: 2, mx: 2 }}>
+					<Card primary="Last transactions">
+						<LastTransactions />
+					</Card>
+				</Stack>
+			</TabPanel>
+
 			<AddButton onClick={handleAddTransaction} />
 			<TransactionForm
 				open={openDrawer}
-				values={{ id: uuidv4() }}
+				values={{ id: crypto.randomUUID(), type: 'expense' }}
 				setOpen={setOpenDrawer}
 				title="Add transaction"
 			/>
+			<AlertMessage />
 		</>
 	);
 };

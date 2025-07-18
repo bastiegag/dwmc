@@ -127,7 +127,8 @@ const components = (colors: IColors) => {
 					'.MuiTypography-root': {
 						paddingRight: '8px',
 						textOverflow: 'ellipsis',
-						overflow: 'hidden'
+						overflow: 'hidden',
+						whiteSpace: 'nowrap'
 					}
 				}
 			}
