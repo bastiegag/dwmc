@@ -11,16 +11,12 @@ import { TransactionForm } from 'components/forms';
 export const LastTransactions = () => {
 	const { transactions, categories, isLoading, error } = useDataProvider();
 	const [openDrawer, setOpenDrawer] = useState(false);
-	const [formValues, setFormValues] = useState<
-		Record<string, string | number | boolean>
-	>({});
+	const [formValues, setFormValues] = useState<Record<string, string>>({});
 
-	// Handle loading state with multiple skeletons
 	if (isLoading) {
 		return <Loader loading={true} />;
 	}
 
-	// Handle error state
 	if (error) {
 		return (
 			<Alert severity="error">
@@ -30,10 +26,7 @@ export const LastTransactions = () => {
 		);
 	}
 
-	// Handle data state
 	const handleEdit = (item: TransactionItem) => {
-		console.log('Editing transaction:', item);
-		// Ensure date is properly formatted before passing to form
 		const dateValue = item.date ? item.date : dayjs().format('YYYY/MM/DD');
 
 		const formattedValues = {
@@ -47,12 +40,10 @@ export const LastTransactions = () => {
 			to: item.to || ''
 		};
 
-		console.log('Setting form values:', formattedValues);
 		setFormValues(formattedValues);
 		setOpenDrawer(true);
 	};
 
-	// Render transactions list
 	let list;
 	if (!transactions || !categories || transactions.length === 0) {
 		list = <EmptyList message="No transactions found" />;

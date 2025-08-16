@@ -9,7 +9,8 @@ import {
 	AlertMessage
 } from 'components';
 import { TransactionForm } from 'components/forms';
-import { LastTransactions } from 'components/widgets';
+import { LastTransactions, TransactionsList } from 'components/widgets';
+import dayjs from 'dayjs';
 
 export const Home = () => {
 	const theme = useTheme();
@@ -66,12 +67,25 @@ export const Home = () => {
 				</Stack>
 			</TabPanel>
 
+			<TabPanel value={tab} index={2}>
+				<Stack spacing={2} sx={{ py: 2, mx: 2 }}>
+					<Card primary="Transactions">
+						<TransactionsList />
+					</Card>
+				</Stack>
+			</TabPanel>
+
 			<AddButton onClick={handleAddTransaction} />
 			<TransactionForm
 				open={openDrawer}
-				values={{ id: crypto.randomUUID(), type: 'expense' }}
+				values={{
+					id: crypto.randomUUID(),
+					type: 'expense',
+					date: dayjs().format('YYYY/MM/DD')
+				}}
 				setOpen={setOpenDrawer}
 				title="Add transaction"
+				createNew={true}
 			/>
 			<AlertMessage />
 		</>

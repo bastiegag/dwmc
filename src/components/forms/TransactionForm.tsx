@@ -63,7 +63,8 @@ export const TransactionForm: FC<FormProps> = ({
 	title,
 	values,
 	open,
-	setOpen
+	setOpen,
+	createNew
 }) => {
 	const { transactions } = useDataProvider();
 	const methods = useForm({
@@ -71,7 +72,6 @@ export const TransactionForm: FC<FormProps> = ({
 		defaultValues: values
 	});
 
-	// Reset form when values change or drawer opens
 	useEffect(() => {
 		if (open && values) {
 			methods.reset(values);
@@ -81,7 +81,6 @@ export const TransactionForm: FC<FormProps> = ({
 	return (
 		transactions && (
 			<Drawer open={open} setOpen={setOpen} fullscreen={true} title={title}>
-				{/* Use a div with stopPropagation to ensure form isolation */}
 				<div onClick={(e) => e.stopPropagation()}>
 					<FormProvider {...methods}>
 						<Form<TransactionItem>
@@ -92,6 +91,7 @@ export const TransactionForm: FC<FormProps> = ({
 							format={formatData}
 							remove={deleteData}
 							setOpen={setOpen}
+							createNew={createNew}
 						/>
 					</FormProvider>
 				</div>
@@ -106,13 +106,11 @@ type TransactionFormatFunction = (
 ) => Record<string, unknown>;
 
 const formatData: TransactionFormatFunction = (data, current) => {
-	// Create a copy of the current array to avoid mutations
 	const transactions = [...current];
 
 	for (const [key, value] of Object.entries(data)) {
 		switch (key) {
 			case 'date': {
-				// Handle different date value types
 				let dateValue: string;
 				if (dayjs.isDayjs(value)) {
 					// If it's a dayjs object

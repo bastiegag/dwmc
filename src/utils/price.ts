@@ -1,8 +1,3 @@
-/**
- * Format price
- * @param {float} price
- * @returns
- */
 export const formatPrice = (price: number) => {
 	if (typeof price == 'undefined') return;
 
@@ -15,10 +10,6 @@ export const formatPrice = (price: number) => {
 	return newPrice;
 };
 
-/**
- * Format price to float
- * @param {string} price
- */
 export const formatPriceToFloat = (price: string) => {
 	if (typeof price == 'undefined') return;
 	if (typeof price == 'number') return price;

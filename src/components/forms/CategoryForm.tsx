@@ -60,7 +60,6 @@ export const CategoryForm: FC<FormProps> = ({
 		defaultValues: values
 	});
 
-	// Reset form when values change or drawer opens
 	useEffect(() => {
 		if (open && values) {
 			methods.reset(values);
@@ -90,7 +89,6 @@ export const CategoryForm: FC<FormProps> = ({
 				fullscreen={true}
 				title="Add category"
 			>
-				{/* Create a completely new form context */}
 				<div onClick={(e) => e.stopPropagation()}>
 					<FormProvider {...methods}>
 						<Form<CategoryItem>
@@ -99,6 +97,7 @@ export const CategoryForm: FC<FormProps> = ({
 							fields={fields}
 							values={values}
 							format={formatData}
+							remove={deleteData}
 							setOpen={setOpen}
 						/>
 					</FormProvider>
@@ -114,7 +113,6 @@ type CategoryFormatFunction = (
 ) => Record<string, unknown>;
 
 const formatData: CategoryFormatFunction = (data, current) => {
-	// Create a copy of the current array to avoid mutations
 	const categories = [...current];
 
 	const idx = categories.findIndex((item: CategoryItem) => item.id === data.id);
@@ -125,6 +123,18 @@ const formatData: CategoryFormatFunction = (data, current) => {
 		};
 	} else {
 		categories.push(data as unknown as CategoryItem);
+	}
+
+	return { items: categories };
+};
+
+const deleteData: CategoryFormatFunction = (data, current) => {
+	const categories = [...current];
+
+	const idx = categories.findIndex((item: CategoryItem) => item.id === data.id);
+
+	if (idx !== -1) {
+		categories.splice(idx, 1);
 	}
 
 	return { items: categories };

@@ -25,28 +25,28 @@ export const RadioField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 		}
 	}, [hiddenValue, data, unregister]);
 
+	if (!show) return null;
+
 	return (
-		show && (
-			<ListItem>
-				<FormControl fullWidth>
-					<RadioGroup
-						row
-						defaultValue={initialValue}
-						sx={{ justifyContent: 'center' }}
-					>
-						{data.choices &&
-							data.choices.length > 0 &&
-							data.choices.map((item, index) => (
-								<FormControlLabel
-									control={<Radio {...register(data.name)} />}
-									key={index}
-									label={item.name}
-									value={item.value}
-								/>
-							))}
-					</RadioGroup>
-				</FormControl>
-			</ListItem>
-		)
+		<ListItem>
+			<FormControl fullWidth>
+				<RadioGroup
+					row
+					defaultValue={initialValue}
+					sx={{ justifyContent: 'center' }}
+				>
+					{data.choices &&
+						data.choices.length > 0 &&
+						data.choices.map((item, index) => (
+							<FormControlLabel
+								control={<Radio {...register(data.name)} />}
+								key={index}
+								label={item.name}
+								value={item.value}
+							/>
+						))}
+				</RadioGroup>
+			</FormControl>
+		</ListItem>
 	);
 };

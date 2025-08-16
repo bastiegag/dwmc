@@ -12,13 +12,14 @@ export interface FieldData {
 export interface FieldProps {
 	data: FieldData;
 	hiddenValue: string;
-	values: Record<string, string | number | boolean> | undefined;
+	values: Record<string, string> | undefined;
 }
 
 export interface FormProps {
 	title: string;
-	values?: Record<string, string | number | boolean>;
+	values?: Record<string, string>;
 	open: boolean;
 	anchor?: 'bottom' | 'right';
+	createNew?: boolean;
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }

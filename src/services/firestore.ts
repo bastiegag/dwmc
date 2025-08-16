@@ -12,9 +12,6 @@ import {
 } from 'firebase/firestore';
 import { Unsubscribe, QuerySnapshot, DocumentData } from 'firebase/firestore';
 
-/**
- * Get documents
- */
 export const getDocuments = (
 	user: string,
 	snapshot: (snapshot: QuerySnapshot<DocumentData>) => void,
@@ -29,9 +26,6 @@ export const getDocuments = (
 	return onSnapshot(q, snapshot);
 };
 
-/**
- * Add document
- */
 export const addDocument = async (
 	data: DocumentData,
 	user: string,
@@ -42,9 +36,6 @@ export const addDocument = async (
 	return await addDoc(collection(db, 'users', user, colRef), data);
 };
 
-/**
- * Set document
- */
 export const setDocument = async (
 	data: DocumentData,
 	user: string,
@@ -60,9 +51,6 @@ export const setDocument = async (
 	}
 };
 
-/**
- * Delete document
- */
 export const deleteDocument = async (
 	user: string,
 	docId: string,
@@ -73,9 +61,6 @@ export const deleteDocument = async (
 	return await deleteDoc(doc(db, 'users', user, colRef, docId));
 };
 
-/**
- * Create default docs
- */
 export const createDefaultDocs = async (user: {
 	uid: string;
 }): Promise<void> => {

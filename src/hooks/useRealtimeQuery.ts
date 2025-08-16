@@ -28,7 +28,7 @@ export function useRealtimeQuery<T = unknown>({
 				queryClient.setQueryData(queryKey, data);
 			},
 			(err: unknown) => {
-				console.error('Real-time query error:', err);
+				console.error('Real-time query error:', err, queryKey);
 				queryClient.invalidateQueries({ queryKey });
 			}
 		);

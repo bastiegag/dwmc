@@ -1,6 +1,6 @@
-import { IColors } from 'theme';
+import { PaletteColors } from 'theme';
 
-const components = (colors: IColors) => {
+const components = (colors: PaletteColors) => {
 	return {
 		MuiAvatar: {
 			styleOverrides: {

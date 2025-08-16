@@ -4,7 +4,7 @@ import colors from 'assets/scss/_vars.module.scss';
 import palette from './palette';
 import components from './components';
 
-export interface IColors {
+export interface PaletteColors {
 	[key: string]: string;
 }
 

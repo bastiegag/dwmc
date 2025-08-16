@@ -26,29 +26,29 @@ export const SwitchField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 		}
 	}, [hiddenValue, data, unregister]);
 
-	return (
-		show && (
-			<ListItem>
-				{data.icon && (
-					<ListItemIcon>
-						<Icon icon={data.icon} />
-					</ListItemIcon>
-				)}
+	if (!show) return null;
 
-				<FormControl fullWidth>
-					<FormControlLabel
-						control={
-							<Switch
-								defaultChecked={Boolean(initialValue)}
-								{...register(data.name)}
-							/>
-						}
-						label={data.label}
-						labelPlacement="start"
-						sx={{ ml: 0, justifyContent: 'space-between' }}
-					/>
-				</FormControl>
-			</ListItem>
-		)
+	return (
+		<ListItem>
+			{data.icon && (
+				<ListItemIcon>
+					<Icon icon={data.icon} />
+				</ListItemIcon>
+			)}
+
+			<FormControl fullWidth>
+				<FormControlLabel
+					control={
+						<Switch
+							defaultChecked={Boolean(initialValue)}
+							{...register(data.name)}
+						/>
+					}
+					label={data.label}
+					labelPlacement="start"
+					sx={{ ml: 0, justifyContent: 'space-between' }}
+				/>
+			</FormControl>
+		</ListItem>
 	);
 };

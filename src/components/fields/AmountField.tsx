@@ -19,67 +19,68 @@ export const AmountField: FC<FieldProps> = ({ data, hiddenValue, values }) => {
 		formState: { errors },
 		unregister
 	} = useFormContext();
-	const initialValue = values?.[data.name] ?? '';
-	const [show, setShow] = useState(true);
+	const [visible, setVisible] = useState(true);
 
 	useEffect(() => {
-		if (isFieldVisible(data.hidden, hiddenValue)) {
-			setShow(true);
-		} else {
+		const shouldShow = isFieldVisible(data.hidden, hiddenValue);
+		setVisible(shouldShow);
+
+		if (!shouldShow) {
 			unregister(data.name);
-			setShow(false);
 		}
-	}, [hiddenValue, data, unregister]);
+	}, [data, hiddenValue, unregister]);
+
+	if (!visible) return null;
+
+	const hasError = Boolean(errors[data.name]);
+	const defaultValue = values?.[data.name] ?? '';
 
 	return (
-		show && (
-			<ListItem
-				sx={{
-					...(errors[data.name] && {
-						bgcolor: (theme) => alpha(theme.palette.error.main, 0.03)
-					})
-				}}
-			>
-				{data.icon && (
-					<ListItemIcon>
-						<Icon icon={data.icon} error={Boolean(errors[data.name])} />
-					</ListItemIcon>
-				)}
+		<ListItem
+			sx={{
+				...(hasError && {
+					bgcolor: (theme) => alpha(theme.palette.error.main, 0.03)
+				})
+			}}
+		>
+			{data.icon && (
+				<ListItemIcon>
+					<Icon icon={data.icon} error={hasError} />
+				</ListItemIcon>
+			)}
 
-				<Controller
-					name={data.name}
-					control={control}
-					rules={{
-						required: data.required
-					}}
-					defaultValue={initialValue}
-					render={({ field: { onChange, value } }) => (
-						<FormControl fullWidth>
-							<NumericFormat
-								value={value}
-								onChange={onChange}
-								placeholder={data.label ? data.label : '0$'}
-								allowedDecimalSeparators={['.']}
-								allowNegative={false}
-								customInput={Input}
-								{...{ inputProps: { inputMode: 'decimal' } }}
-								decimalScale={2}
-								decimalSeparator=","
-								thousandSeparator=" "
-								fixedDecimalScale
-								suffix={'$'}
-								sx={{
-									...(!data.icon && {
-										fontSize: 32,
-										fontWeight: 500,
-										input: { textAlign: 'center', padding: 0 }
-									})
-								}}
-							/>
-						</FormControl>
-					)}
-				/>
-			</ListItem>
-		)
+			<Controller
+				name={data.name}
+				control={control}
+				rules={{ required: data.required }}
+				defaultValue={defaultValue}
+				render={({ field: { onChange, value } }) => (
+					<FormControl fullWidth>
+						<NumericFormat
+							value={value}
+							onChange={onChange}
+							placeholder={data.label || '0$'}
+							customInput={Input}
+							decimalScale={2}
+							decimalSeparator=","
+							thousandSeparator=" "
+							fixedDecimalScale
+							suffix={'$'}
+							allowNegative={false}
+							inputProps={{ inputMode: 'decimal' }}
+							sx={
+								!data.icon
+									? {
+											fontSize: 32,
+											fontWeight: 500,
+											input: { textAlign: 'center', padding: 0 }
+									  }
+									: undefined
+							}
+						/>
+					</FormControl>
+				)}
+			/>
+		</ListItem>
 	);
 };

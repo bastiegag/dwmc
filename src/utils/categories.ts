@@ -13,16 +13,21 @@ export const setColor = (categories: CategoryItem[]) => {
 	const secondary = categories
 		.filter((item) => item.type == 'category')
 		.map((cat) => {
-			const color =
-				primary.find((p) => p.id === cat.section)?.color || cat.color;
+			let section;
+
+			if (primary.find((p) => p.id === cat.section)) {
+				section = primary.find((p) => p.id === cat.section);
+			} else {
+				section = primary.find((p) => p.id === 'default');
+			}
 
 			return {
-				color: color,
+				color: section?.color,
 				id: cat.id,
 				name: cat.name,
 				type: 'category',
 				icon: cat.icon,
-				section: cat.section
+				section: section?.id
 			};
 		});
 

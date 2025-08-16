@@ -54,11 +54,6 @@ export const formatDateTitle = (date: Date) => {
 	return newDate;
 };
 
-/**
- * Format short date
- * @param {string} date
- * @returns
- */
 export const formatShortDate = (date: string) => {
 	const dateObj = new Date(date);
 	const day = dateObj.getDate();
@@ -69,11 +64,6 @@ export const formatShortDate = (date: string) => {
 	return newDate;
 };
 
-/**
- * Format date switcher
- * @param {string} date
- * @returns
- */
 export const formatDateSwitcher = (date: Date) => {
 	const newDate = new Date(date);
 	const month = newDate.getMonth();
@@ -84,12 +74,9 @@ export const formatDateSwitcher = (date: Date) => {
 		month: month + 1,
 		year: year,
 		min: dayjs(new Date(year, month, 1)),
-		max: dayjs(new Date(year, month, 31)),
+		max: dayjs(new Date(year, month, getNumDays(year, month + 1))),
 		label: `${months[month]} ${year}`
 	};
 };
 
-/**
- * Get number of days in a month
- */
 export const getNumDays = (y: number, m: number) => new Date(y, m, 0).getDate();

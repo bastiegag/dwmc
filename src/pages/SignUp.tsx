@@ -8,7 +8,6 @@ export const SignUp = () => {
 	const [email, setEmail] = React.useState('');
 	const [password, setPassword] = React.useState('');
 
-	// Handle sign up
 	const handleSignUp = () => {
 		AuthenticationService.signUp(email, password)
 			.then(() => {

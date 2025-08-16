@@ -10,6 +10,7 @@ export type {
 	Transaction,
 	TransactionItem,
 	Wallet,
-	WalletItem
+	WalletItem,
+	ItemType
 } from './document';
 export type { FieldData, FieldProps, FormProps } from './form';

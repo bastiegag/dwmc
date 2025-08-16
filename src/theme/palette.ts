@@ -1,9 +1,9 @@
 import { PaletteMode } from '@mui/material';
 import { grey } from '@mui/material/colors';
 
-import { IColors } from 'theme';
+import { PaletteColors } from 'theme';
 
-const palette = (colors: IColors) => {
+const palette = (colors: PaletteColors) => {
 	return {
 		mode: 'light' as PaletteMode,
 		common: {

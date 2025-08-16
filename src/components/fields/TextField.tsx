@@ -30,46 +30,39 @@ export const TextField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 		}
 	}, [hiddenValue, data, unregister]);
 
-	// Debug log to check initial values
-	useEffect(() => {
-		if (data.name === 'id' || data.name === 'note') {
-			console.log(`Initial value for ${data.name}:`, initialValue);
-		}
-	}, [data.name, initialValue]);
+	if (!show) return null;
 
 	return (
-		show && (
-			<ListItem
-				sx={{
-					...(errors[data.name] && {
-						bgcolor: (theme) => alpha(theme.palette.error.main, 0.03)
-					}),
-					...(data.type == 'hidden' && { display: 'none' })
-				}}
-			>
-				{data.icon && (
-					<ListItemIcon>
-						<Icon icon={data.icon} />
-					</ListItemIcon>
-				)}
+		<ListItem
+			sx={{
+				...(errors[data.name] && {
+					bgcolor: (theme) => alpha(theme.palette.error.main, 0.03)
+				}),
+				...(data.type == 'hidden' && { display: 'none' })
+			}}
+		>
+			{data.icon && (
+				<ListItemIcon>
+					<Icon icon={data.icon} />
+				</ListItemIcon>
+			)}
 
-				<FormControl fullWidth>
-					<Input
-						placeholder={data.label}
-						{...(data.type == 'hidden' && { type: 'hidden' })}
-						{...register(data.name, {
-							required: data.required,
-							value: initialValue
-						})}
-					/>
-				</FormControl>
+			<FormControl fullWidth>
+				<Input
+					placeholder={data.label}
+					{...(data.type == 'hidden' && { type: 'hidden' })}
+					{...register(data.name, {
+						required: data.required,
+						value: initialValue
+					})}
+				/>
+			</FormControl>
 
-				{errors[data.name] && (
-					<ListItemIcon sx={{ mr: 0 }}>
-						<Icon error={true} />
-					</ListItemIcon>
-				)}
-			</ListItem>
-		)
+			{errors[data.name] && (
+				<ListItemIcon sx={{ mr: 0 }}>
+					<Icon error={true} />
+				</ListItemIcon>
+			)}
+		</ListItem>
 	);
 };

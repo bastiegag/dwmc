@@ -26,7 +26,7 @@ const ColorsWrapper = styled(Box, {
 
 export const ColorField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 	const { register, setValue, unregister } = useFormContext();
-	const initialValue = (values as Record<string, string>)[data.name] ?? 'light';
+	const initialValue = values?.[data.name] ?? 'light';
 	const [color, setColor] = useState(initialValue);
 	const [open, setOpen] = useState(false);
 	const [show, setShow] = useState(true);
@@ -68,37 +68,37 @@ export const ColorField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 		);
 	});
 
+	if (!show) return null;
+
 	return (
-		show && (
-			<>
-				<ListItem onClick={handleOpen}>
-					<ListItemIcon>
-						<Icon icon={data.icon} color={color} />
-					</ListItemIcon>
+		<>
+			<ListItem onClick={handleOpen}>
+				<ListItemIcon>
+					<Icon icon={data.icon} color={color} />
+				</ListItemIcon>
 
-					<FormControl error fullWidth>
-						<Input
-							type="hidden"
-							defaultValue={initialValue}
-							placeholder={data.label}
-							{...register(data.name)}
-						/>
-						<Typography>{data.label}</Typography>
-					</FormControl>
+				<FormControl error fullWidth>
+					<Input
+						type="hidden"
+						defaultValue={initialValue}
+						placeholder={data.label}
+						{...register(data.name)}
+					/>
+					<Typography>{data.label}</Typography>
+				</FormControl>
 
-					<IconButton>
-						<IconChevronDown />
-					</IconButton>
-				</ListItem>
+				<IconButton>
+					<IconChevronDown />
+				</IconButton>
+			</ListItem>
 
-				<Drawer
-					open={open}
-					setOpen={setOpen}
-					title={data.drawerTitle ?? 'Select'}
-				>
-					<ColorsWrapper sx={{ p: 1 }}>{list}</ColorsWrapper>
-				</Drawer>
-			</>
-		)
+			<Drawer
+				open={open}
+				setOpen={setOpen}
+				title={data.drawerTitle ?? 'Select'}
+			>
+				<ColorsWrapper sx={{ p: 1 }}>{list}</ColorsWrapper>
+			</Drawer>
+		</>
 	);
 };

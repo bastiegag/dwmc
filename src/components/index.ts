@@ -13,3 +13,4 @@ export { TransactionListItem } from './TransactionListItem';
 export { Price } from './Price';
 export { EmptyList } from './EmptyList';
 export { TabPanel } from './TabPanel';
+export { Dialog } from './Dialog';

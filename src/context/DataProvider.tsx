@@ -21,10 +21,7 @@ export const DataProvider = ({
 	const categories = cats && setColor(cats);
 	const rawCategories = cats;
 
-	// Global loading: true if either transactions or categories are loading
 	const isLoading = transactionsLoading || categoriesLoading;
-
-	// Global error: first error found, or undefined if none
 	const error = transactionsError || categoriesError;
 
 	const value = useMemo(

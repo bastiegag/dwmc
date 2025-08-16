@@ -61,41 +61,41 @@ export const SelectField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 		);
 	});
 
+	if (!show) return null;
+
 	return (
-		show && (
-			<>
-				<ListItem onClick={handleOpen}>
-					{data.icon && (
-						<ListItemIcon>
-							<Icon icon={data.icon} />
-						</ListItemIcon>
-					)}
+		<>
+			<ListItem onClick={handleOpen}>
+				{data.icon && (
+					<ListItemIcon>
+						<Icon icon={data.icon} />
+					</ListItemIcon>
+				)}
 
-					<FormControl error fullWidth>
-						<Input
-							type="hidden"
-							defaultValue={initialValue}
-							placeholder={data.label}
-							{...register(data.name)}
-						/>
-						<Typography>
-							{data.label} {selectValue ?? ''}
-						</Typography>
-					</FormControl>
+				<FormControl error fullWidth>
+					<Input
+						type="hidden"
+						defaultValue={initialValue}
+						placeholder={data.label}
+						{...register(data.name)}
+					/>
+					<Typography>
+						{data.label} {selectValue ?? ''}
+					</Typography>
+				</FormControl>
 
-					<IconButton>
-						<IconChevronDown />
-					</IconButton>
-				</ListItem>
+				<IconButton>
+					<IconChevronDown />
+				</IconButton>
+			</ListItem>
 
-				<Drawer
-					open={open}
-					setOpen={setOpen}
-					title={data.drawerTitle ?? 'Select'}
-				>
-					{list}
-				</Drawer>
-			</>
-		)
+			<Drawer
+				open={open}
+				setOpen={setOpen}
+				title={data.drawerTitle ?? 'Select'}
+			>
+				{list}
+			</Drawer>
+		</>
 	);
 };

@@ -14,7 +14,7 @@ export interface Category {
 }
 
 export interface TransactionItem {
-	amount: number;
+	amount: string;
 	category: string;
 	date: string;
 	from?: string;
@@ -45,3 +45,10 @@ export interface Wallet {
 	items: WalletItem[];
 	uid: string;
 }
+
+export type ItemType = {
+	id: string;
+	name?: string;
+	icon?: string;
+	color?: string;
+};

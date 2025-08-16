@@ -6,9 +6,6 @@ import {
 	signOut
 } from 'firebase/auth';
 
-/**
- * Log in
- */
 export const login = (email: string, password: string) => {
 	const auth = getAuth();
 
@@ -23,9 +20,6 @@ export const login = (email: string, password: string) => {
 		});
 };
 
-/**
- * Sign up
- */
 export const signUp = (email: string, password: string) => {
 	const auth = getAuth();
 
@@ -40,9 +34,6 @@ export const signUp = (email: string, password: string) => {
 		});
 };
 
-/**
- * Logout
- */
 export const logout = () => {
 	const auth = getAuth();
 
