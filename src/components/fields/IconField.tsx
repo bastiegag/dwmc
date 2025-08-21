@@ -32,8 +32,6 @@ export const IconField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 	const [open, setOpen] = useState(false);
 	const [show, setShow] = useState(true);
 
-	console.log(values);
-
 	useEffect(() => {
 		if (isFieldVisible(data.hidden, hiddenValue)) {
 			setShow(true);

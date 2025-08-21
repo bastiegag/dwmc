@@ -20,14 +20,6 @@ export const useSetDoc = (): UseMutationResult<
 	return useMutation({
 		mutationFn: async ({ userId, data, collection }: SetDocParams) => {
 			try {
-				console.log('Setting document:', {
-					collection,
-					userId,
-					year,
-					month,
-					data
-				});
-
 				const docRef =
 					collection === 'transactions'
 						? doc(db, collection, userId, year.toString(), month.toString())

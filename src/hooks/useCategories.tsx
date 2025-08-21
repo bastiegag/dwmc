@@ -15,16 +15,19 @@ import { Category, CategoryItem } from 'types';
 import { useAuth, useRealtimeQuery } from 'hooks';
 
 export const useCategories = (): UseQueryResult<CategoryItem[]> => {
-	const auth = useAuth();
-	const userId = auth.user?.uid || '';
-
-	if (!userId) {
-		throw new Error('User ID is required to fetch categories');
-	}
+	const { user } = useAuth();
+	const userId = user?.uid;
 
 	return useRealtimeQuery<CategoryItem[]>({
 		queryKey: ['categories', userId],
+		initialData: [], // Return empty array by default
 		subscribeFn: (onData, onError) => {
+			// If no user is logged in, return a noop function
+			if (!userId) {
+				onData([]);
+				return () => {};
+			}
+
 			const unsubscribe = onSnapshot(
 				query(
 					collection(db, 'categories') as CollectionReference<Category>,

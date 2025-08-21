@@ -17,15 +17,18 @@ import { useAuth, useRealtimeQuery, useDate } from 'hooks';
 export const useTransactions = (): UseQueryResult<TransactionItem[]> => {
 	const { month, year } = useDate();
 	const { user } = useAuth();
-	const userId = user?.uid || '';
-
-	if (!userId) {
-		throw new Error('User ID is required to fetch transactions');
-	}
+	const userId = user?.uid;
 
 	return useRealtimeQuery<TransactionItem[]>({
-		queryKey: ['transactions', userId],
+		queryKey: ['transactions', userId, year, month],
+		initialData: [], // Return empty array by default
 		subscribeFn: (onData, onError) => {
+			// If no user is logged in, return a noop function
+			if (!userId) {
+				onData([]);
+				return () => {};
+			}
+
 			const unsubscribe = onSnapshot(
 				query(
 					collection(
