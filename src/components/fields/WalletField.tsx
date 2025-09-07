@@ -70,6 +70,7 @@ export const WalletField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 					data={data}
 					selected={selected}
 					handleClose={handleClose}
+					round={false}
 				/>
 			);
 		});
@@ -81,7 +82,7 @@ export const WalletField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 			<>
 				<ListItem onClick={handleOpen}>
 					<ListItemIcon>
-						<Icon icon={wallet.icon} color={wallet.color} />
+						<Icon icon={wallet.icon} color={wallet.color} round={false} />
 					</ListItemIcon>
 
 					<FormControl error fullWidth>

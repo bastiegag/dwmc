@@ -11,7 +11,7 @@ import { TransactionForm } from 'components/forms';
 export const TransactionsList = () => {
 	const { transactions, categories, isLoading, error } = useDataProvider();
 	const [openDrawer, setOpenDrawer] = useState(false);
-	const [formValues, setFormValues] = useState<Partial<TransactionItem>>({});
+	const [formValues, setFormValues] = useState<Record<string, string>>({});
 
 	if (isLoading) {
 		return <Loader loading={true} />;
@@ -27,24 +27,28 @@ export const TransactionsList = () => {
 	}
 
 	const handleEdit = (item: TransactionItem) => {
-		const dateValue = item.date || dayjs().format('YYYY/MM/DD');
+		const dateValue = item.date ? item.date : dayjs().format('YYYY/MM/DD');
 
-		setFormValues({
-			...item,
+		const formattedValues = {
+			id: item.id,
+			type: item.type,
+			amount: item.amount,
 			date: dateValue,
 			note: item.note || '',
+			category: item.category,
 			from: item.from || '',
 			to: item.to || ''
-		});
+		};
+
+		setFormValues(formattedValues);
 		setOpenDrawer(true);
 	};
 
-	const renderTransactionsList = () => {
-		if (!transactions || !categories || transactions.length === 0) {
-			return <EmptyList message="No transactions found" />;
-		}
-
-		const transactionItems = [...transactions]
+	let list;
+	if (!transactions || !categories || transactions.length === 0) {
+		list = <EmptyList message="No transactions found" />;
+	} else {
+		const transactionItems = transactions
 			.reverse()
 			.map((item: TransactionItem) => {
 				const category = getCategory(categories, item.category);
@@ -57,19 +61,21 @@ export const TransactionsList = () => {
 						handleEdit={handleEdit}
 					/>
 				);
-			});
+			})
+			.filter(Boolean);
 
-		return transactionItems.length > 0 ? (
-			<>{transactionItems}</>
-		) : (
-			<EmptyList message="No transactions found" />
-		);
-	};
+		list =
+			transactionItems.length > 0 ? (
+				<>{transactionItems}</>
+			) : (
+				<EmptyList message="No transactions found" />
+			);
+	}
 
 	return (
 		<>
 			<List component="nav" sx={{ mx: -2 }}>
-				{renderTransactionsList()}
+				{list}
 			</List>
 			<TransactionForm
 				open={openDrawer}

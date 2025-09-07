@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 import { DataContext } from 'context';
-import { useTransactions, useCategories } from 'hooks';
+import { useTransactions, useCategories, useWallets } from 'hooks';
 import { setColor } from 'utils';
 
 export const DataProvider = ({
@@ -10,14 +10,12 @@ export const DataProvider = ({
 }: React.PropsWithChildren<unknown>) => {
 	const [user, setUser] = useState(getAuth().currentUser);
 
-	// Listen for auth state changes
 	useEffect(() => {
 		const auth = getAuth();
 		const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
 			setUser(currentUser);
 		});
 
-		// Clean up subscription
 		return () => unsubscribe();
 	}, []);
 
@@ -33,22 +31,28 @@ export const DataProvider = ({
 		error: categoriesError
 	} = useCategories();
 
+	const {
+		data: wallets,
+		isLoading: walletsLoading,
+		error: walletsError
+	} = useWallets();
+
 	const categories = cats && setColor(cats);
 	const rawCategories = cats;
 
-	const isLoading = transactionsLoading || categoriesLoading;
-	const error = transactionsError || categoriesError;
+	const isLoading = transactionsLoading || categoriesLoading || walletsLoading;
+	const error = transactionsError || categoriesError || walletsError;
 
 	const value = useMemo(
 		() => ({
-			// Only provide data if user is logged in
 			transactions: user ? transactions : undefined,
 			categories: user ? categories : undefined,
+			wallets: user ? wallets : undefined,
 			rawCategories: user ? rawCategories : undefined,
 			isLoading: user ? isLoading : false,
 			error: user ? error : null
 		}),
-		[user, transactions, categories, rawCategories, isLoading, error]
+		[user, transactions, categories, wallets, rawCategories, isLoading, error]
 	);
 
 	return <DataContext.Provider value={value}>{children}</DataContext.Provider>;

@@ -12,7 +12,7 @@ import { TransactionForm } from 'components/forms';
 import { LastTransactions, TransactionsList } from 'components/widgets';
 import dayjs from 'dayjs';
 
-export const Home = () => {
+const Home = () => {
 	const theme = useTheme();
 	const [tab, setTab] = useState(0);
 	const [openDrawer, setOpenDrawer] = useState(false);
@@ -91,3 +91,5 @@ export const Home = () => {
 		</>
 	);
 };
+
+export default Home;

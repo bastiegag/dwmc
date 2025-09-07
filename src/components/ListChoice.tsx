@@ -22,6 +22,7 @@ interface ListChoiceProps {
 	data: CategoryItem | WalletItem | ItemType;
 	selected: boolean;
 	small?: boolean;
+	round?: boolean;
 	edit?: boolean;
 	handleClose: (value: string, label?: string) => void;
 	handleEdit?: (item: CategoryItem | WalletItem | ItemType) => void;
@@ -31,6 +32,7 @@ export const ListChoice: FC<ListChoiceProps> = ({
 	data,
 	selected,
 	small,
+	round = true,
 	edit = false,
 	handleEdit,
 	handleClose
@@ -51,7 +53,7 @@ export const ListChoice: FC<ListChoiceProps> = ({
 		>
 			{data.icon && (
 				<ListItemIcon>
-					<Icon icon={data.icon} color={data.color} />
+					<Icon icon={data.icon} color={data.color} round={round} />
 				</ListItemIcon>
 			)}
 			<ListItemText primary={data.name} />

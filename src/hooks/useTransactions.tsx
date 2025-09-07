@@ -21,9 +21,8 @@ export const useTransactions = (): UseQueryResult<TransactionItem[]> => {
 
 	return useRealtimeQuery<TransactionItem[]>({
 		queryKey: ['transactions', userId, year, month],
-		initialData: [], // Return empty array by default
+		initialData: [],
 		subscribeFn: (onData, onError) => {
-			// If no user is logged in, return a noop function
 			if (!userId) {
 				onData([]);
 				return () => {};

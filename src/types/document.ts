@@ -32,9 +32,9 @@ export interface Transaction {
 }
 
 export interface WalletItem {
-	amount: number;
+	amount: string;
 	color: string;
-	goal: number;
+	goal: string;
 	icon: string;
 	id: string;
 	name: string;

@@ -18,7 +18,7 @@ export const AlertMessage = () => {
 			slots={{ transition: Slide }}
 			slotProps={{ transition: { direction: 'up' } }}
 			sx={(theme) => ({
-				bottom: theme.spacing(9),
+				bottom: theme.spacing(11.5),
 				right: theme.spacing(2),
 				left: theme.spacing(2)
 			})}

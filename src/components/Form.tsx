@@ -5,7 +5,7 @@ import { Button, IconButton, List, ListItem, Stack } from '@mui/material';
 import { getAuth } from 'firebase/auth';
 
 import 'assets/scss/_form.scss';
-import { FieldData, TransactionItem, CategoryItem } from 'types';
+import { FieldData, TransactionItem, CategoryItem, WalletItem } from 'types';
 import { useSetDoc, useDate } from 'hooks';
 import { Dialog } from 'components';
 import {
@@ -21,7 +21,7 @@ import {
 	WalletField
 } from 'components/fields';
 
-interface FormProps<T extends TransactionItem | CategoryItem> {
+interface FormProps<T extends TransactionItem | CategoryItem | WalletItem> {
 	current: T[];
 	collection: string;
 	fields: FieldData[];
@@ -38,7 +38,7 @@ interface FormProps<T extends TransactionItem | CategoryItem> {
 	createNew?: boolean;
 }
 
-export const Form = <T extends TransactionItem | CategoryItem>({
+export const Form = <T extends TransactionItem | CategoryItem | WalletItem>({
 	current,
 	collection,
 	fields,

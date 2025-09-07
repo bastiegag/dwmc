@@ -16,7 +16,7 @@ export const AddButton: FC<AddButtonProps> = ({ onClick }) => {
 
 const Button = styled(IconButton)(({ theme }) => ({
 	position: 'fixed',
-	bottom: theme.spacing(9),
+	bottom: theme.spacing(11.5),
 	right: theme.spacing(2),
 	color: 'white',
 	backgroundColor: theme.palette.primary.main,

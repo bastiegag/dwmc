@@ -38,11 +38,6 @@ const sMonths = [
 	'Déc'
 ];
 
-/**
- * Format date title
- * @param {string} date
- * @returns
- */
 export const formatDateTitle = (date: Date) => {
 	const dateObj = new Date(date);
 	const weekDay = dateObj.getDay();

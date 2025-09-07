@@ -14,8 +14,8 @@ const fields: FieldData[] = [
 		name: 'type',
 		type: 'radio',
 		choices: [
-			{ name: 'Section', value: 'section' },
-			{ name: 'Catégorie', value: 'category' }
+			{ name: 'Catégorie', value: 'category' },
+			{ name: 'Section', value: 'section' }
 		]
 	},
 	{

@@ -9,7 +9,7 @@ import { Header, Navigation } from 'layouts';
 const Content = styled(Box)(({ theme }) => ({
 	backgroundColor: theme.palette.background.default,
 	minHeight: '100vh',
-	paddingBottom: theme.spacing(14)
+	paddingBottom: theme.spacing(16.5)
 }));
 
 export const Main = () => {

@@ -4,7 +4,7 @@ import { IconChevronLeft } from '@tabler/icons-react';
 
 import 'assets/scss/_document.scss';
 
-export const Error = () => {
+const Error = () => {
 	const navigate = useNavigate();
 	const error = useRouteError();
 
@@ -34,3 +34,5 @@ export const Error = () => {
 		</main>
 	);
 };
+
+export default Error;

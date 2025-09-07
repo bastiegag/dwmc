@@ -1,7 +1,7 @@
 import { User } from 'firebase/auth';
 import { Dayjs } from 'dayjs';
 
-import { TransactionItem, CategoryItem } from 'types';
+import { TransactionItem, CategoryItem, WalletItem } from 'types';
 
 export interface DateContextType {
 	current: Date;
@@ -16,6 +16,7 @@ export interface DateContextType {
 export interface DataContextType {
 	transactions: TransactionItem[] | undefined;
 	categories: CategoryItem[] | undefined;
+	wallets: WalletItem[] | undefined;
 	rawCategories: CategoryItem[] | undefined;
 	isLoading: boolean;
 	error: Error | null;

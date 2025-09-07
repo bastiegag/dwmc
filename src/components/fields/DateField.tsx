@@ -19,24 +19,19 @@ export const DateField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 	} = useFormContext();
 	const { min, max, current } = useDate();
 
-	// Determine initial date value with simpler logic
 	const getInitialDate = () => {
 		const rawValue = values?.[data.name];
 
-		// Handle existing value cases
 		if (rawValue) {
-			// Handle string or number values
 			if (typeof rawValue === 'string' || typeof rawValue === 'number') {
 				const parsedDate = dayjs(rawValue);
 				return parsedDate.isValid() ? parsedDate : dayjs();
 			}
-			// Handle dayjs objects
 			if (dayjs.isDayjs(rawValue)) {
 				return rawValue;
 			}
 		}
 
-		// Default to current month or today
 		return current.getMonth() !== dayjs().month()
 			? dayjs(new Date(current.getFullYear(), current.getMonth(), 1))
 			: dayjs();
@@ -46,7 +41,6 @@ export const DateField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 	const [open, setOpen] = useState(false);
 	const [show, setShow] = useState(true);
 
-	// Handle field visibility
 	useEffect(() => {
 		if (isFieldVisible(data.hidden, hiddenValue)) {
 			setShow(true);
@@ -56,7 +50,6 @@ export const DateField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 		}
 	}, [hiddenValue, data, unregister]);
 
-	// Handle date increment/decrement
 	const handleDateChange = (add: boolean) => {
 		const newDate = add
 			? date < max

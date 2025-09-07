@@ -14,16 +14,13 @@ import { db } from '../main';
 import { Wallet, WalletItem } from 'types';
 import { useAuth, useRealtimeQuery } from 'hooks';
 
-export const useWallets = (): UseQueryResult<WalletItem[] | null> => {
+export const useWallets = (): UseQueryResult<WalletItem[]> => {
 	const auth = useAuth();
 	const userId = auth.user?.uid || '';
 
-	if (!userId) {
-		throw new Error('User ID is required to fetch wallets');
-	}
-
-	return useRealtimeQuery<WalletItem[] | null>({
+	return useRealtimeQuery<WalletItem[]>({
 		queryKey: ['wallets', userId],
+		initialData: [],
 		subscribeFn: (onData, onError) => {
 			const unsubscribe = onSnapshot(
 				query(
