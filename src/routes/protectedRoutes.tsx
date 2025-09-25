@@ -1,5 +1,5 @@
 import { Main } from 'layouts';
-import { Home, Wallets, Error } from 'pages';
+import { Home, Budgets, Wallets, Settings, Error } from 'pages';
 
 export const protectedRoutes = [
 	{
@@ -12,8 +12,16 @@ export const protectedRoutes = [
 				element: <Home />
 			},
 			{
+				path: 'budgets',
+				element: <Budgets />
+			},
+			{
 				path: 'wallets',
 				element: <Wallets />
+			},
+			{
+				path: 'settings',
+				element: <Settings />
 			}
 		]
 	}

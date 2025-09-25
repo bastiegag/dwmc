@@ -1,3 +1,4 @@
+export { Account } from './Account';
 export { AddButton } from './AddButton';
 export { AlertMessage } from './AlertMessage';
 export { Card } from './Card';

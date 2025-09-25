@@ -14,7 +14,7 @@ const appTheme = () => {
 		components: components(colors),
 		typography: {
 			fontFamily: 'Montserrat',
-			fontSize: 14
+			fontSize: 15
 		},
 		shape: {
 			borderRadius: 16

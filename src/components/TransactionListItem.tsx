@@ -13,7 +13,7 @@ import { Icon, Price } from 'components';
 
 interface TransactionListItemProps {
 	item: TransactionItem;
-	category: CategoryItem | null;
+	category: CategoryItem | null | undefined;
 	handleEdit: (item: TransactionItem) => void;
 }
 

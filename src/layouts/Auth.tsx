@@ -4,8 +4,9 @@ import { Box, styled } from '@mui/material';
 import 'assets/scss/_document.scss';
 
 const Content = styled(Box)(({ theme }) => ({
-	backgroundColor: theme.palette.background.default,
-	minHeight: '100vh'
+	backgroundColor: theme.palette.common.white,
+	minHeight: '100vh',
+	padding: theme.spacing(4)
 }));
 
 export const Auth = () => {

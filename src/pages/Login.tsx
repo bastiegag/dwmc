@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
-import {
-	IconEye,
-	IconEyeOff,
-	IconLock,
-	IconUserCircle
-} from '@tabler/icons-react';
+import { IconEye, IconEyeOff } from '@tabler/icons-react';
 import {
 	Box,
 	Button,
@@ -13,18 +8,19 @@ import {
 	IconButton,
 	InputAdornment,
 	InputLabel,
-	OutlinedInput,
+	Input,
 	Stack,
 	TextField,
-	Typography
+	useTheme
 } from '@mui/material';
 
 import * as AuthenticationService from 'services/authentication';
 import { useAlert } from 'hooks';
-import { AlertMessage } from 'components';
+import { AlertMessage, Logo } from 'components';
 
 export const Login = () => {
 	const navigate = useNavigate();
+	const theme = useTheme();
 	const { setAlert } = useAlert();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -49,50 +45,29 @@ export const Login = () => {
 			});
 	};
 
-	const boxStyle = {
-		px: 2,
-		position: 'absolute',
-		top: '50%',
-		left: 0,
-		width: '100%',
-		transform: 'translateY(-50%)'
-	};
-
 	return (
-		<Box sx={boxStyle}>
-			<Stack spacing={3}>
+		<Box>
+			<Logo size={128} color={theme.palette.primary.main} />
+			<Stack spacing={2}>
 				<AlertMessage />
 				<TextField
 					id="username"
-					label="Nom d'utilisateur"
+					label="Email"
 					value={email}
 					onChange={(event) => {
 						setEmail(event.target.value);
 					}}
-					slotProps={{
-						input: {
-							startAdornment: (
-								<InputAdornment position="start">
-									<IconUserCircle />
-								</InputAdornment>
-							)
-						}
-					}}
+					variant="standard"
 				/>
-				<FormControl fullWidth variant="outlined">
-					<InputLabel htmlFor="password">Mot de passe</InputLabel>
-					<OutlinedInput
+				<FormControl fullWidth variant="standard">
+					<InputLabel htmlFor="password">Password</InputLabel>
+					<Input
 						id="password"
 						type={showPassword ? 'text' : 'password'}
 						value={password}
 						onChange={(event) => {
 							setPassword(event.target.value);
 						}}
-						startAdornment={
-							<InputAdornment position="start">
-								<IconLock />
-							</InputAdornment>
-						}
 						endAdornment={
 							<InputAdornment position="end">
 								<IconButton
@@ -105,21 +80,20 @@ export const Login = () => {
 								</IconButton>
 							</InputAdornment>
 						}
-						label="Mot de passe"
 					/>
 				</FormControl>
 				<Button variant="contained" onClick={handleLogin}>
-					Connexion
+					Log in
 				</Button>
 
-				<Typography
+				<Button
 					component={Link}
 					to="signup"
-					variant="caption"
-					sx={{ textAlign: 'center' }}
+					variant="outlined"
+					onClick={handleLogin}
 				>
-					S&apos;inscrire
-				</Typography>
+					Sign in
+				</Button>
 			</Stack>
 		</Box>
 	);

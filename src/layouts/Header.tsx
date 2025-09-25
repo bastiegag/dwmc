@@ -28,10 +28,8 @@ export const Header = () => {
 	const { setAlert } = useAlert();
 
 	useEffect(() => {
-		document.title = `Dude, where's my cash? | ${
-			location.pathname === '/'
-				? "Dude, where's my cash?"
-				: titles[location.pathname]
+		document.title = `Dude, where's my cash?${
+			location.pathname === '/' ? '' : ` | ${titles[location.pathname]}`
 		}`;
 		setTitle(titles[location.pathname]);
 	}, [location.pathname]);

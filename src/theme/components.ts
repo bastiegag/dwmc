@@ -13,7 +13,7 @@ const components = (colors: PaletteColors) => {
 		MuiBackdrop: {
 			styleOverrides: {
 				root: {
-					backgroundColor: 'rgba(0, 0, 0, 0.65)'
+					backgroundColor: 'rgba(0, 0, 0, 0.25)'
 					//backdropFilter: 'blur(2px)'
 				}
 			}
@@ -24,7 +24,10 @@ const components = (colors: PaletteColors) => {
 			},
 			styleOverrides: {
 				root: {
-					borderRadius: '40px'
+					borderRadius: '40px',
+					textTransform: 'none',
+					fontWeight: 600,
+					borderWidth: '2px'
 				}
 			}
 		},
@@ -77,15 +80,19 @@ const components = (colors: PaletteColors) => {
 				}
 			}
 		},
-		MuiInput: {
-			defaultProps: {
-				disableUnderline: true
-			}
-		},
 		MuiInputAdornment: {
 			styleOverrides: {
 				root: {
 					color: 'inherit'
+				}
+			}
+		},
+		MuiInputBase: {
+			styleOverrides: {
+				input: {
+					'&:-webkit-autofill': {
+						'-webkit-box-shadow': `0 0 0 1000px ${colors.white} inset !important`
+					}
 				}
 			}
 		},

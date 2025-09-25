@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+//import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import {
@@ -25,7 +25,7 @@ createRoot(document.getElementById('root')!).render(
 				<QueryClientProvider client={queryClient}>
 					<CssBaseline />
 					<App />
-					<ReactQueryDevtools />
+					{/*<ReactQueryDevtools />*/}
 				</QueryClientProvider>
 			</ThemeProvider>
 		</StyledEngineProvider>
