@@ -5,7 +5,7 @@ import 'assets/scss/_document.scss';
 
 const Content = styled(Box)(({ theme }) => ({
 	backgroundColor: theme.palette.common.white,
-	minHeight: '100vh',
+	height: '100vh',
 	padding: theme.spacing(4)
 }));
 

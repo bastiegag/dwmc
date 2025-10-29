@@ -46,7 +46,14 @@ export const Login = () => {
 	};
 
 	return (
-		<Box>
+		<Box
+			sx={{
+				height: '100%',
+				display: 'flex',
+				flexDirection: 'column',
+				justifyContent: 'space-evenly'
+			}}
+		>
 			<Logo size={128} color={theme.palette.primary.main} />
 			<Stack spacing={2}>
 				<AlertMessage />
