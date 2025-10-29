@@ -1,54 +1,28 @@
-# React + TypeScript + Vite
+# DWMC - Dude, where's my cash?
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern web application for managing personal finances, tracking transactions, and organizing wallets with an intuitive user interface built with React and TypeScript.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **User Authentication**: Secure login and signup with Firebase Authentication
+- **Wallet Management**: Create and manage multiple wallets with custom colors and icons
+- **Transaction Tracking**: Record income and expense transactions with detailed categorization
+- **Smart Categories**: Organize transactions with custom categories and automatic color coding
+- **Date Navigation**: Easy month-to-month navigation for transaction history
+- **Real-time Updates**: Live data synchronization with Firestore
+- **Responsive Design**: Beautiful Material-UI interface optimized for all devices
+- **PWA Support**: Install as a web app on your device
+- **Budget Overview**: Visual representation of your financial data with charts
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-	extends: [
-		// Remove ...tseslint.configs.recommended and replace with this
-		...tseslint.configs.recommendedTypeChecked,
-		// Alternatively, use this for stricter rules
-		...tseslint.configs.strictTypeChecked,
-		// Optionally, add this for stylistic rules
-		...tseslint.configs.stylisticTypeChecked
-	],
-	languageOptions: {
-		// other options...
-		parserOptions: {
-			project: ['./tsconfig.node.json', './tsconfig.app.json'],
-			tsconfigRootDir: import.meta.dirname
-		}
-	}
-});
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
-
-export default tseslint.config({
-	plugins: {
-		// Add the react-x and react-dom plugins
-		'react-x': reactX,
-		'react-dom': reactDom
-	},
-	rules: {
-		// other rules...
-		// Enable its recommended typescript rules
-		...reactX.configs['recommended-typescript'].rules,
-		...reactDom.configs.recommended.rules
-	}
-});
-```
+- **Frontend Framework**: React 19.1 with TypeScript
+- **Build Tool**: Vite 7.1
+- **UI Library**: Material-UI (MUI) 7.3
+- **State Management**: React Context API + TanStack React Query
+- **Form Handling**: React Hook Form 7.62
+- **Backend**: Firebase (Authentication & Firestore)
+- **Icons**: Tabler Icons React 3.34
+- **Styling**: SCSS + Emotion
+- **Charts**: MUI X-Charts 8.11
+- **PWA**: Vite PWA Plugin 1.0
