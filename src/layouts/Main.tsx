@@ -6,7 +6,10 @@ import 'assets/scss/_document.scss';
 import { useAuth } from 'hooks';
 import { Header, Navigation } from 'layouts';
 
-const Content = styled(Box)(({ theme }) => ({
+const MainRoot = styled(Box, {
+	name: 'Main',
+	slot: 'root'
+})(({ theme }) => ({
 	backgroundColor: theme.palette.background.default,
 	minHeight: '100vh',
 	paddingBottom: theme.spacing(16.5)
@@ -17,14 +20,16 @@ export const Main = () => {
 	const { user } = useAuth();
 
 	useEffect(() => {
-		if (!user) navigate('/');
+		if (!user) {
+			navigate('/', { replace: true });
+		}
 	}, [user, navigate]);
 
 	return (
-		<Content>
+		<MainRoot className="Main-root">
 			<Header />
 			<Outlet />
 			<Navigation />
-		</Content>
+		</MainRoot>
 	);
 };

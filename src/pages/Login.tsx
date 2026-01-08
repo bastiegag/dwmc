@@ -46,7 +46,14 @@ export const Login = () => {
 	};
 
 	return (
-		<Box>
+		<Box
+			sx={{
+				height: '100%',
+				display: 'flex',
+				flexDirection: 'column',
+				justifyContent: 'space-evenly'
+			}}
+		>
 			<Logo size={128} color={theme.palette.primary.main} />
 			<Stack spacing={2}>
 				<AlertMessage />
@@ -92,7 +99,7 @@ export const Login = () => {
 					variant="outlined"
 					onClick={handleLogin}
 				>
-					Sign in
+					Sign up
 				</Button>
 			</Stack>
 		</Box>

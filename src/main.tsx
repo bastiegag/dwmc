@@ -10,22 +10,37 @@ import {
 	ThemeProvider
 } from '@mui/material';
 
-import firebaseConfig from './firebaseConfig.ts';
-import App from './App.tsx';
+import firebaseConfig from './firebaseConfig';
+import App from './App';
 import theme from 'theme';
 
 const queryClient = new QueryClient();
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
-createRoot(document.getElementById('root')!).render(
+const rootElement = document.getElementById('root');
+if (!rootElement) throw new Error('Root element not found');
+
+interface WindowWithRoot extends Window {
+	_rootInstance?: ReturnType<typeof createRoot>;
+}
+
+let root: ReturnType<typeof createRoot>;
+if (!(window as WindowWithRoot)._rootInstance) {
+	root = createRoot(rootElement);
+	(window as WindowWithRoot)._rootInstance = root;
+} else {
+	root = (window as WindowWithRoot)._rootInstance!;
+}
+
+root.render(
 	<StrictMode>
 		<StyledEngineProvider injectFirst>
 			<ThemeProvider theme={theme()}>
 				<QueryClientProvider client={queryClient}>
 					<CssBaseline />
 					<App />
-					{/*<ReactQueryDevtools />*/}
+					{/*{import.meta.env.DEV && <ReactQueryDevtools />}*/}
 				</QueryClientProvider>
 			</ThemeProvider>
 		</StyledEngineProvider>

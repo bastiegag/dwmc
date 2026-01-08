@@ -1,8 +1,11 @@
-export interface CategoryItem {
-	color?: string;
-	icon?: string;
+interface BaseItem {
 	id: string;
 	name: string;
+}
+
+export interface CategoryItem extends BaseItem {
+	color?: string;
+	icon?: string;
 	section?: string;
 	type: string;
 }
@@ -31,13 +34,11 @@ export interface Transaction {
 	uid: string;
 }
 
-export interface WalletItem {
+export interface WalletItem extends BaseItem {
 	amount: string;
 	color: string;
 	goal: string;
 	icon: string;
-	id: string;
-	name: string;
 }
 
 export interface Wallet {
@@ -46,9 +47,9 @@ export interface Wallet {
 	uid: string;
 }
 
-export type ItemType = {
+export interface ItemType {
 	id: string;
 	name?: string;
 	icon?: string;
 	color?: string;
-};
+}

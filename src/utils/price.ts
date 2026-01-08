@@ -1,20 +1,20 @@
-export const formatPrice = (price: number) => {
-	if (typeof price == 'undefined') return;
+const priceFormatter = new Intl.NumberFormat('en-CA', {
+	style: 'currency',
+	currency: 'CAD',
+	minimumFractionDigits: 2
+});
 
-	const newPrice = new Intl.NumberFormat('fr-CA', {
-		style: 'currency',
-		currency: 'CAD',
-		minimumFractionDigits: 2
-	}).format(price);
-
-	return newPrice;
+export const formatPrice = (price: number): string | undefined => {
+	if (typeof price === 'undefined') return;
+	return priceFormatter.format(price);
 };
 
-export const formatPriceToFloat = (price: string) => {
-	if (typeof price == 'undefined') return;
-	if (typeof price == 'number') return price;
+export const formatPriceToFloat = (
+	price: string | number
+): number | undefined => {
+	if (typeof price === 'undefined') return;
+	if (typeof price === 'number') return price;
 
-	const newPrice = price.replace(',', '.');
-
-	return parseFloat(newPrice.replace(/[^\d.-]/g, ''));
+	const normalizedPrice = price.replace(',', '.');
+	return parseFloat(normalizedPrice.replace(/[^\d.-]/g, ''));
 };

@@ -1,11 +1,11 @@
-import { User } from 'firebase/auth';
-import { Dayjs } from 'dayjs';
+import type { User } from 'firebase/auth';
+import type { Dayjs } from 'dayjs';
 
-import { TransactionItem, CategoryItem, WalletItem } from 'types';
+import type { TransactionItem, CategoryItem, WalletItem } from 'types';
 
 export interface DateContextType {
 	current: Date;
-	setCurrent: React.Dispatch<React.SetStateAction<DateContextType['current']>>;
+	setCurrent: (date: Date) => void;
 	month: number;
 	year: number;
 	min: Dayjs;
@@ -24,15 +24,17 @@ export interface DataContextType {
 
 export interface AuthContextType {
 	user: User | null;
-	setUser: React.Dispatch<React.SetStateAction<AuthContextType['user']>>;
+	setUser: (user: User | null) => void;
+}
+
+export interface Alert {
+	open: boolean;
+	type: 'success' | 'info' | 'warning' | 'error';
+	code?: string;
+	message?: string;
 }
 
 export interface AlertContextType {
-	alert: {
-		open: boolean;
-		type: 'success' | 'info' | 'warning' | 'error';
-		code?: string;
-		message?: string;
-	};
-	setAlert: React.Dispatch<React.SetStateAction<AlertContextType['alert']>>;
+	alert: Alert;
+	setAlert: (alert: Alert) => void;
 }

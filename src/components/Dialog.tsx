@@ -1,4 +1,5 @@
-import React from 'react';
+import type { Dispatch, SetStateAction } from 'react';
+import { useCallback } from 'react';
 import {
 	Button,
 	Dialog as MuiDialog,
@@ -9,15 +10,15 @@ import {
 } from '@mui/material';
 
 interface DialogProps {
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	setOpen: Dispatch<SetStateAction<boolean>>;
 	open: boolean;
 	action: () => void;
 }
 
 export const Dialog = ({ open, setOpen, action }: DialogProps) => {
-	const handleClose = () => {
+	const handleClose = useCallback(() => {
 		setOpen(false);
-	};
+	}, [setOpen]);
 
 	return (
 		<MuiDialog open={open} onClose={handleClose}>

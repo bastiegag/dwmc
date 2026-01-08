@@ -4,6 +4,7 @@ export { useCategories } from './useCategories';
 export { useContextWrapper } from './useContextWrapper';
 export { useDataProvider } from './useDataProvider';
 export { useDate } from './useDate';
+export { useFieldVisibility } from './useFieldVisibility';
 export { useRealtimeQuery } from './useRealtimeQuery';
 export { useSetDoc } from './useSetDoc';
 export { useTransactions } from './useTransactions';

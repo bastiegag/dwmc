@@ -1,4 +1,4 @@
-import { FC, memo } from 'react';
+import { memo } from 'react';
 import {
 	ListItemButton,
 	ListItemIcon,
@@ -7,18 +7,19 @@ import {
 	Typography
 } from '@mui/material';
 
-import { TransactionItem, CategoryItem } from 'types';
+import type { TransactionItem, CategoryItem } from 'types';
 import { formatShortDate } from 'utils';
 import { Icon, Price } from 'components';
 
 interface TransactionListItemProps {
 	item: TransactionItem;
 	category: CategoryItem | null | undefined;
+	hasDate?: boolean;
 	handleEdit: (item: TransactionItem) => void;
 }
 
-export const TransactionListItem: FC<TransactionListItemProps> = memo(
-	({ item, category, handleEdit }) => {
+export const TransactionListItem = memo(
+	({ item, category, hasDate, handleEdit }: TransactionListItemProps) => {
 		const primaryText = item.note || category?.name || '';
 		const secondaryText =
 			item.note && category?.name ? category.name : undefined;
@@ -31,13 +32,15 @@ export const TransactionListItem: FC<TransactionListItemProps> = memo(
 				<ListItemText primary={primaryText} secondary={secondaryText} />
 				<Stack sx={{ textAlign: 'right' }}>
 					<Price value={Number(item.amount)} styled={true} type={item.type} />
-					<Typography
-						color="text.secondary"
-						variant="caption"
-						sx={{ lineHeight: 1, mt: 0.5 }}
-					>
-						{formatShortDate(item.date)}
-					</Typography>
+					{hasDate && (
+						<Typography
+							color="text.secondary"
+							variant="caption"
+							sx={{ lineHeight: 1, mt: 0.5 }}
+						>
+							{formatShortDate(item.date)}
+						</Typography>
+					)}
 				</Stack>
 			</ListItemButton>
 		);

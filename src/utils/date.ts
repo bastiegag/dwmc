@@ -1,77 +1,81 @@
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
-const days = [
-	'Dimanche',
-	'Lundi',
-	'Mardi',
-	'Mercredi',
-	'Jeudi',
-	'Vendredi',
-	'Samedi'
-];
-const months = [
-	'Janvier',
-	'Février',
-	'Mars',
-	'Avril',
-	'Mai',
-	'Juin',
-	'Juillet',
-	'Août',
-	'Septembre',
-	'Octobre',
-	'Novembre',
-	'Décembre'
-];
-const sMonths = [
+const DAYS = [
+	'Sunday',
+	'Monday',
+	'Tuesday',
+	'Wednesday',
+	'Thursday',
+	'Friday',
+	'Saturday'
+] as const;
+
+const MONTHS = [
+	'January',
+	'February',
+	'March',
+	'April',
+	'May',
+	'June',
+	'July',
+	'August',
+	'September',
+	'October',
+	'November',
+	'December'
+] as const;
+
+const SHORT_MONTHS = [
 	'Jan',
-	'Fév',
+	'Feb',
 	'Mar',
-	'Avr',
-	'Mai',
-	'Jui',
+	'Apr',
+	'May',
+	'Jun',
 	'Jul',
-	'Aoû',
+	'Aug',
 	'Sep',
 	'Oct',
 	'Nov',
-	'Déc'
-];
+	'Dec'
+] as const;
 
-export const formatDateTitle = (date: string) => {
-	const dateObj = new Date(date);
-	const weekDay = dateObj.getDay();
-	const day = dateObj.getDate();
-	const month = dateObj.getMonth();
-
-	const newDate = `${days[weekDay]}, ${day} ${sMonths[month]}`;
-
-	return newDate;
+export const formatDateTitle = (date: string): string => {
+	const dateObj = dayjs(date);
+	return `${DAYS[dateObj.day()]}, ${dateObj.date()} ${
+		SHORT_MONTHS[dateObj.month()]
+	}`;
 };
 
-export const formatShortDate = (date: string) => {
-	const dateObj = new Date(date);
-	const day = dateObj.getDate();
-	const month = dateObj.getMonth();
-
-	const newDate = `${day} ${sMonths[month]}`;
-
-	return newDate;
+export const formatShortDate = (date: string): string => {
+	const dateObj = dayjs(date);
+	return `${dateObj.date()} ${SHORT_MONTHS[dateObj.month()]}`;
 };
 
-export const formatDateSwitcher = (date: Date) => {
-	const newDate = new Date(date);
-	const month = newDate.getMonth();
-	const year = newDate.getFullYear();
+interface DateSwitcherResult {
+	current: Date;
+	month: number;
+	year: number;
+	min: Dayjs;
+	max: Dayjs;
+	label: string;
+}
+
+export const formatDateSwitcher = (date: Date): DateSwitcherResult => {
+	const dateObj = dayjs(date);
+	const month = dateObj.month();
+	const year = dateObj.year();
+	const numDays = getNumDays(year, month + 1);
 
 	return {
-		current: date,
+		current: dateObj.toDate(),
 		month: month + 1,
-		year: year,
+		year,
 		min: dayjs(new Date(year, month, 1)),
-		max: dayjs(new Date(year, month, getNumDays(year, month + 1))),
-		label: `${months[month]} ${year}`
+		max: dayjs(new Date(year, month, numDays)),
+		label: `${MONTHS[month]} ${year}`
 	};
 };
 
-export const getNumDays = (y: number, m: number) => new Date(y, m, 0).getDate();
+export const getNumDays = (y: number, m: number): number =>
+	dayjs(`${y}-${String(m).padStart(2, '0')}-01`).daysInMonth();

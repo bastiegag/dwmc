@@ -1,4 +1,3 @@
-import { FC, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import {
 	FormControl,
@@ -8,25 +7,24 @@ import {
 	Switch
 } from '@mui/material';
 
-import { FieldProps } from 'types';
-import { isFieldVisible } from 'utils';
+import type { FieldProps } from 'types';
+import { useFieldVisibility } from 'hooks';
 import { Icon } from 'components';
 
-export const SwitchField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
-	const { register, unregister } = useFormContext();
+/**
+ * SwitchField is a form field component that renders a Material-UI Switch
+ * integrated with react-hook-form. It supports conditional visibility,
+ * optional icon display, and label placement.
+ */
+export const SwitchField = ({ data, values, hiddenValue }: FieldProps) => {
+	const { register } = useFormContext();
+	// Initial switch value from form or default
 	const initialValue = values?.[data.name] ?? false;
-	const [show, setShow] = useState(true);
 
-	useEffect(() => {
-		if (isFieldVisible(data.hidden, hiddenValue)) {
-			setShow(true);
-		} else {
-			unregister(data.name);
-			setShow(false);
-		}
-	}, [hiddenValue, data, unregister]);
+	// Check if field should be visible based on conditional rules
+	const visible = useFieldVisibility(data.hidden, hiddenValue, data.name);
 
-	if (!show) return null;
+	if (!visible) return null;
 
 	return (
 		<ListItem>
@@ -35,7 +33,6 @@ export const SwitchField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 					<Icon icon={data.icon} />
 				</ListItemIcon>
 			)}
-
 			<FormControl fullWidth>
 				<FormControlLabel
 					control={

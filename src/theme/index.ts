@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material';
+import { createTheme, type Theme } from '@mui/material';
 
 import colors from 'assets/scss/_vars.module.scss';
 import palette from './palette';
@@ -8,8 +8,8 @@ export interface PaletteColors {
 	[key: string]: string;
 }
 
-const appTheme = () => {
-	const themeOptions = {
+const appTheme = (): Theme =>
+	createTheme({
 		palette: palette(colors),
 		components: components(colors),
 		typography: {
@@ -19,9 +19,6 @@ const appTheme = () => {
 		shape: {
 			borderRadius: 16
 		}
-	};
-
-	return createTheme(themeOptions);
-};
+	});
 
 export default appTheme;

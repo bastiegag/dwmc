@@ -4,7 +4,7 @@ interface LoaderProps {
 	loading?: boolean;
 }
 
-export const Loader = ({ loading }: React.PropsWithChildren<LoaderProps>) => {
+export const Loader = ({ loading }: LoaderProps) => {
 	return (
 		loading && (
 			<Box

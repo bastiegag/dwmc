@@ -1,11 +1,11 @@
-export { formatPrice, formatPriceToFloat } from './price';
+export { getCategory, setColor } from './categories';
+export { colors, icons } from './data';
 export {
 	formatDateSwitcher,
-	formatShortDate,
 	formatDateTitle,
+	formatShortDate,
 	getNumDays
 } from './date';
-export { setColor, getCategory } from './categories';
-export { getWallet } from './wallets';
 export { isFieldVisible } from './fields';
-export { colors, icons } from './data';
+export { formatPrice, formatPriceToFloat } from './price';
+export { getWallet } from './wallets';

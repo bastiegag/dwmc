@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { IconUser } from '@tabler/icons-react';
 import { IconButton, List } from '@mui/material';
 
@@ -7,9 +7,7 @@ import { Drawer } from 'components';
 export const Account = () => {
 	const [open, setOpen] = useState(false);
 
-	const handleOpen = () => {
-		setOpen(true);
-	};
+	const handleOpen = useCallback(() => setOpen(true), []);
 
 	return (
 		<>
