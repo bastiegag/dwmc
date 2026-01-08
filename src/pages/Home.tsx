@@ -42,9 +42,9 @@ const Home = () => {
 					textColor="inherit"
 					centered
 				>
-					<Tab disableRipple label="Aperçu" />
-					<Tab disableRipple label="Catégories" />
-					<Tab disableRipple label="Liste" />
+					<Tab disableRipple label="Preview" />
+					<Tab disableRipple label="Categories" />
+					<Tab disableRipple label="List" />
 				</Tabs>
 			</Box>
 			<Box

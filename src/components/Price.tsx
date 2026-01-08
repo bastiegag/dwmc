@@ -1,6 +1,4 @@
-import { FC } from 'react';
 import { Typography } from '@mui/material';
-
 import { formatPrice } from 'utils';
 
 interface PriceProps {
@@ -9,11 +7,11 @@ interface PriceProps {
 	type?: string;
 }
 
-export const Price: FC<PriceProps> = ({
+export const Price = ({
 	value,
 	styled = false,
 	type = 'expense'
-}) => {
+}: PriceProps) => {
 	let price = formatPrice(value);
 	let color = 'inherit';
 

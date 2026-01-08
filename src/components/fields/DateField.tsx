@@ -1,78 +1,88 @@
-import { FC, useEffect, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import { IconButton, FormControl, ListItem, ListItemIcon } from '@mui/material';
 import { MobileDatePicker } from '@mui/x-date-pickers';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs, { type Dayjs } from 'dayjs';
 
-import { FieldProps } from 'types';
-import { useDate } from 'hooks';
-import { isFieldVisible } from 'utils';
+import type { FieldProps } from 'types';
+import { useDate, useFieldVisibility } from 'hooks';
 import { Icon } from 'components';
 
-export const DateField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
+/**
+ * DateField - A form field for selecting and adjusting dates with a date picker and navigation buttons.
+ * Supports min/max date constraints and custom formatting.
+ */
+export const DateField = ({ data, values, hiddenValue }: FieldProps) => {
 	const {
 		control,
 		formState: { errors },
-		setValue,
-		unregister
+		setValue
 	} = useFormContext();
 	const { min, max, current } = useDate();
 
-	const getInitialDate = () => {
+	// Compute initial date value from form values or fallback to current month
+	const initialDate = useMemo(() => {
 		const rawValue = values?.[data.name];
-
 		if (rawValue) {
 			if (typeof rawValue === 'string' || typeof rawValue === 'number') {
 				const parsedDate = dayjs(rawValue);
 				return parsedDate.isValid() ? parsedDate : dayjs();
 			}
-			if (dayjs.isDayjs(rawValue)) {
-				return rawValue;
-			}
+			if (dayjs.isDayjs(rawValue)) return rawValue;
 		}
-
 		return current.getMonth() !== dayjs().month()
 			? dayjs(new Date(current.getFullYear(), current.getMonth(), 1))
 			: dayjs();
-	};
+	}, [values, data.name, current]);
 
-	const [date, setDate] = useState(getInitialDate());
+	// Local state for date picker and drawer
+	const [date, setDate] = useState(initialDate);
 	const [open, setOpen] = useState(false);
-	const [show, setShow] = useState(true);
 
-	useEffect(() => {
-		if (isFieldVisible(data.hidden, hiddenValue)) {
-			setShow(true);
-		} else {
-			unregister(data.name);
-			setShow(false);
-		}
-	}, [hiddenValue, data, unregister]);
+	// Check if field should be visible based on conditional rules
+	const visible = useFieldVisibility(data.hidden, hiddenValue, data.name);
 
-	const handleDateChange = (add: boolean) => {
-		const newDate = add
-			? date < max
-				? date.add(1, 'day')
-				: date
-			: date > min
-			? date.subtract(1, 'day')
-			: date;
+	// Open the date picker drawer
+	const handleOpen = useCallback(() => setOpen(true), []);
 
-		setDate(newDate);
-		setValue(data.name, newDate);
-	};
+	// Close the date picker drawer
+	const handleClose = useCallback(() => setOpen(false), []);
 
-	if (!show) return null;
+	// Increment or decrement the date by one day, respecting min/max
+	const handleDateChange = useCallback(
+		(add: boolean) => {
+			const newDate = add
+				? date < max
+					? date.add(1, 'day')
+					: date
+				: date > min
+				? date.subtract(1, 'day')
+				: date;
+			setDate(newDate);
+			setValue(data.name, newDate);
+		},
+		[date, max, min, data.name, setValue]
+	);
+
+	// Handle date picker value change
+	const handleChange = useCallback(
+		(onChange: (value: Dayjs | null) => void) => (newValue: Dayjs | null) => {
+			onChange(newValue);
+			if (newValue) setDate(newValue);
+		},
+		[]
+	);
+
+	if (!visible) return null;
 
 	return (
 		<ListItem>
 			{data.icon && (
-				<ListItemIcon onClick={() => setOpen(true)}>
+				<ListItemIcon onClick={handleOpen}>
 					<Icon icon={data.icon} error={Boolean(errors[data.name])} />
 				</ListItemIcon>
 			)}
-
 			<Controller
 				name={data.name}
 				control={control}
@@ -80,13 +90,10 @@ export const DateField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 				render={({ field: { onChange, value } }) => (
 					<FormControl fullWidth>
 						<MobileDatePicker
-							closeOnSelect={true}
+							closeOnSelect
 							format="dddd, D MMM YYYY"
-							onChange={(newValue: Dayjs | null) => {
-								onChange(newValue);
-								if (newValue) setDate(newValue);
-							}}
-							onClose={() => setOpen(false)}
+							onChange={handleChange(onChange)}
+							onClose={handleClose}
 							open={open}
 							minDate={min}
 							maxDate={max}
@@ -98,7 +105,6 @@ export const DateField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 					</FormControl>
 				)}
 			/>
-
 			<IconButton
 				disabled={date <= min}
 				onClick={() => handleDateChange(false)}

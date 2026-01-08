@@ -3,7 +3,10 @@ import { Box, styled } from '@mui/material';
 
 import 'assets/scss/_document.scss';
 
-const Content = styled(Box)(({ theme }) => ({
+const AuthRoot = styled(Box, {
+	name: 'Auth',
+	slot: 'root'
+})(({ theme }) => ({
 	backgroundColor: theme.palette.common.white,
 	height: '100vh',
 	padding: theme.spacing(4)
@@ -11,8 +14,8 @@ const Content = styled(Box)(({ theme }) => ({
 
 export const Auth = () => {
 	return (
-		<Content>
+		<AuthRoot className="Auth-root">
 			<Outlet />
-		</Content>
+		</AuthRoot>
 	);
 };

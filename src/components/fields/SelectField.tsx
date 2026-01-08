@@ -1,67 +1,63 @@
-import { FC, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { IconChevronDown } from '@tabler/icons-react';
 import {
 	FormControl,
 	IconButton,
-	Input,
+	InputBase,
 	ListItem,
 	ListItemIcon,
 	Typography
 } from '@mui/material';
 
-import { FieldProps } from 'types';
-import { isFieldVisible } from 'utils';
+import type { FieldProps } from 'types';
+import { useFieldVisibility } from 'hooks';
 import { Drawer, Icon, ListChoice } from 'components';
 
-export const SelectField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
-	const { register, setValue, unregister } = useFormContext();
+/**
+ * SelectField is a form component that displays a selectable list of choices in a drawer.
+ * It integrates with react-hook-form for form state management and supports conditional visibility.
+ * The component displays the current selection and allows users to choose an option from a drawer.
+ */
+export const SelectField = ({ data, values, hiddenValue }: FieldProps) => {
+	const { register, setValue } = useFormContext();
+	// Initial select value from form or first choice
 	const initialValue = String(
 		values?.[data.name] ?? data.choices?.[0]?.value ?? ''
 	);
 	const [selectValue, setSelectValue] = useState<string>(initialValue);
 	const [open, setOpen] = useState(false);
-	const [show, setShow] = useState(true);
 
-	useEffect(() => {
-		if (isFieldVisible(data.hidden, hiddenValue)) {
-			setShow(true);
-		} else {
-			unregister(data.name);
-			setShow(false);
-		}
-	}, [hiddenValue, data, unregister]);
+	// Check if field should be visible based on conditional rules
+	const visible = useFieldVisibility(data.hidden, hiddenValue, data.name);
 
-	const handleOpen = () => {
-		setOpen(true);
-	};
+	// Open drawer to select option
+	const handleOpen = useCallback(() => setOpen(true), []);
 
-	const handleClose = (value: string, label?: string) => {
-		if (label) {
-			setSelectValue(label);
-		}
-		setValue(data.name, value);
-		setOpen(false);
-	};
+	// Close drawer and update select value
+	const handleClose = useCallback(
+		(value: string, label?: string) => {
+			if (label) setSelectValue(label);
+			setValue(data.name, value);
+			setOpen(false);
+		},
+		[data.name, setValue]
+	);
 
 	const list = data.choices?.map((item) => {
-		const selected = selectValue && selectValue === item.name ? true : false;
-		const data = {
-			id: item.value,
-			name: item.name
-		};
-
+		const selected = selectValue === item.name;
+		const itemData = { id: item.value, name: item.name };
 		return (
 			<ListChoice
 				key={item.value}
-				data={data}
+				data={itemData}
 				selected={selected}
 				handleClose={handleClose}
 			/>
 		);
 	});
 
-	if (!show) return null;
+	if (!visible) return null;
 
 	return (
 		<>
@@ -71,9 +67,8 @@ export const SelectField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 						<Icon icon={data.icon} />
 					</ListItemIcon>
 				)}
-
 				<FormControl error fullWidth>
-					<Input
+					<InputBase
 						type="hidden"
 						defaultValue={initialValue}
 						placeholder={data.label}
@@ -83,12 +78,10 @@ export const SelectField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 						{data.label} {selectValue ?? ''}
 					</Typography>
 				</FormControl>
-
 				<IconButton>
 					<IconChevronDown />
 				</IconButton>
 			</ListItem>
-
 			<Drawer
 				open={open}
 				setOpen={setOpen}

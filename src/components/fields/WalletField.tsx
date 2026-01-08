@@ -1,115 +1,112 @@
-import { FC, ReactElement, useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import type { ReactElement } from 'react';
+import { useCallback, useState, useMemo } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { IconChevronDown } from '@tabler/icons-react';
 import {
 	FormControl,
 	IconButton,
-	Input,
+	InputBase,
 	List,
 	ListItem,
 	ListItemIcon,
 	Typography
 } from '@mui/material';
 
-import { FieldProps, WalletItem } from 'types';
-import { useWallets } from 'hooks';
-import { getWallet, isFieldVisible } from 'utils';
+import type { FieldProps, WalletItem } from 'types';
+import { useWallets, useFieldVisibility } from 'hooks';
+import { getWallet } from 'utils';
 import { Drawer, Icon, ListChoice } from 'components';
 
-export const WalletField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
-	const { register, unregister, setValue } = useFormContext();
-	const initialValue =
-		(values as Record<string, string>)[data.name] ?? 'default';
+/**
+ * WalletField is a form component that displays the currently selected wallet and allows users to choose a different wallet from a drawer list.
+ * It integrates with react-hook-form and uses MUI components for layout and styling.
+ */
+export const WalletField = ({ data, values, hiddenValue }: FieldProps) => {
+	const { register, setValue, control } = useFormContext();
+	const walletId =
+		useWatch({ control, name: data.name }) ??
+		(values as Record<string, string>)[data.name] ??
+		'default';
 	const { data: wallets } = useWallets();
-	const [wallet, setWallet] = useState<WalletItem | null>(null);
 	const [open, setOpen] = useState(false);
-	const [show, setShow] = useState(true);
 
-	useEffect(() => {
-		if (isFieldVisible(data.hidden, hiddenValue)) {
-			setShow(true);
-		} else {
-			unregister(data.name);
-			setShow(false);
-		}
-	}, [hiddenValue, data, unregister]);
+	const wallet: WalletItem | null = useMemo(() => {
+		if (!wallets) return null;
 
-	useEffect(() => {
-		const found: WalletItem | undefined = wallets
-			? getWallet(wallets, initialValue)
-			: undefined;
-		setWallet(found ?? null);
-	}, [wallets, initialValue]);
+		return getWallet(wallets, walletId) ?? null;
+	}, [wallets, walletId]);
 
-	const handleOpen = () => {
+	// Determine if field should be visible
+	const visible = useFieldVisibility(data.hidden, hiddenValue, data.name);
+
+	// Open drawer to select wallet
+	const handleOpen = useCallback(() => {
 		setOpen(true);
-	};
+	}, []);
 
-	const handleClose = (id: string) => {
-		const newWallet: WalletItem | undefined = wallets
-			? getWallet(wallets, id)
-			: undefined;
-		setWallet(newWallet ?? null);
-		setValue(data.name, id);
-		setOpen(false);
-	};
+	// Handle wallet selection and update form value
+	const handleClose = useCallback(
+		(id: string) => {
+			setValue(data.name, id);
+			setOpen(false);
+		},
+		[data.name, setValue]
+	);
 
-	let list: ReactElement[] | undefined;
-	if (wallets) {
-		list = wallets.map((item: WalletItem) => {
-			const selected = wallet ? wallet.id === item.id : false;
-			const data = {
-				id: item.id,
-				name: item.name,
-				icon: item.icon,
-				color: item.color
-			};
-			return (
-				<ListChoice
-					key={item.id}
-					data={data}
-					selected={selected}
-					handleClose={handleClose}
-					round={false}
-				/>
-			);
-		});
-	}
+	// Render wallet choices for drawer
+	const list: ReactElement[] | undefined = wallets?.map((item: WalletItem) => {
+		const selected = walletId === item.id;
+		const itemData = {
+			id: item.id,
+			name: item.name,
+			icon: item.icon,
+			color: item.color
+		};
+		return (
+			<ListChoice
+				key={item.id}
+				data={itemData}
+				selected={selected}
+				handleClose={handleClose}
+				round={false}
+			/>
+		);
+	});
+
+	// Hide field if not visible or wallet not found
+	if (!visible || !wallet) return null;
 
 	return (
-		show &&
-		wallet && (
-			<>
-				<ListItem onClick={handleOpen}>
-					<ListItemIcon>
-						<Icon icon={wallet.icon} color={wallet.color} round={false} />
-					</ListItemIcon>
+		<>
+			<ListItem onClick={handleOpen}>
+				<ListItemIcon>
+					<Icon icon={wallet.icon} color={wallet.color} round={false} />
+				</ListItemIcon>
 
-					<FormControl error fullWidth>
-						<Input
-							type="hidden"
-							defaultValue={initialValue}
-							placeholder={data.label}
-							{...register(data.name)}
-						/>
-						<Typography>
-							{data.label} {wallet.name ?? ''}
-						</Typography>
-					</FormControl>
+				<FormControl error fullWidth>
+					<InputBase
+						type="hidden"
+						value={walletId}
+						placeholder={data.label}
+						{...register(data.name)}
+					/>
+					<Typography>
+						{data.label} {wallet.name ?? ''}
+					</Typography>
+				</FormControl>
 
-					<IconButton>
-						<IconChevronDown />
-					</IconButton>
-				</ListItem>
+				<IconButton>
+					<IconChevronDown />
+				</IconButton>
+			</ListItem>
 
-				<Drawer
-					open={open}
-					setOpen={setOpen}
-					title={data.drawerTitle ?? 'Select'}
-				>
-					<List>{list}</List>
-				</Drawer>
-			</>
-		)
+			<Drawer
+				open={open}
+				setOpen={setOpen}
+				title={data.drawerTitle ?? 'Select'}
+			>
+				<List>{list}</List>
+			</Drawer>
+		</>
 	);
 };

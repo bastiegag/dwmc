@@ -8,16 +8,28 @@ import {
 	doc,
 	setDoc,
 	deleteDoc,
-	SetOptions
+	type SetOptions,
+	type Unsubscribe,
+	type QuerySnapshot,
+	type DocumentData,
+	type Firestore
 } from 'firebase/firestore';
-import { Unsubscribe, QuerySnapshot, DocumentData } from 'firebase/firestore';
+
+let firestoreInstance: Firestore | null = null;
+
+const getFirestoreInstance = (): Firestore => {
+	if (!firestoreInstance) {
+		firestoreInstance = getFirestore();
+	}
+	return firestoreInstance;
+};
 
 export const getDocuments = (
 	user: string,
 	snapshot: (snapshot: QuerySnapshot<DocumentData>) => void,
 	colRef: string
 ): Unsubscribe => {
-	const db = getFirestore();
+	const db = getFirestoreInstance();
 	const q = query(
 		collection(db, 'users', user, colRef),
 		where('uid', '==', user)
@@ -30,10 +42,9 @@ export const addDocument = async (
 	data: DocumentData,
 	user: string,
 	colRef: string
-): Promise<ReturnType<typeof addDoc>> => {
-	const db = getFirestore();
-
-	return await addDoc(collection(db, 'users', user, colRef), data);
+) => {
+	const db = getFirestoreInstance();
+	return addDoc(collection(db, 'users', user, colRef), data);
 };
 
 export const setDocument = async (
@@ -42,13 +53,9 @@ export const setDocument = async (
 	docId: string,
 	colRef: string,
 	options?: SetOptions
-): Promise<ReturnType<typeof setDoc>> => {
-	const db = getFirestore();
-	if (options) {
-		return await setDoc(doc(db, 'users', user, colRef, docId), data, options);
-	} else {
-		return await setDoc(doc(db, 'users', user, colRef, docId), data);
-	}
+) => {
+	const db = getFirestoreInstance();
+	return setDoc(doc(db, 'users', user, colRef, docId), data, options || {});
 };
 
 export const deleteDocument = async (
@@ -56,15 +63,14 @@ export const deleteDocument = async (
 	docId: string,
 	colRef: string
 ): Promise<void> => {
-	const db = getFirestore();
-
-	return await deleteDoc(doc(db, 'users', user, colRef, docId));
+	const db = getFirestoreInstance();
+	return deleteDoc(doc(db, 'users', user, colRef, docId));
 };
 
 export const createDefaultDocs = async (user: {
 	uid: string;
 }): Promise<void> => {
-	const db = getFirestore();
+	const db = getFirestoreInstance();
 
 	const defaults = {
 		categories: {
@@ -96,13 +102,16 @@ export const createDefaultDocs = async (user: {
 
 	await setDoc(doc(db, 'users', user.uid), { uid: user.uid });
 
-	for (const [colRef, docs] of Object.entries(defaults)) {
-		for (const [docId, data] of Object.entries(docs)) {
+	const documentPromises = Object.entries(defaults).flatMap(([colRef, docs]) =>
+		Object.entries(docs).map(([docId, data]) =>
 			setDocument(data, user.uid, docId, colRef)
-				.then(() => {})
-				.catch((error) => {
-					console.log(error);
-				});
-		}
+		)
+	);
+
+	try {
+		await Promise.all(documentPromises);
+	} catch (error) {
+		console.error('Error creating default documents:', error);
+		throw error;
 	}
 };

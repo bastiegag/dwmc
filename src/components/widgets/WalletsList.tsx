@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Alert, Stack } from '@mui/material';
 
-import { WalletItem } from 'types';
+import type { WalletItem } from 'types';
 import { useDataProvider } from 'hooks';
 import { EmptyList, WalletListItem, Loader } from 'components';
 import { WalletForm } from 'components/forms';
@@ -11,20 +11,7 @@ export const WalletsList = () => {
 	const [openDrawer, setOpenDrawer] = useState(false);
 	const [formValues, setFormValues] = useState<Record<string, string>>({});
 
-	if (isLoading) {
-		return <Loader loading={true} />;
-	}
-
-	if (error) {
-		return (
-			<Alert severity="error">
-				Error loading wallets:{' '}
-				{error instanceof Error ? error.message : 'Unknown error'}
-			</Alert>
-		);
-	}
-
-	const handleEdit = (item: WalletItem) => {
+	const handleEdit = useCallback((item: WalletItem) => {
 		const formattedValues = {
 			id: item.id,
 			amount: item.amount,
@@ -36,32 +23,38 @@ export const WalletsList = () => {
 
 		setFormValues(formattedValues);
 		setOpenDrawer(true);
-	};
+	}, []);
 
-	let list;
+	let listContent;
 	if (!wallets || wallets.length === 0) {
-		list = <EmptyList message="No wallets found" />;
+		listContent = <EmptyList message="No wallets found" />;
 	} else {
-		const walletItems = wallets
+		const walletItems = [...wallets]
 			.reverse()
-			.map((item: WalletItem) => {
-				return (
-					<WalletListItem key={item.id} item={item} handleEdit={handleEdit} />
-				);
-			})
-			.filter(Boolean);
-
-		list =
+			.map((item: WalletItem) => (
+				<WalletListItem key={item.id} item={item} handleEdit={handleEdit} />
+			));
+		listContent =
 			walletItems.length > 0 ? (
-				<>{walletItems}</>
+				walletItems
 			) : (
 				<EmptyList message="No wallets found" />
 			);
 	}
 
+	if (isLoading) return <Loader loading />;
+	if (error) {
+		return (
+			<Alert severity="error">
+				Error loading wallets:{' '}
+				{error instanceof Error ? error.message : 'Unknown error'}
+			</Alert>
+		);
+	}
+
 	return (
 		<>
-			<Stack spacing={2}>{list}</Stack>
+			<Stack spacing={2}>{listContent}</Stack>
 			<WalletForm
 				open={openDrawer}
 				setOpen={setOpenDrawer}

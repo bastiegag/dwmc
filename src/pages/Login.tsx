@@ -99,7 +99,7 @@ export const Login = () => {
 					variant="outlined"
 					onClick={handleLogin}
 				>
-					Sign in
+					Sign up
 				</Button>
 			</Stack>
 		</Box>

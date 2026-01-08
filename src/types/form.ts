@@ -1,5 +1,12 @@
+import type { Dispatch, SetStateAction } from 'react';
+
+export interface FieldChoice {
+	name: string;
+	value: string;
+}
+
 export interface FieldData {
-	choices?: { name: string; value: string }[];
+	choices?: FieldChoice[];
 	drawerTitle?: string;
 	hidden?: string[];
 	icon?: string;
@@ -21,5 +28,5 @@ export interface FormProps {
 	open: boolean;
 	anchor?: 'bottom' | 'right';
 	createNew?: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setOpen: Dispatch<SetStateAction<boolean>>;
 }

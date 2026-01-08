@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { IconTrash } from '@tabler/icons-react';
 import { Button, IconButton, List, ListItem, Stack } from '@mui/material';
 import { getAuth } from 'firebase/auth';
 
 import 'assets/scss/_form.scss';
-import { FieldData, TransactionItem, CategoryItem, WalletItem } from 'types';
+import type {
+	FieldData,
+	TransactionItem,
+	CategoryItem,
+	WalletItem
+} from 'types';
 import { useSetDoc, useDate } from 'hooks';
 import { Dialog } from 'components';
 import {
@@ -61,35 +66,38 @@ export const Form = <T extends TransactionItem | CategoryItem | WalletItem>({
 
 	const hidden = watch('type', values?.type);
 
-	const handleCloseDrawer = () => {
+	const handleCloseDrawer = useCallback(() => {
 		setOpen(false);
-	};
+	}, [setOpen]);
 
-	const handleOpenDialog = () => {
+	const handleOpenDialog = useCallback(() => {
 		setOpenDialog(true);
-	};
+	}, []);
 
-	const handleDelete = (data: Record<string, unknown>) => {
-		if (collection === 'transactions' && 'date' in data) {
-			setDoc({
-				userId: user.uid,
-				data: {
-					...remove(data, current),
-					month: month,
-					uid: user.uid
-				},
-				collection: collection
-			});
-		} else {
-			setDoc({
-				userId: user.uid,
-				data: remove(data, current),
-				collection: collection
-			});
-		}
+	const handleDelete = useCallback(
+		(data: Record<string, unknown>) => {
+			if (collection === 'transactions' && 'date' in data) {
+				setDoc({
+					userId: user.uid,
+					data: {
+						...remove(data, current),
+						month: month,
+						uid: user.uid
+					},
+					collection: collection
+				});
+			} else {
+				setDoc({
+					userId: user.uid,
+					data: remove(data, current),
+					collection: collection
+				});
+			}
 
-		handleCloseDrawer();
-	};
+			handleCloseDrawer();
+		},
+		[collection, current, month, remove, setDoc, user, handleCloseDrawer]
+	);
 
 	const disabled = Boolean(
 		values?.id === 'default' || values?.id === 'subdefault'
@@ -232,7 +240,7 @@ export const Form = <T extends TransactionItem | CategoryItem | WalletItem>({
 							)}
 
 							<Button type="submit" fullWidth variant="contained">
-								Enregistrer
+								Save
 							</Button>
 						</Stack>
 					</ListItem>

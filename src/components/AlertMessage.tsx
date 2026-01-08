@@ -1,14 +1,15 @@
+import { useCallback } from 'react';
 import { IconX } from '@tabler/icons-react';
 import { Alert, Snackbar, IconButton, Slide } from '@mui/material';
 
-import { useAlert } from 'hooks/useAlert';
+import { useAlert } from 'hooks';
 
 export const AlertMessage = () => {
 	const { alert, setAlert } = useAlert();
 
-	const handleClose = () => {
+	const handleClose = useCallback(() => {
 		setAlert({ ...alert, open: false });
-	};
+	}, [alert, setAlert]);
 
 	return (
 		<Snackbar

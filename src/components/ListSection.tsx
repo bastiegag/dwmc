@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
 	IconPencil,
 	IconChevronDown,
@@ -12,12 +12,13 @@ import {
 	Stack
 } from '@mui/material';
 
-import { CategoryItem } from 'types';
+import type { CategoryItem } from 'types';
 
 interface ListSectionProps {
 	data: CategoryItem;
 	edit?: boolean;
 	handleEdit?: (item: CategoryItem) => void;
+	children?: React.ReactNode;
 }
 
 export const ListSection = ({
@@ -25,14 +26,26 @@ export const ListSection = ({
 	edit = false,
 	handleEdit,
 	children
-}: React.PropsWithChildren<ListSectionProps>) => {
+}: ListSectionProps) => {
 	const theme = useTheme();
 	const [open, setOpen] = useState<boolean>(true);
+
+	const handleToggle = useCallback(() => {
+		setOpen((prev) => !prev);
+	}, []);
+
+	const handleEditClick = useCallback(
+		(e: React.MouseEvent<HTMLButtonElement>) => {
+			e.stopPropagation();
+			handleEdit?.(data);
+		},
+		[handleEdit, data]
+	);
 
 	return (
 		<>
 			<ListSubheader
-				onClick={() => setOpen(!open)}
+				onClick={handleToggle}
 				sx={{
 					display: 'flex',
 					justifyContent: 'space-between',
@@ -49,13 +62,7 @@ export const ListSection = ({
 					<span>{data.name}</span>
 				</Stack>
 				{edit && (
-					<IconButton
-						color="primary"
-						onClick={(e) => {
-							e.stopPropagation();
-							handleEdit?.(data);
-						}}
-					>
+					<IconButton color="primary" onClick={handleEditClick}>
 						<IconPencil color={theme.palette.primary.main} />
 					</IconButton>
 				)}

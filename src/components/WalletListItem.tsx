@@ -1,7 +1,7 @@
-import { FC, memo } from 'react';
+import { memo } from 'react';
 import { Stack, Divider, Typography, Box, LinearProgress } from '@mui/material';
 
-import { WalletItem } from 'types';
+import type { WalletItem } from 'types';
 import { Card, Icon, Price } from 'components';
 
 interface WalletListItemProps {
@@ -9,8 +9,8 @@ interface WalletListItemProps {
 	handleEdit: (item: WalletItem) => void;
 }
 
-export const WalletListItem: FC<WalletListItemProps> = memo(
-	({ item, handleEdit }) => {
+export const WalletListItem = memo(
+	({ item, handleEdit }: WalletListItemProps) => {
 		const goal = Number(item.goal);
 		const percent = Number((Number(item.amount) / goal) * 100);
 
@@ -35,7 +35,7 @@ export const WalletListItem: FC<WalletListItemProps> = memo(
 							justifyContent="space-between"
 						>
 							<Typography variant="caption" color="text.secondary">
-								Objectif d'épargne
+								Savings goal
 							</Typography>
 							<Price value={goal} />
 						</Stack>

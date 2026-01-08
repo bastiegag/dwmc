@@ -1,54 +1,48 @@
-import { FC, useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
 import {
 	alpha,
 	FormControl,
-	Input,
+	InputBase,
 	ListItem,
 	ListItemIcon
 } from '@mui/material';
 
-import { FieldProps } from 'types';
-import { isFieldVisible } from 'utils';
+import type { FieldProps } from 'types';
+import { useFieldVisibility } from 'hooks';
 import { Icon } from 'components';
 
-export const AmountField: FC<FieldProps> = ({ data, hiddenValue, values }) => {
+/**
+ * AmountField - A formatted numeric input field for monetary amounts
+ * with currency prefix, thousand separators, and decimal precision
+ */
+export const AmountField = ({ data, hiddenValue, values }: FieldProps) => {
 	const {
 		control,
-		formState: { errors },
-		unregister
+		formState: { errors }
 	} = useFormContext();
-	const [visible, setVisible] = useState(true);
 
-	useEffect(() => {
-		const shouldShow = isFieldVisible(data.hidden, hiddenValue);
-		setVisible(shouldShow);
-
-		if (!shouldShow) {
-			unregister(data.name);
-		}
-	}, [data, hiddenValue, unregister]);
-
+	// Check if field should be visible based on conditional rules
+	const visible = useFieldVisibility(data.hidden, hiddenValue, data.name);
 	if (!visible) return null;
 
-	const hasError = Boolean(errors[data.name]);
+	const hasError = !!errors[data.name];
 	const defaultValue = values?.[data.name] ?? '';
 
+	// Render with error styling if validation fails
 	return (
 		<ListItem
-			sx={{
-				...(hasError && {
-					bgcolor: (theme) => alpha(theme.palette.error.main, 0.03)
-				})
-			}}
+			sx={
+				hasError
+					? { bgcolor: (theme) => alpha(theme.palette.error.main, 0.03) }
+					: undefined
+			}
 		>
 			{data.icon && (
 				<ListItemIcon>
 					<Icon icon={data.icon} error={hasError} />
 				</ListItemIcon>
 			)}
-
 			<Controller
 				name={data.name}
 				control={control}
@@ -59,15 +53,16 @@ export const AmountField: FC<FieldProps> = ({ data, hiddenValue, values }) => {
 						<NumericFormat
 							value={value}
 							onChange={onChange}
-							placeholder={data.label || '0$'}
-							customInput={Input}
+							placeholder={data.label || '$0'}
+							customInput={InputBase}
 							decimalScale={2}
 							decimalSeparator=","
 							thousandSeparator=" "
 							fixedDecimalScale
-							suffix={'$'}
+							prefix="$"
 							allowNegative={false}
 							inputProps={{ inputMode: 'decimal' }}
+							// When no icon: larger, centered styling for standalone amount input
 							sx={
 								!data.icon
 									? {

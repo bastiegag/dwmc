@@ -1,3 +1,5 @@
+import type { Dispatch, SetStateAction } from 'react';
+import { useCallback } from 'react';
 import { IconChevronDown, IconChevronRight } from '@tabler/icons-react';
 import {
 	SwipeableDrawer,
@@ -9,11 +11,12 @@ import {
 
 interface DrawerProps {
 	open: boolean;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	setOpen: Dispatch<SetStateAction<boolean>>;
 	title?: string;
 	fullscreen?: boolean;
 	anchor?: 'bottom' | 'right';
 	action?: React.ReactNode;
+	children?: React.ReactNode;
 }
 
 export const Drawer = ({
@@ -24,18 +27,18 @@ export const Drawer = ({
 	anchor = 'bottom',
 	action,
 	children
-}: React.PropsWithChildren<DrawerProps>) => {
-	const handleClose = () => {
+}: DrawerProps) => {
+	const handleClose = useCallback(() => {
 		setOpen(false);
-	};
+	}, [setOpen]);
 
-	const handleOpen = () => {
+	const handleOpen = useCallback(() => {
 		setOpen(true);
-	};
+	}, [setOpen]);
 
 	let height = '43vh';
 	if (fullscreen) {
-		if (anchor == 'bottom') {
+		if (anchor === 'bottom') {
 			height = 'calc(100vh - 24px)';
 		} else {
 			height = '100vh';
@@ -48,16 +51,14 @@ export const Drawer = ({
 			open={open}
 			onClose={handleClose}
 			onOpen={handleOpen}
-			ModalProps={{
-				keepMounted: false
-			}}
+			ModalProps={{ keepMounted: false }}
 			sx={(theme) => ({
 				'.MuiDrawer-paper': {
-					borderTopLeftRadius: anchor == 'bottom' ? theme.spacing(2) : 0,
-					borderTopRightRadius: anchor == 'bottom' ? theme.spacing(2) : 0,
+					borderTopLeftRadius: anchor === 'bottom' ? theme.spacing(2) : 0,
+					borderTopRightRadius: anchor === 'bottom' ? theme.spacing(2) : 0,
 					overflow: 'visible',
 					height: height,
-					width: anchor == 'bottom' ? 'auto' : '100%'
+					width: anchor === 'bottom' ? 'auto' : '100%'
 				}
 			})}
 		>
@@ -68,12 +69,11 @@ export const Drawer = ({
 			>
 				<DrawerHeader>
 					<IconButton onClick={handleClose}>
-						{anchor == 'bottom' ? <IconChevronDown /> : <IconChevronRight />}
+						{anchor === 'bottom' ? <IconChevronDown /> : <IconChevronRight />}
 					</IconButton>
 					{title && <Typography variant="overline">{title}</Typography>}
 					{action && action}
 				</DrawerHeader>
-
 				<DrawerContent>{children}</DrawerContent>
 			</Box>
 		</SwipeableDrawer>

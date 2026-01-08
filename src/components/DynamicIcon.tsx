@@ -1,12 +1,17 @@
-import { FC, lazy, Suspense, memo } from 'react';
+import type { ComponentType, LazyExoticComponent } from 'react';
+import { lazy, Suspense, memo } from 'react';
 import { CircularProgress } from '@mui/material';
 
 const iconCache: Record<
 	string,
-	React.LazyExoticComponent<React.ComponentType<unknown>>
+	LazyExoticComponent<ComponentType<unknown>>
 > = {};
 
-export const DynamicIcon: FC<{ iconName: string }> = memo(({ iconName }) => {
+interface DynamicIconProps {
+	iconName: string;
+}
+
+export const DynamicIcon = memo(({ iconName }: DynamicIconProps) => {
 	if (!iconName) return null;
 
 	if (!iconCache[iconName]) {
@@ -18,10 +23,10 @@ export const DynamicIcon: FC<{ iconName: string }> = memo(({ iconName }) => {
 					return {
 						default: (() => (
 							<div style={{ width: 24, height: 24 }} />
-						)) as React.ComponentType<unknown>
+						)) as ComponentType<unknown>
 					};
 				}
-				return { default: Icon as React.ComponentType<unknown> };
+				return { default: Icon as ComponentType<unknown> };
 			})
 		);
 	}

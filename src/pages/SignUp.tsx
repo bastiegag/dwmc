@@ -32,15 +32,15 @@ export const SignUp = () => {
 			<Stack spacing={3}>
 				<TextField
 					id="username"
-					label="Nom d'utilisateur"
+					label="Username"
 					value={email}
 					onChange={(event) => {
 						setEmail(event.target.value);
 					}}
 				/>
 				<TextField
-					id="username"
-					label="Mot de passe"
+					id="password"
+					label="Password"
 					value={password}
 					type="password"
 					onChange={(event) => {
@@ -48,7 +48,7 @@ export const SignUp = () => {
 					}}
 				/>
 				<Button variant="contained" onClick={handleSignUp}>
-					S&apos;inscrire
+					Sign up
 				</Button>
 
 				<Typography
@@ -57,7 +57,7 @@ export const SignUp = () => {
 					variant="caption"
 					sx={{ textAlign: 'center' }}
 				>
-					Se connecter
+					Log in
 				</Typography>
 			</Stack>
 		</Box>

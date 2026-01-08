@@ -3,43 +3,44 @@ import {
 	signInWithEmailAndPassword,
 	createUserWithEmailAndPassword,
 	getAdditionalUserInfo,
-	signOut
+	signOut,
+	type Auth
 } from 'firebase/auth';
 
-export const login = (email: string, password: string) => {
-	const auth = getAuth();
+let authInstance: Auth | null = null;
 
-	return signInWithEmailAndPassword(auth, email, password)
-		.then((result) => {
-			const additionalUserInfo = getAdditionalUserInfo(result);
-
-			console.log(additionalUserInfo?.isNewUser);
-		})
-		.catch((error) => {
-			throw error;
-		});
+const getAuthInstance = (): Auth => {
+	if (!authInstance) {
+		authInstance = getAuth();
+	}
+	return authInstance;
 };
 
-export const signUp = (email: string, password: string) => {
-	const auth = getAuth();
+export const login = async (email: string, password: string) => {
+	const auth = getAuthInstance();
+	const result = await signInWithEmailAndPassword(auth, email, password);
+	const additionalUserInfo = getAdditionalUserInfo(result);
 
-	return createUserWithEmailAndPassword(auth, email, password)
-		.then((result) => {
-			const additionalUserInfo = getAdditionalUserInfo(result);
+	if (import.meta.env.DEV) {
+		console.log('New user:', additionalUserInfo?.isNewUser);
+	}
 
-			console.log(additionalUserInfo?.isNewUser);
-		})
-		.catch((error) => {
-			throw error;
-		});
+	return result;
 };
 
-export const logout = () => {
-	const auth = getAuth();
+export const signUp = async (email: string, password: string) => {
+	const auth = getAuthInstance();
+	const result = await createUserWithEmailAndPassword(auth, email, password);
+	const additionalUserInfo = getAdditionalUserInfo(result);
 
-	return signOut(auth)
-		.then(() => {})
-		.catch((error) => {
-			throw error;
-		});
+	if (import.meta.env.DEV) {
+		console.log('New user:', additionalUserInfo?.isNewUser);
+	}
+
+	return result;
+};
+
+export const logout = async () => {
+	const auth = getAuthInstance();
+	await signOut(auth);
 };

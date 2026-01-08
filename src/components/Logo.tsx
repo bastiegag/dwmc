@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import { Box } from '@mui/material';
 
 interface LogoProps {
@@ -6,7 +5,7 @@ interface LogoProps {
 	color?: string;
 }
 
-export const Logo: FC<LogoProps> = ({ size, color = 'white' }) => {
+export const Logo = ({ size, color = 'white' }: LogoProps) => {
 	return (
 		<Box sx={{ width: size, height: size, margin: '0 auto' }}>
 			<svg className="logo" viewBox="0 0 150 150">

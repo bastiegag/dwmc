@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import {
 	FormControl,
@@ -8,24 +8,36 @@ import {
 	RadioGroup
 } from '@mui/material';
 
-import { FieldProps } from 'types';
-import { isFieldVisible } from 'utils';
+import type { FieldProps } from 'types';
+import { useFieldVisibility } from 'hooks';
 
-export const RadioField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
-	const { register, unregister } = useFormContext();
+/**
+ * RadioField - A form field for selecting one option from a set of radio choices.
+ * Supports conditional visibility and default value selection.
+ */
+export const RadioField = ({ data, values, hiddenValue }: FieldProps) => {
+	const { register } = useFormContext();
+	// Determine initial value from form values or first choice
 	const initialValue = values?.[data.name] ?? data.choices?.[0]?.value ?? '';
-	const [show, setShow] = useState(true);
 
-	useEffect(() => {
-		if (isFieldVisible(data.hidden, hiddenValue)) {
-			setShow(true);
-		} else {
-			unregister(data.name);
-			setShow(false);
-		}
-	}, [hiddenValue, data, unregister]);
+	// Check if field should be visible based on conditional rules
+	const visible = useFieldVisibility(data.hidden, hiddenValue, data.name);
 
-	if (!show) return null;
+	// Memoize radio options for performance
+	const radioOptions = useMemo(
+		() =>
+			data.choices?.map((item) => (
+				<FormControlLabel
+					control={<Radio {...register(data.name)} />}
+					key={item.value}
+					label={item.name}
+					value={item.value}
+				/>
+			)),
+		[data.choices, data.name, register]
+	);
+
+	if (!visible) return null;
 
 	return (
 		<ListItem>
@@ -35,16 +47,7 @@ export const RadioField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 					defaultValue={initialValue}
 					sx={{ justifyContent: 'center' }}
 				>
-					{data.choices &&
-						data.choices.length > 0 &&
-						data.choices.map((item, index) => (
-							<FormControlLabel
-								control={<Radio {...register(data.name)} />}
-								key={index}
-								label={item.name}
-								value={item.value}
-							/>
-						))}
+					{radioOptions}
 				</RadioGroup>
 			</FormControl>
 		</ListItem>

@@ -1,36 +1,31 @@
-import { FC, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import {
 	alpha,
 	FormControl,
-	Input,
+	InputBase,
 	ListItem,
 	ListItemIcon
 } from '@mui/material';
 
-import { FieldProps } from 'types';
-import { isFieldVisible } from 'utils';
+import type { FieldProps } from 'types';
+import { useFieldVisibility } from 'hooks';
 import { Icon } from 'components';
 
-export const TextField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
+/**
+ * A text input field component that integrates with react-hook-form.
+ * Supports visibility control, validation, error display, and optional icons.
+ */
+export const TextField = ({ data, values, hiddenValue }: FieldProps) => {
 	const {
 		register,
-		unregister,
 		formState: { errors }
 	} = useFormContext();
 	const initialValue = values?.[data.name] ?? '';
-	const [show, setShow] = useState(true);
 
-	useEffect(() => {
-		if (isFieldVisible(data.hidden, hiddenValue)) {
-			setShow(true);
-		} else {
-			unregister(data.name);
-			setShow(false);
-		}
-	}, [hiddenValue, data, unregister]);
+	// Determine if field should be visible
+	const visible = useFieldVisibility(data.hidden, hiddenValue, data.name);
 
-	if (!show) return null;
+	if (!visible) return null;
 
 	return (
 		<ListItem
@@ -38,7 +33,7 @@ export const TextField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 				...(errors[data.name] && {
 					bgcolor: (theme) => alpha(theme.palette.error.main, 0.03)
 				}),
-				...(data.type == 'hidden' && { display: 'none' })
+				...(data.type === 'hidden' && { display: 'none' })
 			}}
 		>
 			{data.icon && (
@@ -48,9 +43,9 @@ export const TextField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 			)}
 
 			<FormControl fullWidth>
-				<Input
+				<InputBase
 					placeholder={data.label}
-					{...(data.type == 'hidden' && { type: 'hidden' })}
+					{...(data.type === 'hidden' && { type: 'hidden' })}
 					{...register(data.name, {
 						required: data.required,
 						value: initialValue
@@ -60,7 +55,7 @@ export const TextField: FC<FieldProps> = ({ data, values, hiddenValue }) => {
 
 			{errors[data.name] && (
 				<ListItemIcon sx={{ mr: 0 }}>
-					<Icon error={true} />
+					<Icon error />
 				</ListItemIcon>
 			)}
 		</ListItem>

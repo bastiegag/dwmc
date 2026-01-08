@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import { IconPencil } from '@tabler/icons-react';
 import {
 	IconButton,
@@ -7,8 +6,9 @@ import {
 	ListItemText,
 	useTheme
 } from '@mui/material';
+import { useCallback } from 'react';
 
-import { CategoryItem, WalletItem } from 'types';
+import type { CategoryItem, WalletItem } from 'types';
 import { Icon } from 'components';
 
 type ItemType = {
@@ -28,7 +28,7 @@ interface ListChoiceProps {
 	handleEdit?: (item: CategoryItem | WalletItem | ItemType) => void;
 }
 
-export const ListChoice: FC<ListChoiceProps> = ({
+export const ListChoice = ({
 	data,
 	selected,
 	small,
@@ -36,21 +36,36 @@ export const ListChoice: FC<ListChoiceProps> = ({
 	edit = false,
 	handleEdit,
 	handleClose
-}) => {
+}: ListChoiceProps) => {
 	const theme = useTheme();
 
-	return small ? (
-		<IconButton
-			onClick={() => handleClose(data.id, data.name)}
-			sx={{ ...(selected && { bgcolor: 'grey.100' }) }}
-		>
-			<Icon icon={data.icon} color={data.color} />
-		</IconButton>
-	) : (
-		<ListItemButton
-			onClick={() => handleClose(data.id, data.name)}
-			selected={selected}
-		>
+	const handleClick = useCallback(() => {
+		handleClose(data.id, data.name);
+	}, [handleClose, data.id, data.name]);
+
+	const handleEditClick = useCallback(
+		(e: React.MouseEvent<HTMLButtonElement>) => {
+			e.stopPropagation();
+			if (handleEdit) {
+				handleEdit(data);
+			}
+		},
+		[handleEdit, data]
+	);
+
+	if (small) {
+		return (
+			<IconButton
+				onClick={handleClick}
+				sx={{ ...(selected && { bgcolor: 'grey.100' }) }}
+			>
+				<Icon icon={data.icon} color={data.color} />
+			</IconButton>
+		);
+	}
+
+	return (
+		<ListItemButton onClick={handleClick} selected={selected}>
 			{data.icon && (
 				<ListItemIcon>
 					<Icon icon={data.icon} color={data.color} round={round} />
@@ -58,13 +73,7 @@ export const ListChoice: FC<ListChoiceProps> = ({
 			)}
 			<ListItemText primary={data.name} />
 			{edit && handleEdit && (
-				<IconButton
-					color="primary"
-					onClick={(e) => {
-						e.stopPropagation();
-						handleEdit(data);
-					}}
-				>
+				<IconButton color="primary" onClick={handleEditClick}>
 					<IconPencil color={theme.palette.primary.main} />
 				</IconButton>
 			)}

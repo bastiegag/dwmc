@@ -1,14 +1,8 @@
-import { WalletItem } from 'types';
+import type { WalletItem } from 'types';
 
 export const getWallet = (
 	data: WalletItem[],
 	id: string = 'default'
-): WalletItem | undefined => {
-	const wallet = data.find((wallet) => wallet.id === id);
-
-	if (!wallet) {
-		return data.find((wallet) => wallet.id === 'default');
-	}
-
-	return wallet;
-};
+): WalletItem | undefined =>
+	data.find((wallet) => wallet.id === id) ||
+	data.find((wallet) => wallet.id === 'default');

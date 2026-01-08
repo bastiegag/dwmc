@@ -4,15 +4,15 @@ import { IconChevronLeft } from '@tabler/icons-react';
 
 import 'assets/scss/_document.scss';
 
+const Page = styled(Box)({
+	backgroundColor: '#fbfbfb',
+	minHeight: '100vh',
+	paddingBottom: '144px'
+});
+
 const Error = () => {
 	const navigate = useNavigate();
 	const error = useRouteError();
-
-	const Page = styled(Box)({
-		backgroundColor: '#fbfbfb',
-		minHeight: '100vh',
-		paddingBottom: '144px'
-	});
 
 	console.error(error);
 
@@ -27,7 +27,7 @@ const Error = () => {
 						sx={{ display: 'inline-flex', alignItems: 'center' }}
 					>
 						<IconChevronLeft size={16} />
-						Retour
+						Back
 					</Typography>
 				</Page>
 			</Box>

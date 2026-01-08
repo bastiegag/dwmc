@@ -1,12 +1,12 @@
-import { FC, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { FormProps, FieldData, WalletItem } from 'types';
+import type { FormProps, FieldData, WalletItem } from 'types';
 import { useDataProvider } from 'hooks';
 import { Drawer, Form } from 'components';
 import { formatPriceToFloat } from 'utils';
 
-const fields: FieldData[] = [
+const BASE_FIELDS: FieldData[] = [
 	{
 		name: 'id',
 		type: 'hidden'
@@ -19,14 +19,14 @@ const fields: FieldData[] = [
 	{
 		name: 'name',
 		type: 'text',
-		label: 'Nom',
+		label: 'Name',
 		icon: 'IconTag',
 		required: true
 	},
 	{
 		name: 'color',
 		type: 'color',
-		label: 'Couleur',
+		label: 'Color',
 		icon: 'IconColorPicker'
 	},
 	{
@@ -38,18 +38,18 @@ const fields: FieldData[] = [
 	{
 		name: 'goal',
 		type: 'amount',
-		label: 'Objectif',
+		label: 'Goal',
 		icon: 'IconPigMoney'
 	}
 ];
 
-export const WalletForm: FC<FormProps> = ({
+export const WalletForm = ({
 	title,
 	values,
 	open,
 	setOpen,
 	createNew
-}) => {
+}: FormProps) => {
 	const { wallets } = useDataProvider();
 	const methods = useForm({
 		mode: 'onBlur',
@@ -57,30 +57,46 @@ export const WalletForm: FC<FormProps> = ({
 	});
 
 	useEffect(() => {
-		if (open && values) {
-			methods.reset(values);
-		}
-	}, [values, open, methods]);
+		if (open && values) methods.reset(values);
+	}, [open, values, methods]);
 
+	const formatData = useCallback<WalletFormatFunction>((data, current) => {
+		const updated = [...current];
+		for (const [key, value] of Object.entries(data)) {
+			if (key === 'amount') {
+				data[key] = formatPriceToFloat(value as string);
+			}
+		}
+		const idx = updated.findIndex((item: WalletItem) => item.id === data.id);
+		if (idx !== -1) {
+			updated[idx] = { ...updated[idx], ...(data as Partial<WalletItem>) };
+			return { items: updated };
+		}
+		return { items: [...updated, data as unknown as WalletItem] };
+	}, []);
+
+	const deleteData = useCallback<WalletFormatFunction>((data, current) => {
+		return { items: current.filter((item: WalletItem) => item.id !== data.id) };
+	}, []);
+
+	if (!wallets) return null;
 	return (
-		wallets && (
-			<Drawer open={open} setOpen={setOpen} fullscreen={true} title={title}>
-				<div onClick={(e) => e.stopPropagation()}>
-					<FormProvider {...methods}>
-						<Form<WalletItem>
-							current={wallets}
-							collection="wallets"
-							fields={fields}
-							values={values}
-							format={formatData}
-							remove={deleteData}
-							setOpen={setOpen}
-							createNew={createNew}
-						/>
-					</FormProvider>
-				</div>
-			</Drawer>
-		)
+		<Drawer open={open} setOpen={setOpen} fullscreen title={title}>
+			<div onClick={(e) => e.stopPropagation()}>
+				<FormProvider {...methods}>
+					<Form<WalletItem>
+						current={wallets}
+						collection="wallets"
+						fields={BASE_FIELDS}
+						values={values}
+						format={formatData}
+						remove={deleteData}
+						setOpen={setOpen}
+						createNew={createNew}
+					/>
+				</FormProvider>
+			</div>
+		</Drawer>
 	);
 };
 
@@ -88,41 +104,3 @@ type WalletFormatFunction = (
 	data: Record<string, unknown>,
 	current: WalletItem[]
 ) => Record<string, unknown>;
-
-const formatData: WalletFormatFunction = (data, current) => {
-	const wallets = [...current];
-
-	for (const [key, value] of Object.entries(data)) {
-		switch (key) {
-			case 'amount': {
-				data[key] = formatPriceToFloat(value as string);
-				break;
-			}
-		}
-	}
-
-	const idx = wallets.findIndex((item: WalletItem) => item.id === data.id);
-
-	if (idx !== -1) {
-		wallets[idx] = {
-			...wallets[idx],
-			...(data as Partial<WalletItem>)
-		};
-	} else {
-		wallets.push(data as unknown as WalletItem);
-	}
-
-	return { items: wallets };
-};
-
-const deleteData: WalletFormatFunction = (data, current) => {
-	const wallets = [...current];
-
-	const idx = wallets.findIndex((item: WalletItem) => item.id === data.id);
-
-	if (idx !== -1) {
-		wallets.splice(idx, 1);
-	}
-
-	return { items: wallets };
-};
