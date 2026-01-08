@@ -178,7 +178,7 @@ Configured in `tsconfig.app.json` (baseUrl: "./src") and `vite.config.ts`.
 
 ### CI Failure History
 
-ALL recent CI builds have failed with the same TypeScript compilation errors. This is a **known issue** with the codebase. The last successful build was commit `075963c5` (September 2025).
+ALL recent CI builds have failed with the same TypeScript compilation errors. This is a **known issue** with the codebase. The last successful build was commit `075963c5` (September 7, 2025).
 
 **CI Build Time**: ~30-40 seconds before failure (includes checkout, npm install, tsc failure)
 
