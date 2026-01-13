@@ -29,7 +29,7 @@ A modern personal finance management application built with React, TypeScript, a
 - **State Management**: React Context API + TanStack Query (React Query)
 - **Testing**: Vitest + Testing Library
 
-## 🚀**Backend**: Firebase (Authentication & Firestore)
+## 🚀 **Backend**: Firebase (Authentication & Firestore)
 
 - **Routing**: React Router v7
 - **Icons**: Tabler Icons
@@ -67,7 +67,7 @@ A modern personal finance management application built with React, TypeScript, a
    - Create a Firestore database
    - Copy your Firebase config and update `src/firebaseConfig.ts`
 
-4. 📜 Start the development server:
+4. Start the development server:
 
    ```bash
    npm run dev
@@ -75,7 +75,7 @@ A modern personal finance management application built with React, TypeScript, a
 
 5. Open your browser and navigate to `http://localhost:5173`
 
-## Available Scripts
+## 📜 Available Scripts
 
 - `npm run dev` - Start the development server
 - `npm run build` - Build for production
@@ -85,9 +85,7 @@ A modern personal finance management application built with React, TypeScript, a
 - `npm run test:coverage` - Generate test coverage report
 - `npm run deploy` - Deploy to Firebase Hosting
 
-## 📁
-
-## Project Structure
+## 📁 Project Structure
 
 ```
 src/
@@ -104,7 +102,7 @@ src/
 ├── routes/          # Routing configuration
 ├── services/        # API and Firebase services
 ├── theme/           # MUI theme configuration
-├──🔒  types/           # TypeScript type definitions
+├── types/           # TypeScript type definitions
 └── utils/           # Utility functions
 ```
 
@@ -122,7 +120,7 @@ service cloud.firestore {
   }
 }
 
-## 👤 Author
+## Author
 
 **Sebastien Gagne**
 
