@@ -1,4 +1,4 @@
-# 💰 Dude, where's my cash? - Personal Finance Manager
+# Dude, where's my cash? - Personal Finance Manager
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 [![React](https://img.shields.io/badge/React-19.1.1-blue.svg)](https://reactjs.org/)
@@ -122,7 +122,7 @@ service cloud.firestore {
 
 ## Author
 
-**Sebastien Gagne**
+Sébastien Gagné
 
 ## Acknowledgments
 
