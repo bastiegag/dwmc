@@ -142,10 +142,6 @@ service cloud.firestore {
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 👤 Author
-
-**Sebastien Gagne**
-
 ## 🙏 Acknowledgments
 
 - [Material-UI](https://mui.com/) for the component library
@@ -155,6 +151,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-<div align="center">
-Made with ❤️ by Sebastien Gagne
-</div>
+Built with ❤️ using React and TypeScript
