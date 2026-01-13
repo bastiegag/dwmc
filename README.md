@@ -1,132 +1,162 @@
-# Dude, where's my cash? - Personal Finance Manager
+# 💰 Dude, Where's My Cash?
 
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
-[![React](https://img.shields.io/badge/React-19.1.1-blue.svg)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-blue.svg)](https://www.typescriptlang.org/)
-[![Firebase](https://img.shields.io/badge/Firebase-12.2.1-orange.svg)](https://firebase.google.com/)
-[![Vite](https://img.shields.io/badge/Vite-7.3.1-646CFF.svg)](https://vitejs.dev/)
-[![MUI](https://img.shields.io/badge/MUI-7.3.7-007FFF.svg)](https://mui.com/)
+A modern personal finance management application built with React, TypeScript, and Firebase.
 
-A modern personal finance management application built with React, TypeScript, and Firebase. Track your transactions, manage multiple wallets, organize expenses by categories, and monitor your budgets all in one place.
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![React](https://img.shields.io/badge/React-19.1-blue.svg)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://typescriptlang.org/)
+[![Firebase](https://img.shields.io/badge/Firebase-12.2-orange.svg)](https://firebase.google.com/)
+
+## 🎯 About
+
+**Dude, Where's My Cash?** helps you track your expenses, manage multiple wallets, organize transactions by categories, and monitor your budgets in real-time. Built with modern web technologies for a fast, secure, and responsive experience.
 
 ## ✨ Features
 
-- 🔐 **User Authentication** - Secure sign-up and login with Firebase Authentication
-- 💼 **Multi-Wallet Support** - Create and manage multiple wallets with custom icons and colors
-- 💸 **Transaction Tracking** - Record income and expenses with detailed categorization
-- 📂 **Category Management** - Organize transactions with customizable categories
-- 📊 **Budget Planning** - Set and monitor budgets for better financial control
-- ⚡ **Real-time Sync** - Data synchronized across devices via Firebase Firestore
-- 📱 **Responsive Design** - Beautiful Material-UI interface that works on all devices
+- 🔐 **User Authentication** - Secure login with Firebase Authentication
+- 💼 **Multi-Wallet Support** - Manage multiple accounts with custom icons and colors
+- 💸 **Transaction Tracking** - Record and categorize income and expenses
+- 📂 **Custom Categories** - Organize spending with personalized categories
+- 📊 **Budget Management** - Set and monitor monthly budgets
+- ⚡ **Real-time Sync** - Data synced across all your devices
+- 📱 **Responsive Design** - Beautiful UI that works on desktop, tablet, and mobile
 - 📅 **Date Navigation** - Browse transactions by month and year
-- 📈 **Visual Analytics** - Charts and statistics to visualize your spending patterns
+- 📈 **Visual Analytics** - Charts and insights for your spending patterns
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: React 19, TypeScript
-- **Build Tool**: Vite
-- **UI Framework**: Material-UI (MUI) v7
-- **State Management**: React Context API + TanStack Query (React Query)
-- **Testing**: Vitest + Testing Library
+- **Frontend:** React 19, TypeScript
+- **Build Tool:** Vite 7
+- **UI Framework:** Material-UI (MUI) v7
+- **State Management:** React Context + TanStack Query
+- **Forms:** React Hook Form
+- **Backend:** Firebase (Auth + Firestore)
+- **Routing:** React Router v7
+- **Testing:** Vitest + Testing Library
+- **Styling:** Sass/SCSS + Emotion
 
-## 🚀 **Backend**: Firebase (Authentication & Firestore)
-
-- **Routing**: React Router v7
-- **Icons**: Tabler Icons
-- **Date Management**: Day.js
-- **Charts**: MUI X Charts
-- **Styling**: Sass/SCSS + Emotion
-
-## Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
 
-- Node.js (v18 or higher)
+- Node.js 18+
 - npm or yarn
-- Firebase project with Firestore and Authentication enabled
+- Firebase account
 
 ### Installation
 
 1. Clone the repository:
 
-   ```bash
-   git clone <repository-url>
-   cd App
-   ```
+```bash
+git clone https://github.com/yourusername/dwmc.git
+cd dwmc
+```
 
 2. Install dependencies:
 
-   ```bash
-   npm install
-   ```
+```bash
+npm install
+```
 
-3. Configure Firebase:
+3. Create a `.env` file with your Firebase credentials:
 
-   - Create a Firebase project at [https://console.firebase.google.com](https://console.firebase.google.com)
-   - Enable Authentication (Email/Password)
-   - Create a Firestore database
-   - Copy your Firebase config and update `src/firebaseConfig.ts`
+```env
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
+```
 
 4. Start the development server:
 
-   ```bash
-   npm run dev
-   ```
+```bash
+npm run dev
+```
 
-5. Open your browser and navigate to `http://localhost:5173`
+5. Open [http://localhost:5173](http://localhost:5173)
 
-## 📜 Available Scripts
+## 📜 Scripts
 
-- `npm run dev` - Start the development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview the production build
-- `npm run test` - Run tests with Vitest
-- `npm run test:ui` - Open Vitest UI
-- `npm run test:coverage` - Generate test coverage report
-- `npm run deploy` - Deploy to Firebase Hosting
+| Command                 | Description              |
+| ----------------------- | ------------------------ |
+| `npm run dev`           | Start development server |
+| `npm run build`         | Build for production     |
+| `npm run preview`       | Preview production build |
+| `npm run lint`          | Run ESLint               |
+| `npm test`              | Run tests                |
+| `npm run test:ui`       | Open test UI             |
+| `npm run test:coverage` | Generate coverage report |
+| `npm run deploy`        | Deploy to Firebase       |
 
 ## 📁 Project Structure
 
 ```
 src/
-├── assets/          # Images and global styles
 ├── components/      # Reusable UI components
-│   ├── fields/      # Form field components
-│   ├── forms/       # Form components
-│   ├── icons/       # Icon components
-│   └── widgets/     # Widget components
 ├── context/         # React Context providers
 ├── hooks/           # Custom React hooks
 ├── layouts/         # Layout components
 ├── pages/           # Page components
 ├── routes/          # Routing configuration
-├── services/        # API and Firebase services
-├── theme/           # MUI theme configuration
-├── types/           # TypeScript type definitions
+├── services/        # Firebase services
+├── theme/           # MUI theme config
+├── types/           # TypeScript types
 └── utils/           # Utility functions
 ```
 
-## Firebase Security Rules
+## 🧪 Testing
 
-Make sure to set up appropriate Firestore security rules to protect user data:
+```bash
+# Run tests
+npm test
+
+# Run tests with UI
+npm run test:ui
+
+# Generate coverage
+npm run test:coverage
+```
+
+## 🔒 Firebase Setup
+
+1. Create a Firebase project at [console.firebase.google.com](https://console.firebase.google.com)
+2. Enable Authentication (Email/Password)
+3. Create a Firestore database
+4. Add security rules:
 
 ```javascript
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if request.auth != null && request.auth.uid == resource.data.uid;
+    match /{collection}/{userId}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
     }
   }
 }
-
-## Author
-
-Sébastien Gagné
-
-## Acknowledgments
-
-- Material-UI for the beautiful component library
-- Firebase for the backend infrastructure
-- The React and TypeScript communities for excellent documentation and support
 ```
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👤 Author
+
+**Sebastien Gagne**
+
+## 🙏 Acknowledgments
+
+- [Material-UI](https://mui.com/) for the component library
+- [Firebase](https://firebase.google.com/) for backend services
+- [Vite](https://vitejs.dev/) for the build tool
+- [TanStack Query](https://tanstack.com/query) for data management
+
+---
+
+<div align="center">
+Made with ❤️ by Sebastien Gagne
+<br>
+⭐ Star this repo if you find it useful!
+</div>
