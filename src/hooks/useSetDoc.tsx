@@ -1,5 +1,5 @@
 import { doc, setDoc } from 'firebase/firestore';
-import { useMutation, UseMutationResult } from '@tanstack/react-query';
+import { useMutation, type UseMutationResult } from '@tanstack/react-query';
 
 import { db } from '../main';
 import { useDate } from 'hooks';

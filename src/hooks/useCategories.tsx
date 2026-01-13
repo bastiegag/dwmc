@@ -1,17 +1,17 @@
 import {
 	collection,
 	CollectionReference,
-	DocumentData,
 	onSnapshot,
 	query,
 	QueryDocumentSnapshot,
 	QuerySnapshot,
-	where
+	where,
+	type DocumentData
 } from 'firebase/firestore';
-import { UseQueryResult } from '@tanstack/react-query';
+import type { UseQueryResult } from '@tanstack/react-query';
 
 import { db } from '../main';
-import { Category, CategoryItem } from 'types';
+import type { Category, CategoryItem } from 'types';
 import { useAuth, useRealtimeQuery } from 'hooks';
 
 export const useCategories = (): UseQueryResult<CategoryItem[]> => {
@@ -48,6 +48,7 @@ export const useCategories = (): UseQueryResult<CategoryItem[]> => {
 				},
 				onError
 			);
+
 			return unsubscribe;
 		}
 	});

@@ -1,5 +1,9 @@
 import { createContext } from 'react';
 
-import { AlertContextType } from 'types';
+import type { AlertContextType } from 'types';
 
-export const AlertContext = createContext<AlertContextType | null>(null);
+export const AlertContext = createContext<AlertContextType>({
+	alert: { open: false, type: 'error', code: '', message: '' },
+	setAlert: () => {},
+	setAlertWithMessage: () => {}
+});

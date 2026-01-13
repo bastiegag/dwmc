@@ -1,17 +1,17 @@
 import {
 	collection,
 	CollectionReference,
-	DocumentData,
 	onSnapshot,
 	query,
 	QueryDocumentSnapshot,
 	QuerySnapshot,
-	where
+	where,
+	type DocumentData
 } from 'firebase/firestore';
-import { UseQueryResult } from '@tanstack/react-query';
+import type { UseQueryResult } from '@tanstack/react-query';
 
 import { db } from '../main';
-import { Transaction, TransactionItem } from 'types';
+import type { Transaction, TransactionItem } from 'types';
 import { useAuth, useRealtimeQuery, useDate } from 'hooks';
 
 export const useTransactions = (): UseQueryResult<TransactionItem[]> => {

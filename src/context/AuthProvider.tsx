@@ -1,12 +1,10 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, type PropsWithChildren } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
-import { AuthContextType } from 'types';
+import type { AuthContextType } from 'types';
 import { AuthContext } from 'context';
 
-export const AuthProvider = ({
-	children
-}: React.PropsWithChildren<unknown>) => {
+export const AuthProvider = ({ children }: PropsWithChildren) => {
 	const auth = getAuth();
 	const [loading, setLoading] = useState(true);
 	const [user, setUser] = useState<AuthContextType['user'] | null>(null);

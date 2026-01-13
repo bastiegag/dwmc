@@ -1,15 +1,8 @@
-//import { useState } from 'react';
 import { Stack } from '@mui/material';
 
 import { AlertMessage, TabPanel } from 'components';
 
 const Budgets = () => {
-	//const [openDrawer, setOpenDrawer] = useState(false);
-
-	//const handleAddBudget = () => {
-	//	setOpenDrawer(true);
-	//};
-
 	return (
 		<>
 			<TabPanel value={0} index={0}>

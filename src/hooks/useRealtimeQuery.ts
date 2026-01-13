@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import {
-	QueryKey,
 	useQuery,
 	useQueryClient,
-	UseQueryOptions
+	type QueryKey,
+	type UseQueryOptions
 } from '@tanstack/react-query';
 
 interface UseRealtimeQueryProps<T> {

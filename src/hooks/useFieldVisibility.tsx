@@ -10,7 +10,7 @@ export const useFieldVisibility = (
 	const { unregister } = useFormContext();
 
 	const visible = useMemo(
-		() => isFieldVisible(hidden, hiddenValue),
+		() => isFieldVisible(hidden, hiddenValue ?? ''),
 		[hidden, hiddenValue]
 	);
 

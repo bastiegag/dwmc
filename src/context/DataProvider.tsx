@@ -1,13 +1,11 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect, type PropsWithChildren } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 import { DataContext } from 'context';
 import { useTransactions, useCategories, useWallets } from 'hooks';
 import { setColor } from 'utils';
 
-export const DataProvider = ({
-	children
-}: React.PropsWithChildren<unknown>) => {
+export const DataProvider = ({ children }: PropsWithChildren) => {
 	const [user, setUser] = useState(getAuth().currentUser);
 
 	useEffect(() => {

@@ -37,4 +37,9 @@ export interface Alert {
 export interface AlertContextType {
 	alert: Alert;
 	setAlert: (alert: Alert) => void;
+	setAlertWithMessage: (
+		type: Alert['type'],
+		message: string,
+		code?: string
+	) => void;
 }

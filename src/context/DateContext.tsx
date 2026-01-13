@@ -1,5 +1,15 @@
 import { createContext } from 'react';
+import dayjs from 'dayjs';
 
-import { DateContextType } from 'types';
+import type { DateContextType } from 'types';
 
-export const DateContext = createContext<DateContextType | null>(null);
+const now = new Date();
+export const DateContext = createContext<DateContextType>({
+	current: now,
+	setCurrent: () => {},
+	month: now.getMonth() + 1,
+	year: now.getFullYear(),
+	min: dayjs(new Date(now.getFullYear(), now.getMonth(), 1)),
+	max: dayjs(new Date(now.getFullYear(), now.getMonth() + 1, 0)),
+	label: ''
+});
