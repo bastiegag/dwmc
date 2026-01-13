@@ -1,4 +1,4 @@
-# DWMC - Personal Finance Manager
+# Dude, where's my cash? - Personal Finance Manager
 
 A modern personal finance management application built with React, TypeScript, and Firebase. Track your transactions, manage multiple wallets, organize expenses by categories, and monitor your budgets all in one place.
 
