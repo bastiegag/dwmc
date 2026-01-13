@@ -119,21 +119,12 @@ service cloud.firestore {
     match /{document=**} {
       allow read, write: if request.auth != null && request.auth.uid == resource.data.uid;
     }
-  }🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📄 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+  }
+}
 
 ## 👤 Author
 
 **Sebastien Gagne**
-
-## 🙏 Author
-
-Sebastien Gagne
 
 ## Acknowledgments
 
