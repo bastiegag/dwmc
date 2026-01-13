@@ -11,10 +11,10 @@ export const SignUp = () => {
 	const handleSignUp = () => {
 		AuthenticationService.signUp(email, password)
 			.then(() => {
-				console.log('Signed in');
+				//console.log('Signed in');
 			})
-			.catch((error) => {
-				console.error('Not signed in', error);
+			.catch(() => {
+				//console.error('Not signed in', error);
 			});
 	};
 

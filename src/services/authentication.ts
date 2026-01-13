@@ -2,7 +2,7 @@ import {
 	getAuth,
 	signInWithEmailAndPassword,
 	createUserWithEmailAndPassword,
-	getAdditionalUserInfo,
+	//getAdditionalUserInfo,
 	signOut,
 	type Auth
 } from 'firebase/auth';
@@ -19,11 +19,11 @@ const getAuthInstance = (): Auth => {
 export const login = async (email: string, password: string) => {
 	const auth = getAuthInstance();
 	const result = await signInWithEmailAndPassword(auth, email, password);
-	const additionalUserInfo = getAdditionalUserInfo(result);
+	//const additionalUserInfo = getAdditionalUserInfo(result);
 
-	if (import.meta.env.DEV) {
-		console.log('New user:', additionalUserInfo?.isNewUser);
-	}
+	//if (import.meta.env.DEV) {
+	//	console.log('New user:', additionalUserInfo?.isNewUser);
+	//}
 
 	return result;
 };
@@ -31,11 +31,11 @@ export const login = async (email: string, password: string) => {
 export const signUp = async (email: string, password: string) => {
 	const auth = getAuthInstance();
 	const result = await createUserWithEmailAndPassword(auth, email, password);
-	const additionalUserInfo = getAdditionalUserInfo(result);
+	//const additionalUserInfo = getAdditionalUserInfo(result);
 
-	if (import.meta.env.DEV) {
-		console.log('New user:', additionalUserInfo?.isNewUser);
-	}
+	//if (import.meta.env.DEV) {
+	//	console.log('New user:', additionalUserInfo?.isNewUser);
+	//}
 
 	return result;
 };
