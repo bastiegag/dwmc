@@ -1,4 +1,4 @@
-# 💰 Dude, Where's My Cash?
+# Dude, Where's My Cash?
 
 A modern personal finance management application built with React, TypeScript, and Firebase.
 
@@ -13,15 +13,15 @@ A modern personal finance management application built with React, TypeScript, a
 
 ## ✨ Features
 
-- 🔐 **User Authentication** - Secure login with Firebase Authentication
-- 💼 **Multi-Wallet Support** - Manage multiple accounts with custom icons and colors
-- 💸 **Transaction Tracking** - Record and categorize income and expenses
-- 📂 **Custom Categories** - Organize spending with personalized categories
-- 📊 **Budget Management** - Set and monitor monthly budgets
-- ⚡ **Real-time Sync** - Data synced across all your devices
-- 📱 **Responsive Design** - Beautiful UI that works on desktop, tablet, and mobile
-- 📅 **Date Navigation** - Browse transactions by month and year
-- 📈 **Visual Analytics** - Charts and insights for your spending patterns
+- **User Authentication** - Secure login with Firebase Authentication
+- **Multi-Wallet Support** - Manage multiple accounts with custom icons and colors
+- **Transaction Tracking** - Record and categorize income and expenses
+- **Custom Categories** - Organize spending with personalized categories
+- **Budget Management** - Set and monitor monthly budgets
+- **Real-time Sync** - Data synced across all your devices
+- **Responsive Design** - Beautiful UI that works on desktop, tablet, and mobile
+- **Date Navigation** - Browse transactions by month and year
+- **Visual Analytics** - Charts and insights for your spending patterns
 
 ## 🛠️ Tech Stack
 
@@ -148,7 +148,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Firebase](https://firebase.google.com/) for backend services
 - [Vite](https://vitejs.dev/) for the build tool
 - [TanStack Query](https://tanstack.com/query) for data management
-
----
-
-Built with ❤️ using React and TypeScript
