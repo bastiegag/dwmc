@@ -20,12 +20,7 @@ describe('price utilities', () => {
 		});
 
 		it('returns undefined for undefined input', () => {
-			expect(formatPrice(undefined as any)).toBeUndefined();
-		});
-	});
-
-	describe('formatPriceToFloat', () => {
-		it('parses string with dollar sign', () => {
+			expect(formatPrice(undefined)).toBeUndefined();
 			expect(formatPriceToFloat('$1234.56')).toBe(1234.56);
 		});
 
@@ -38,7 +33,7 @@ describe('price utilities', () => {
 		});
 
 		it('returns undefined for undefined input', () => {
-			expect(formatPriceToFloat(undefined as any)).toBeUndefined();
+			expect(formatPriceToFloat(undefined)).toBeUndefined();
 		});
 
 		it('handles negative values', () => {
