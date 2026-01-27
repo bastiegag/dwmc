@@ -7,11 +7,11 @@ A modern personal finance management application built with React, TypeScript, a
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://typescriptlang.org/)
 [![Firebase](https://img.shields.io/badge/Firebase-12.2-orange.svg)](https://firebase.google.com/)
 
-## 🎯 About
+## About
 
 **Dude, Where's My Cash?** helps you track your expenses, manage multiple wallets, organize transactions by categories, and monitor your budgets in real-time. Built with modern web technologies for a fast, secure, and responsive experience.
 
-## ✨ Features
+## Features
 
 - **User Authentication** - Secure login with Firebase Authentication
 - **Multi-Wallet Support** - Manage multiple accounts with custom icons and colors
@@ -23,7 +23,7 @@ A modern personal finance management application built with React, TypeScript, a
 - **Date Navigation** - Browse transactions by month and year
 - **Visual Analytics** - Charts and insights for your spending patterns
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Frontend:** React 19, TypeScript
 - **Build Tool:** Vite 7
@@ -35,7 +35,7 @@ A modern personal finance management application built with React, TypeScript, a
 - **Testing:** Vitest + Testing Library
 - **Styling:** Sass/SCSS + Emotion
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -78,7 +78,7 @@ npm run dev
 
 5. Open [http://localhost:5173](http://localhost:5173)
 
-## 📜 Scripts
+## Scripts
 
 | Command                 | Description              |
 | ----------------------- | ------------------------ |
@@ -91,7 +91,7 @@ npm run dev
 | `npm run test:coverage` | Generate coverage report |
 | `npm run deploy`        | Deploy to Firebase       |
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 src/
@@ -107,7 +107,7 @@ src/
 └── utils/           # Utility functions
 ```
 
-## 🧪 Testing
+## Testing
 
 ```bash
 # Run tests
@@ -120,7 +120,7 @@ npm run test:ui
 npm run test:coverage
 ```
 
-## 🔒 Firebase Setup
+## Firebase Setup
 
 1. Create a Firebase project at [console.firebase.google.com](https://console.firebase.google.com)
 2. Enable Authentication (Email/Password)
@@ -138,11 +138,11 @@ service cloud.firestore {
 }
 ```
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - [Material-UI](https://mui.com/) for the component library
 - [Firebase](https://firebase.google.com/) for backend services
